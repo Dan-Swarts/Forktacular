@@ -28,10 +28,18 @@ class spoonacularService {
             console.log(error);
             return null
         }
+    }
 
-        const url = `${this.baseURL}/recipes/complexSearch?api${this.apiKey}`;
-        console.log(url);
-        return input;
+    async findInformation(id: number){
+        try {
+            const searchURL = `${this.baseURL}/recipes/${id}/information?apiKey=${this.apiKey}`;
+            const response = await fetch(searchURL);
+            const information = await response.json();
+            return information;
+        } catch(error) {
+            console.log(error);
+            return null;
+        }
     }
 };
 
