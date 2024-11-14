@@ -1,4 +1,3 @@
-import  from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
@@ -18,19 +17,19 @@ const HomePage = () => {
       <div className="pt-20 px-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <button
-            onClick={() => navigate('/search')}
+            onClick={() => navigate('/SearchPage')}
             className="bg-blue-500 text-white p-6 rounded shadow hover:bg-blue-600"
           >
             Go to Search Page
           </button>
           <button
-            onClick={() => navigate('/recipe-book')}
+            onClick={() => navigate('/RecipeBook')}
             className="bg-green-500 text-white p-6 rounded shadow hover:bg-green-600"
           >
             Go to Recipe Book
           </button>
           <button
-            onClick={() => navigate('/recipe-maker')}
+            onClick={() => navigate('/RecipeMaker')}
             className="bg-purple-500 text-white p-6 rounded shadow hover:bg-purple-600"
           >
             Go to Recipe Maker
