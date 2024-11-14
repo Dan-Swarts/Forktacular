@@ -9,7 +9,6 @@ const seedAll = async (): Promise<void> => {
   try {
     await sequelize.sync({ force: true });
     console.log('\n----- DATABASE SYNCED -----\n');
-    console.log(('\n----- NEW LINE -----\n'))
     
     await seedUsers(); 
     console.log('\n----- USERS SEEDED -----\n');
