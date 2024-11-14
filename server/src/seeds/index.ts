@@ -2,6 +2,7 @@ import { seedVolunteers } from './volunteer-seeds.js';
 import { seedWork } from './work-seeds.js';
 import sequelize from '../config/connection.js';
 
+
 const seedAll = async (): Promise<void> => {
   try {
     await sequelize.sync({ force: true });
