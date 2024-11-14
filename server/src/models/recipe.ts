@@ -7,9 +7,9 @@ interface RecipeAttributes {
   summary: string;
   readyInMinutes: number; 
   servings: number; 
-  //ingredients: string[]; 
+  ingredients: string[]; 
   instructions: string; 
-  //steps: string[]; 
+  steps: string[]; 
   image: string; 
   sourceUrl: string; 
   spoonacularId: number; 
@@ -24,9 +24,9 @@ export class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> im
   public summary!: string;
   public readyInMinutes!: number; 
   public servings!: number; 
-  //public ingredients!: string[]; 
+  public ingredients!: string[]; 
   public instructions!: string;
-  //public steps!: string[];  
+  public steps!: string[];  
   public image!: string; 
   public sourceUrl!: string; 
   public spoonacularId!: number; 
@@ -58,20 +58,18 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
         type: DataTypes.INTEGER, 
         allowNull: true,
       }, 
-      /*
       ingredients: {
-        type: DataTypes.ARRAY, 
+        type: DataTypes.ARRAY(DataTypes.TEXT), 
         allowNull: false,
       },
-      */
       instructions: {
         type: DataTypes.TEXT, 
         allowNull: false,
       },
-      /*steps: {
-        type: DataTypes.ARRAY(DataTypes.STRING(1000)), 
+      steps: {
+        type: DataTypes.ARRAY(DataTypes.TEXT), 
         allowNull: false, 
-      },*/
+      },
       image: {
         type: DataTypes.STRING, 
         allowNull: true, 

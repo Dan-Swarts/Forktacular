@@ -21,7 +21,6 @@ const seedAll = async (): Promise<void> => {
     
     await seedWork();
     console.log('\n----- WORK SEEDED -----\n');
-
     
     process.exit(0);
   } catch (error) {
