@@ -1,5 +1,5 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
-import { User } from './user.js';
+//import { User } from './user.js';
 
 interface RecipeAttributes {
   id: number;
@@ -7,14 +7,13 @@ interface RecipeAttributes {
   summary: string;
   readyInMinutes: number; 
   servings: number; 
-  ingredients: string[]; 
-  instructions: string; 
-  steps: string[]; 
+  //ingredients: string[]; 
+  //instructions: string; 
+  //steps: string[]; 
   image: string; 
   sourceUrl: string; 
   spoonacularId: number; 
   spoonacularSourceUrl: string; 
-  userId?: number;
 }
 
 interface RecipeCreationAttributes extends Optional<RecipeAttributes, 'id'> {}
@@ -25,17 +24,14 @@ export class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> im
   public summary!: string;
   public readyInMinutes!: number; 
   public servings!: number; 
-  public ingredients!: string[]; 
-  public instructions!: string;
-  public steps!: string[];  
+  //public ingredients!: string[]; 
+ // public instructions!: string;
+  //public steps!: string[];  
   public image!: string; 
   public sourceUrl!: string; 
   public spoonacularId!: number; 
   public spoonacularSourceUrl!: string; 
-  public userId!: number;
 
-  // associated Volunteer model
-  public readonly savedUser?: User;
 }
 
 export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
@@ -47,7 +43,7 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
         primaryKey: true,
       },
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(500),
         allowNull: false,
       },
       summary: {
@@ -62,18 +58,20 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
         type: DataTypes.INTEGER, 
         allowNull: true,
       }, 
+      /*
       ingredients: {
-        type: DataTypes.STRING, 
+        type: DataTypes.ARRAY, 
         allowNull: false,
       },
+      
       instructions: {
         type: DataTypes.TEXT, 
         allowNull: false,
       },
-      steps: {
-        type: DataTypes.STRING(1000), 
+      /*steps: {
+        type: DataTypes.ARRAY(DataTypes.STRING(1000)), 
         allowNull: false, 
-      },
+      },*/
       image: {
         type: DataTypes.STRING, 
         allowNull: true, 
@@ -89,11 +87,7 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
       spoonacularSourceUrl: {
         type: DataTypes.STRING, 
         allowNull: true,
-      }, 
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
+      }
     },
     {
       tableName: 'recipe',
