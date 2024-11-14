@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 
 const RecipeMaker = () => {
   const [recipeImage, setRecipeImage] = useState(null);
@@ -6,7 +6,7 @@ const RecipeMaker = () => {
   const [instructions, setInstructions] = useState('');
   
   // Handle file upload
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: { target: { files: any[]; }; }) => {
     const file = e.target.files[0];
     if (file) {
       setRecipeImage(URL.createObjectURL(file));
@@ -14,7 +14,7 @@ const RecipeMaker = () => {
   };
 
   // Handle ingredient change
-  const handleIngredientChange = (index, field, value) => {
+  const handleIngredientChange = (index: number, field: string, value: string) => {
     const newIngredients = [...ingredients];
     newIngredients[index][field] = value;
     setIngredients(newIngredients);
@@ -26,18 +26,18 @@ const RecipeMaker = () => {
   };
 
   // Remove ingredient field
-  const handleRemoveIngredient = (index) => {
+  const handleRemoveIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
   };
 
   // Handle instruction change
-  const handleInstructionsChange = (e) => {
+  const handleInstructionsChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     setInstructions(e.target.value);
   };
 
   // Handle form submission 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     // Handle the form data
     console.log('Recipe Submitted:', { recipeImage, ingredients, instructions });

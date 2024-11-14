@@ -1,5 +1,3 @@
-import  from 'react';
-
 const RecipeSearchPage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
