@@ -4,27 +4,36 @@ export const seedUsers = async () => {
   await User.bulkCreate([
     {
       userName: 'Paul', 
-      intolerance: 'dairy', 
-      diet: 'vegan', 
-      favIngredients: 'cheese'
+      userEmail: 'paul@gmail.com',
+      userPassword: '1234', 
+      intolerance: ['dairy'], 
+      diet: ['vegan'], 
+      favIngredients: ['cheese']
     }, 
     {
-      userName: 'Jae',
-      intolerance: 'dairy', 
-      diet: 'vegan', 
-      favIngredients: 'cheese'
+      userName: 'Joe',
+      userEmail: 'joe@gmail.com',
+      userPassword: '1234', 
+      intolerance: ['dairy'], 
+      diet: ['vegan'], 
+      favIngredients: ['cheese'],
     }, 
     {
       userName: 'Jessica',
-      intolerance: 'dairy', 
-      diet: 'vegan', 
-      favIngredients: 'cheese'
+      userEmail: 'jessica@gmail.com',
+      userPassword: '1234', 
+      intolerance: ['dairy'], 
+      diet: ['vegan'], 
+      favIngredients: ['cheese'],
     },
     {
       userName: 'Jennifer', 
-      intolerance: 'dairy', 
-      diet: 'vegan', 
-      favIngredients: 'cheese'
+      userEmail: 'jennifer@gmail.com',
+      userPassword: '1234', 
+      intolerance: ['dairy'], 
+      diet: ['vegan'], 
+      favIngredients: ['cheese']
+
     }
   ], { individualHooks: true})
 }

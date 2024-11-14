@@ -8,13 +8,14 @@ import { RecipeFactory } from './recipe.js';
     const Volunteer = VolunteerFactory(sequelize);
     const Work = WorkFactory(sequelize);
 
-    Volunteer.hasMany(Work, { foreignKey: 'assignedVolunteerId'});
-    Work.belongsTo(Volunteer, { foreignKey: 'assignedVolunteerId', as: 'assignedVolunteer'});
-
     const User = UserFactory(sequelize); 
     const Recipe = RecipeFactory(sequelize); 
 
-    User.hasMany(Recipe, { foreignKey: 'userId' });
-    Recipe.belongsTo(User, { foreignKey: 'userId', as: 'savedUser'}); 
+    Volunteer.hasMany(Work, { foreignKey: 'assignedVolunteerId'});
+    Work.belongsTo(Volunteer, { foreignKey: 'assignedVolunteerId', as: 'assignedVolunteer'});
+
+    User.belongsToMany(Recipe, { through: 'UserRecipe'});
+    Recipe.belongsToMany(User, { through: 'UserRecipe'}); 
+
 
 export { Volunteer, Work, User, Recipe };

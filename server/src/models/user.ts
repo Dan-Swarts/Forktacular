@@ -3,9 +3,11 @@ import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
 interface UserAttributes {
   id: number;
   userName: string;
-  intolerance: string;
-  diet: string;
-  favIngredients: string; 
+  userEmail: string;
+  userPassword: string; 
+  intolerance: string[];
+  diet: string[];
+  favIngredients: string[]; 
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
@@ -13,9 +15,11 @@ interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public userName!: string;
-  public intolerance!: string; 
-  public diet!: string; 
-  public favIngredients!: string;
+  public userEmail!: string; 
+  public userPassword!: string;  
+  public intolerance!: string[]; 
+  public diet!: string[]; 
+  public favIngredients!: string[];
 }
 
 export function UserFactory(sequelize: Sequelize): typeof User {
@@ -30,16 +34,25 @@ export function UserFactory(sequelize: Sequelize): typeof User {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      intolerance: {
+      userEmail: {
         type: DataTypes.STRING,
+        allowNull: false, 
+        unique: true, 
+      }, 
+      userPassword: {
+        type: DataTypes.STRING, 
+        allowNull: false,
+      },
+      intolerance: {
+        type: DataTypes.ARRAY,
         allowNull: true,
       }, 
       diet: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY,
         allowNull: true,
       }, 
       favIngredients: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY,
         allowNull: true,
       }
     },

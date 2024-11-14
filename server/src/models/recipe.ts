@@ -7,10 +7,13 @@ interface RecipeAttributes {
   summary: string;
   readyInMinutes: number; 
   servings: number; 
+  ingredients: string[]; 
   instructions: string; 
-  ingredients: string; 
+  steps: string[]; 
   image: string; 
-  spoonacular: boolean; 
+  sourceUrl: string; 
+  spoonacularId: number; 
+  spoonacularSourceUrl: string; 
   userId?: number;
 }
 
@@ -22,10 +25,13 @@ export class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> im
   public summary!: string;
   public readyInMinutes!: number; 
   public servings!: number; 
-  public instructions!: string; 
-  public ingredients!: string; 
+  public ingredients!: string[]; 
+  public instructions!: string;
+  public steps!: string[];  
   public image!: string; 
-  public spoonacular!: boolean; 
+  public sourceUrl!: string; 
+  public spoonacularId!: number; 
+  public spoonacularSourceUrl!: string; 
   public userId!: number;
 
   // associated Volunteer model
@@ -56,22 +62,34 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
         type: DataTypes.INTEGER, 
         allowNull: true,
       }, 
+      ingredients: {
+        type: DataTypes.STRING, 
+        allowNull: false,
+      },
       instructions: {
         type: DataTypes.STRING, 
         allowNull: false,
       },
-      ingredients: {
-        type: DataTypes.STRING, 
-        allowNull: false,
+      steps: {
+        type: DataTypes.ARRAY, 
+        allowNull: false, 
       },
       image: {
         type: DataTypes.STRING, 
         allowNull: true, 
       },
-      spoonacular: {
-        type: DataTypes.BOOLEAN,
+      sourceUrl: {
+        type: DataTypes.STRING, 
+        allowNull: true, 
+      },
+      spoonacularId: {
+        type: DataTypes.NUMBER,
         allowNull: false,
       },
+      spoonacularSourceUrl: {
+        type: DataTypes.STRING, 
+        allowNull: true,
+      }, 
       userId: {
         type: DataTypes.INTEGER,
         allowNull: true,

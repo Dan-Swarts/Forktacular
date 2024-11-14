@@ -18,4 +18,6 @@ const sequelize = process.env.DB_URL
       }
     );
 
+    sequelize.sync();
+
 export default sequelize;
