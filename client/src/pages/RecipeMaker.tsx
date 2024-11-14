@@ -1,20 +1,20 @@
-import { SetStateAction, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 const RecipeMaker = () => {
-  const [recipeImage, setRecipeImage] = useState(null);
-  const [ingredients, setIngredients] = useState([{ ingredient: '', measurement: '' }]);
-  const [instructions, setInstructions] = useState('');
-  
+  const [recipeImage, setRecipeImage] = useState<string | null>(null);
+  const [ingredients, setIngredients] = useState<{ ingredient: string; measurement: string }[]>([{ ingredient: '', measurement: '' }]);
+  const [instructions, setInstructions] = useState<string>('');
+
   // Handle file upload
-  const handleImageChange = (e: { target: { files: any[]; }; }) => {
-    const file = e.target.files[0];
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       setRecipeImage(URL.createObjectURL(file));
     }
   };
 
   // Handle ingredient change
-  const handleIngredientChange = (index: number, field: string, value: string) => {
+  const handleIngredientChange = (index: number, field: 'ingredient' | 'measurement', value: string) => {
     const newIngredients = [...ingredients];
     newIngredients[index][field] = value;
     setIngredients(newIngredients);
@@ -32,12 +32,12 @@ const RecipeMaker = () => {
   };
 
   // Handle instruction change
-  const handleInstructionsChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const handleInstructionsChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInstructions(e.target.value);
   };
 
   // Handle form submission 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle the form data
     console.log('Recipe Submitted:', { recipeImage, ingredients, instructions });
@@ -110,7 +110,7 @@ const RecipeMaker = () => {
             value={instructions}
             onChange={handleInstructionsChange}
             placeholder="Write your cooking instructions here..."
-            rows="5"
+            rows={5}
             className="w-full p-2 border border-gray-300 rounded-md"
           />
         </div>

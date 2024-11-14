@@ -1,38 +1,41 @@
+import React from 'react';
+import '../index.css';
+
 const RecipeBook = ({ recipes }) => {
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8">My Recipe Book</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <h1 className="text-4xl font-bold text-amber-700 mb-8 text-center">My Recipe Book</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {recipes.map((recipe: { recipeImage: string | undefined; title: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; ingredients: any[]; }, index: React.Key | null | undefined) => (
           <div
             key={index}
-            className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+            className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-transform transform hover:scale-105"
           >
             {/* Recipe Image */}
             {recipe.recipeImage && (
               <img
                 src={recipe.recipeImage}
                 alt={`Recipe ${index}`}
-                className="w-full h-48 object-cover"
+                className="w-full h-56 object-cover"
               />
             )}
 
-            <div className="p-4">
+            <div className="p-6 bg-gradient-to-r from-amber-50 to-white">
               {/* Recipe Title */}
-              <h2 className="text-2xl font-semibold text-gray-700 mb-2">{recipe.title}</h2>
+              <h2 className="text-2xl font-bold text-amber-800 mb-3">{recipe.title}</h2>
 
               {/* Ingredients */}
-              <h3 className="text-lg font-medium text-gray-600 mb-1">Ingredients:</h3>
-              <ul className="list-disc list-inside mb-4">
+              <h3 className="text-lg font-semibold text-amber-700 mb-2">Ingredients:</h3>
+              <ul className="list-disc list-inside mb-4 space-y-1">
                 {recipe.ingredients.map((item: { measurement: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; ingredient: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }, idx: React.Key | null | undefined) => (
-                  <li key={idx} className="text-gray-700">
+                  <li key={idx} className="text-gray-800">
                     {item.measurement} {item.ingredient}
                   </li>
                 ))}
               </ul>
 
               {/* View Recipe Button */}
-              <button className="mt-4 w-full bg-teal-500 text-white py-2 rounded-md hover:bg-teal-600">
+              <button className="mt-4 w-full bg-gradient-to-r from-teal-500 to-teal-700 text-white py-2 rounded-md hover:from-teal-600 hover:to-teal-800 transition-colors">
                 View Recipe
               </button>
             </div>
@@ -40,6 +43,7 @@ const RecipeBook = ({ recipes }) => {
         ))}
       </div>
     </div>
+
   );
 };
 

@@ -1,15 +1,14 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './index.css'
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './index.css';
 
-import App from './App.tsx';
-import ErrorPage from './pages/ErrorPage.tsx';
-import MainPage from './pages/MainPage.tsx';
-import VolunteerPage from './pages/VolunteerPage.tsx';
-import VolunteerForm from './pages/VolunteerForm.tsx';
-import EditVolunteer from './pages/EditVolunteer.tsx';
-import EditWork from './pages/EditWork.tsx';
-
+import App from './App';
+import ErrorPage from './pages/ErrorPage';
+import HomePage from './pages/HomePage';
+import SearchPage from './pages/SearchPage';
+import RecipeBook from './pages/RecipeBook';
+import RecipeMaker from './pages/RecipeMaker';
+import UserInfo from './pages/UserInfo';
 
 const router = createBrowserRouter([
   {
@@ -19,30 +18,30 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <MainPage />
+        element: <HomePage />
       }, 
       {
-        path: '/show-volunteers',
-        element: <VolunteerPage />
+        path: 'search',
+        element: <SearchPage />
       },
       {
-        path: '/new-volunteer',
-        element: <VolunteerForm />
+        path: 'recipe-book',
+        element: <RecipeBook />
       },
       {
-        path: '/edit-volunteer',
-        element: <EditVolunteer />
+        path: 'recipe-maker',
+        element: <RecipeMaker />
       },
       {
-        path: '/edit-work',
-        element: <EditWork />
+        path: 'user-info',
+        element: <UserInfo />
       }
     ]
   }
 ]);
 
 const rootElement = document.getElementById('root');
-if(rootElement) {
+if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <RouterProvider router={router} />
   );

@@ -1,16 +1,21 @@
-import { Outlet } from "react-router-dom"
-
-import Navbar from "./components/Navbar"
+import { Outlet, Link } from 'react-router-dom';
 
 function App() {
   return (
-    <>
-      <Navbar />
-        <main>
-          <Outlet />
-        </main>
-    </>
-  )
+    <div>
+      <nav>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/search">Search</Link></li>
+          <li><Link to="/recipe-book">Recipe Book</Link></li>
+          <li><Link to="/recipe-maker">Recipe Maker</Link></li>
+          <li><Link to="/user-info">User Info</Link></li>
+        </ul>
+      </nav>
+      {/* This Outlet is essential for nested routes to be displayed */}
+      <Outlet />
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -1,5 +1,15 @@
+interface Ingredient {
+  ingredient: string;
+  measurement: string;
+}
 
-const RecipeCard = ({ recipeImage, ingredients, instructions }) => {
+interface RecipeCardProps {
+  recipeImage: string;
+  ingredients: Ingredient[];
+  instructions: string;
+}
+
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipeImage, ingredients, instructions }) => {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10 border border-gray-200">
       {/* Recipe Image */}
@@ -20,7 +30,7 @@ const RecipeCard = ({ recipeImage, ingredients, instructions }) => {
       <div className="mb-6">
         <h3 className="text-2xl font-semibold text-gray-700 mb-2">Ingredients</h3>
         <ul className="list-disc list-inside space-y-1">
-          {ingredients.map((item, index) => (
+          {ingredients.map((item: Ingredient, index: number) => (
             <li key={index} className="text-gray-600">
               {item.ingredient} - {item.measurement}
             </li>
@@ -38,8 +48,8 @@ const RecipeCard = ({ recipeImage, ingredients, instructions }) => {
 };
 
 // Example usage with mock data (Replace with actual data from the form)
-const App = () => {
-  const mockRecipe = {
+const App: React.FC = () => {
+  const mockRecipe: RecipeCardProps = {
     recipeImage: 'https://via.placeholder.com/400', // Replace this with the actual image URL
     ingredients: [
       { ingredient: 'Flour', measurement: '2 cups' },
