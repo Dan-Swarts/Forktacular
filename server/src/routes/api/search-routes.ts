@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import spoonacularService from '../../service/spoonacularService.js';
+import searchInput from "../../types/searchInput.js";
 
 const router = Router();
 
@@ -11,15 +12,16 @@ router.get('/test', (_req:Request, res:Response) => {
     }
 });
 
-router.post('/search', async (_req:Request, res:Response) => {
-    try{
-        const message = 'hello';
-        // const message = await spoonacularService.findRecipes({});
-        console.log(spoonacularService);
-        res.status(200).json({ message: message });
+router.post('/recipes', async (req:Request, res:Response) => {
+    try {
+        const searchTerms: searchInput = req.body;
+        const recipes = await spoonacularService.findRecipes(searchTerms);
+        res.status(200).json(recipes);
     } catch(error) {
         res.status(500).json({ message: 'hello' });
     }
 });
+
+router.post('/find')
 
 export default router;
