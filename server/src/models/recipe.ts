@@ -51,7 +51,7 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
         allowNull: false,
       },
       summary: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       readyInMinutes: {
@@ -67,11 +67,11 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
         allowNull: false,
       },
       instructions: {
-        type: DataTypes.STRING, 
+        type: DataTypes.TEXT, 
         allowNull: false,
       },
       steps: {
-        type: DataTypes.ARRAY, 
+        type: DataTypes.STRING(1000), 
         allowNull: false, 
       },
       image: {
@@ -83,7 +83,7 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
         allowNull: true, 
       },
       spoonacularId: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       spoonacularSourceUrl: {

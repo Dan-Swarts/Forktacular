@@ -1,6 +1,6 @@
 import { Recipe } from '../models/index.js';
 
-export const seedRecipe = async () => {
+export const seedRecipes = async () => {
   await Recipe.bulkCreate([
     {
       title: "Rosemary and Red Onion Focaccia", 
