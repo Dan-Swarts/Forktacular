@@ -44,15 +44,15 @@ export function UserFactory(sequelize: Sequelize): typeof User {
         allowNull: false,
       },
       intolerance: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true,
       }, 
       diet: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true,
       }, 
       favIngredients: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true,
       }
     },
