@@ -1,6 +1,8 @@
 import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RecipeMaker = () => {
+  const navigate = useNavigate();
   const [recipeImage, setRecipeImage] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState<{ ingredient: string; measurement: string }[]>([{ ingredient: '', measurement: '' }]);
   const [instructions, setInstructions] = useState<string>('');
@@ -44,88 +46,113 @@ const RecipeMaker = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-[#ffe89d] shadow-lg rounded-md">
-      <h2 className="text-2xl font-semibold text-[#a84e24] text-center mb-6">Recipe Maker</h2>
+    <div className="bg-[#ffe89d] min-h-screen pt-24"> {/* Added pt-24 to prevent content from being hidden behind the navbar */}
+   <nav className="bg-[#f5d3a4] shadow-md fixed top-0 left-0 right-0 flex justify-between items-center px-6 py-2 max-w-7xl mx-auto z-10">
+  {/* Forktacular button on the left */}
+  <button
+    onClick={() => navigate('/')}
+    className="text-[#a84e24] hover:text-[#b7572e] font-semibold"
+  >
+    Forktacular
+  </button>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Recipe Image Upload */}
-        <div>
-          <label htmlFor="image" className="block text-lg font-medium mb-2 text-[#a84e24]">Recipe Image</label>
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 file:bg-gray-100 hover:file:bg-gray-200"
-          />
-          {recipeImage && (
-            <div className="mt-4">
-              <img src={recipeImage} alt="Recipe Preview" className="w-full h-48 object-cover rounded-md" />
-            </div>
-          )}
-        </div>
+  {/* Title centered */}
+  <div className="text-2xl font-bold text-[#a84e24] flex-1 text-center">
+    Recipe Maker
+  </div>
 
-        {/* Ingredients Section */}
-        <div>
-          <label className="block text-lg font-medium mb-2 text-[#a84e24]">Ingredients</label>
-          {ingredients.map((ingredient, index) => (
-            <div key={index} className="flex items-center space-x-4 mb-4">
-              <input
-                type="text"
-                value={ingredient.ingredient}
-                onChange={(e) => handleIngredientChange(index, 'ingredient', e.target.value)}
-                placeholder="Ingredient"
-                className="w-1/2 p-2 border border-gray-300 rounded-md"
-              />
-              <input
-                type="text"
-                value={ingredient.measurement}
-                onChange={(e) => handleIngredientChange(index, 'measurement', e.target.value)}
-                placeholder="Measurement"
-                className="w-1/3 p-2 border border-gray-300 rounded-md"
-              />
-              <button
-                type="button"
-                onClick={() => handleRemoveIngredient(index)}
-                className="text-red-600 hover:text-red-800"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={handleAddIngredient}
-            className="text-[#0062cc] hover:text-[#0046b1]"
-          >
-            Add Ingredient
-          </button>
-        </div>
+  {/* Navigation buttons on the right */}
+  <div className="flex space-x-4">
+    <button onClick={() => navigate('/recipe-book')} className="text-[#a84e24] hover:text-[#b7572e]">Recipe Book</button>
+    <button onClick={() => navigate('/search')} className="text-[#a84e24] hover:text-[#b7572e]">Search Page</button>
+    <button onClick={() => navigate('/user-info')} className="text-[#a84e24] hover:text-[#b7572e]">Account</button>
+  </div>
+</nav>
 
-        {/* Cooking Instructions Section */}
-        <div>
-          <label htmlFor="instructions" className="block text-lg font-medium mb-2 text-[#a84e24]">Cooking Instructions</label>
-          <textarea
-            id="instructions"
-            value={instructions}
-            onChange={handleInstructionsChange}
-            placeholder="Write your cooking instructions here..."
-            rows={5}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
+  {/* Main Content Area */}
+  <div className="max-w-3xl mx-auto p-6 bg-[#fadaae] shadow-lg rounded-md mt-24"> {/* mt-24 to prevent content overlap */}
+    <h2 className="text-2xl font-semibold text-[#a84e24] text-center mb-6">Recipe Maker</h2>
 
-        {/* Submit Button */}
-        <div className="flex justify-center">
-          <button
-            type="submit"
-            className="bg-[#ff9e40] text-white px-6 py-2 rounded-md hover:bg-[#e7890c]"
-          >
-            Submit Recipe
-          </button>
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Recipe Image Upload */}
+      <div>
+        <label htmlFor="image" className="block text-lg font-medium mb-2 text-[#a84e24]">Recipe Image</label>
+        <input
+          type="file"
+          id="image"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 file:bg-gray-100 hover:file:bg-gray-200"
+        />
+        {recipeImage && (
+          <div className="mt-4">
+            <img src={recipeImage} alt="Recipe Preview" className="w-full h-48 object-cover rounded-md" />
+          </div>
+        )}
+      </div>
+
+      {/* Ingredients Section */}
+      <div>
+        <label className="block text-lg font-medium mb-2 text-[#a84e24]">Ingredients</label>
+        {ingredients.map((ingredient, index) => (
+          <div key={index} className="flex items-center space-x-4 mb-4">
+            <input
+              type="text"
+              value={ingredient.ingredient}
+              onChange={(e) => handleIngredientChange(index, 'ingredient', e.target.value)}
+              placeholder="Ingredient"
+              className="w-1/2 p-2 border border-gray-300 rounded-md"
+            />
+            <input
+              type="text"
+              value={ingredient.measurement}
+              onChange={(e) => handleIngredientChange(index, 'measurement', e.target.value)}
+              placeholder="Measurement"
+              className="w-1/3 p-2 border border-gray-300 rounded-md"
+            />
+            <button
+              type="button"
+              onClick={() => handleRemoveIngredient(index)}
+              className="text-red-600 hover:text-red-800"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={handleAddIngredient}
+          className="text-[#0062cc] hover:text-[#0046b1]"
+        >
+          Add Ingredient
+        </button>
+      </div>
+
+      {/* Cooking Instructions Section */}
+      <div>
+        <label htmlFor="instructions" className="block text-lg font-medium mb-2 text-[#a84e24]">Cooking Instructions</label>
+        <textarea
+          id="instructions"
+          value={instructions}
+          onChange={handleInstructionsChange}
+          placeholder="Write your cooking instructions here..."
+          rows={5}
+          className="w-full p-2 border border-gray-300 rounded-md"
+        />
+      </div>
+
+      {/* Submit Button */}
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className="bg-[#ff9e40] text-white px-6 py-2 rounded-md hover:bg-[#e7890c]"
+        >
+          Submit Recipe
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
   );
 };
 

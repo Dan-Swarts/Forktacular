@@ -1,15 +1,32 @@
+import { useNavigate } from 'react-router-dom';
+
 const RecipeSearchPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-[#fef3d0]">
       {/* Navbar */}
-      <nav className="bg-[#fef3d0] shadow-md fixed top-0 w-full flex justify-between items-center px-4 py-2">
-        <div className="text-xl font-bold text-[#a84e24] text-center flex-1">Recipe Search</div>
-        <div className="flex space-x-4">
-          <button className="text-gray-700 hover:text-gray-900">Recipe Book</button>
-          <button className="text-gray-700 hover:text-gray-900">Recipe Maker</button>
-          <button className="text-gray-700 hover:text-gray-900">Account</button>
-        </div>
-      </nav>
+      <nav className="bg-[#f5d3a4] shadow-md fixed top-0 left-0 right-0 flex justify-between items-center px-6 py-2 max-w-7xl mx-auto z-10">
+  {/* Forktacular button on the left */}
+  <button
+    onClick={() => navigate('/')}
+    className="text-[#a84e24] hover:text-[#b7572e] font-semibold"
+  >
+    Forktacular
+  </button>
+
+  {/* Title centered */}
+  <div className="text-2xl font-bold text-[#a84e24] flex-1 text-center">
+    Recipe Search
+  </div>
+
+  {/* Navigation buttons on the right */}
+  <div className="flex space-x-4">
+    <button onClick={() => navigate('/recipe-book')} className="text-[#a84e24] hover:text-[#b7572e]">Recipe Book</button>
+    <button onClick={() => navigate('/recipe-maker')} className="text-[#a84e24] hover:text-[#b7572e]">Recipe Maker</button>
+    <button onClick={() => navigate('/user-info')} className="text-[#a84e24] hover:text-[#b7572e]">Account</button>
+  </div>
+</nav>
 
       {/* Main Content */}
       <div className="pt-20 px-4">

@@ -7,11 +7,29 @@ const HomePage = () => {
     <div className="min-h-screen bg-[#fef3d0]">
       {/* Navbar */}
       <nav className="bg-[#f5d3a4] shadow-md fixed top-0 w-full flex justify-between items-center px-4 py-2">
-        <div className="text-2xl font-bold text-[#a84e24] flex-1 text-center">Home</div>
-        <div className="flex">
-          <button onClick={() => navigate('/user-info')} className="text-[#a84e24] hover:text-[#b7572e]">Account</button>
-        </div>
-      </nav>
+      {/* Forktacular button on the left */}
+      <button
+        onClick={() => navigate('/')}
+        className="text-[#a84e24] hover:text-[#b7572e] font-semibold"
+      >
+        Forktacular
+      </button>
+
+      {/* Title centered */}
+      <div className="text-2xl font-bold text-[#a84e24] flex-1 text-center">
+        Home
+      </div>
+
+      {/* Account button on the right */}
+      <div className="flex">
+        <button
+          onClick={() => navigate('/user-info')}
+          className="text-[#a84e24] hover:text-[#b7572e]"
+        >
+          Account
+        </button>
+      </div>
+    </nav>
 
       {/* Main Content */}
       <div className="pt-20 px-4">
