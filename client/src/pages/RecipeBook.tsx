@@ -1,12 +1,28 @@
-import React from 'react';
 import '../index.css';
 
-const RecipeBook = ({ recipes }) => {
+
+interface Ingredient {
+  measurement: string;
+  ingredient: string;
+}
+
+interface Recipe {
+  title: string;
+  recipeImage: string | undefined;
+  ingredients: Ingredient[];
+  instructions: string;
+}
+
+interface RecipeBookProps {
+  recipes: Recipe[];
+}
+
+const RecipeBook = ({ recipes }: RecipeBookProps) => {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-4xl font-bold text-amber-700 mb-8 text-center">My Recipe Book</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {recipes.map((recipe: { recipeImage: string | undefined; title: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; ingredients: any[]; }, index: React.Key | null | undefined) => (
+        {recipes.map((recipe, index) => (
           <div
             key={index}
             className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-transform transform hover:scale-105"
@@ -27,7 +43,7 @@ const RecipeBook = ({ recipes }) => {
               {/* Ingredients */}
               <h3 className="text-lg font-semibold text-amber-700 mb-2">Ingredients:</h3>
               <ul className="list-disc list-inside mb-4 space-y-1">
-                {recipe.ingredients.map((item: { measurement: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; ingredient: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }, idx: React.Key | null | undefined) => (
+                {recipe.ingredients.map((item, idx) => (
                   <li key={idx} className="text-gray-800">
                     {item.measurement} {item.ingredient}
                   </li>
@@ -43,13 +59,12 @@ const RecipeBook = ({ recipes }) => {
         ))}
       </div>
     </div>
-
   );
 };
 
 // Example usage with mock data (Replace with actual recipe data from storage or state)
 const App = () => {
-  const mockRecipes = [
+  const mockRecipes: Recipe[] = [
     {
       title: 'Chocolate Cake',
       recipeImage: 'https://via.placeholder.com/400',
