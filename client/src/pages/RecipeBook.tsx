@@ -1,5 +1,5 @@
 import '../index.css';
-
+import { useNavigate } from 'react-router-dom';
 
 interface Ingredient {
   measurement: string;
@@ -18,10 +18,12 @@ interface RecipeBookProps {
 }
 
 const RecipeBook = ({ recipes }: RecipeBookProps) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-4xl font-bold text-amber-700 mb-8 text-center">My Recipe Book</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+    <div className="max-w-7xl mx-auto p-6 bg-[#fef3d0]">
+      <h1 className="text-4xl font-bold text-[#a84e24] mb-8 text-center">My Recipe Book</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {recipes.map((recipe, index) => (
           <div
             key={index}
@@ -36,12 +38,12 @@ const RecipeBook = ({ recipes }: RecipeBookProps) => {
               />
             )}
 
-            <div className="p-6 bg-gradient-to-r from-amber-50 to-white">
+            <div className="p-6 bg-gradient-to-r from-[#f5d3a4] to-white">
               {/* Recipe Title */}
-              <h2 className="text-2xl font-bold text-amber-800 mb-3">{recipe.title}</h2>
+              <h2 className="text-2xl font-bold text-[#a84e24] mb-3">{recipe.title}</h2>
 
               {/* Ingredients */}
-              <h3 className="text-lg font-semibold text-amber-700 mb-2">Ingredients:</h3>
+              <h3 className="text-lg font-semibold text-[#a84e24] mb-2">Ingredients:</h3>
               <ul className="list-disc list-inside mb-4 space-y-1">
                 {recipe.ingredients.map((item, idx) => (
                   <li key={idx} className="text-gray-800">
@@ -51,7 +53,7 @@ const RecipeBook = ({ recipes }: RecipeBookProps) => {
               </ul>
 
               {/* View Recipe Button */}
-              <button className="mt-4 w-full bg-gradient-to-r from-teal-500 to-teal-700 text-white py-2 rounded-md hover:from-teal-600 hover:to-teal-800 transition-colors">
+              <button onClick={() => navigate('/recipe-card')} className="mt-4 w-full bg-[#ff9e40] text-white py-2 rounded-lg shadow hover:bg-[#e7890c] transition-colors duration-200">
                 View Recipe
               </button>
             </div>

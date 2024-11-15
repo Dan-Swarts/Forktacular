@@ -11,7 +11,7 @@ interface RecipeCardProps {
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipeImage, ingredients, instructions }) => {
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10 border border-gray-200">
+    <div className="max-w-2xl mx-auto p-6 bg-[#fef3d0] shadow-lg rounded-lg mt-10 border border-gray-200">
       {/* Recipe Image */}
       {recipeImage && (
         <div className="mb-4">
@@ -24,14 +24,14 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipeImage, ingredients, instr
       )}
 
       {/* Recipe Title */}
-      <h2 className="text-3xl font-bold text-gray-800 mb-4">Recipe Card</h2>
+      <h2 className="text-3xl font-bold text-[#a84e24] mb-4">Recipe Card</h2>
 
       {/* Ingredients List */}
       <div className="mb-6">
-        <h3 className="text-2xl font-semibold text-gray-700 mb-2">Ingredients</h3>
+        <h3 className="text-2xl font-semibold text-[#a84e24] mb-2">Ingredients</h3>
         <ul className="list-disc list-inside space-y-1">
           {ingredients.map((item: Ingredient, index: number) => (
-            <li key={index} className="text-gray-600">
+            <li key={index} className="text-gray-800">
               {item.ingredient} - {item.measurement}
             </li>
           ))}
@@ -40,8 +40,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipeImage, ingredients, instr
 
       {/* Cooking Instructions */}
       <div>
-        <h3 className="text-2xl font-semibold text-gray-700 mb-2">Instructions</h3>
-        <p className="text-gray-600 whitespace-pre-line">{instructions}</p>
+        <h3 className="text-2xl font-semibold text-[#a84e24] mb-2">Instructions</h3>
+        <p className="text-gray-800 whitespace-pre-line">{instructions}</p>
       </div>
     </div>
   );

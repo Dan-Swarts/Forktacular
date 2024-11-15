@@ -44,13 +44,13 @@ const RecipeMaker = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-md">
-      <h2 className="text-2xl font-semibold text-center mb-6">Recipe Maker</h2>
+    <div className="max-w-3xl mx-auto p-6 bg-[#ffe89d] shadow-lg rounded-md">
+      <h2 className="text-2xl font-semibold text-[#a84e24] text-center mb-6">Recipe Maker</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Recipe Image Upload */}
         <div>
-          <label htmlFor="image" className="block text-lg font-medium mb-2">Recipe Image</label>
+          <label htmlFor="image" className="block text-lg font-medium mb-2 text-[#a84e24]">Recipe Image</label>
           <input
             type="file"
             id="image"
@@ -67,7 +67,7 @@ const RecipeMaker = () => {
 
         {/* Ingredients Section */}
         <div>
-          <label className="block text-lg font-medium mb-2">Ingredients</label>
+          <label className="block text-lg font-medium mb-2 text-[#a84e24]">Ingredients</label>
           {ingredients.map((ingredient, index) => (
             <div key={index} className="flex items-center space-x-4 mb-4">
               <input
@@ -96,7 +96,7 @@ const RecipeMaker = () => {
           <button
             type="button"
             onClick={handleAddIngredient}
-            className="text-blue-600 hover:text-blue-800"
+            className="text-[#0062cc] hover:text-[#0046b1]"
           >
             Add Ingredient
           </button>
@@ -104,7 +104,7 @@ const RecipeMaker = () => {
 
         {/* Cooking Instructions Section */}
         <div>
-          <label htmlFor="instructions" className="block text-lg font-medium mb-2">Cooking Instructions</label>
+          <label htmlFor="instructions" className="block text-lg font-medium mb-2 text-[#a84e24]">Cooking Instructions</label>
           <textarea
             id="instructions"
             value={instructions}
@@ -119,7 +119,7 @@ const RecipeMaker = () => {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+            className="bg-[#ff9e40] text-white px-6 py-2 rounded-md hover:bg-[#e7890c]"
           >
             Submit Recipe
           </button>

@@ -4,9 +4,9 @@ const UserInfo = () => {
   const [isSignIn, setIsSignIn] = useState(true);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-[#fef3d0]">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">
+        <h2 className="text-2xl font-bold mb-6 text-center text-[#a84e24]">
           {isSignIn ? 'Sign In' : 'Sign Up'}
         </h2>
         {isSignIn ? (
@@ -18,7 +18,7 @@ const UserInfo = () => {
               <input
                 type="text"
                 id="username"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#ff9e40]"
                 placeholder="Enter your username"
               />
             </div>
@@ -29,13 +29,13 @@ const UserInfo = () => {
               <input
                 type="password"
                 id="password"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#ff9e40]"
                 placeholder="Enter your password"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+              className="w-full bg-[#ff9e40] text-white py-2 rounded hover:bg-[#e7890c]"
             >
               Sign In
             </button>
@@ -49,7 +49,7 @@ const UserInfo = () => {
               <input
                 type="text"
                 id="username"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
                 placeholder="Enter your username"
               />
             </div>
@@ -60,7 +60,7 @@ const UserInfo = () => {
               <input
                 type="password"
                 id="password"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
                 placeholder="Enter your password"
               />
             </div>
@@ -71,7 +71,7 @@ const UserInfo = () => {
               <input
                 type="password"
                 id="confirm-password"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
                 placeholder="Confirm your password"
               />
             </div>
@@ -82,7 +82,7 @@ const UserInfo = () => {
               <input
                 type="text"
                 id="allergies"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
                 placeholder="List any allergies or intolerances"
               />
             </div>
@@ -93,20 +93,20 @@ const UserInfo = () => {
               <input
                 type="text"
                 id="diet"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-green-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
                 placeholder="Specify your diet, e.g., vegan, keto"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
+              className="w-full bg-[#a84e24] text-white py-2 rounded hover:bg-[#9c401e]"
             >
               Sign Up
             </button>
           </form>
         )}
         <button
-          className="mt-4 text-blue-500 hover:underline focus:outline-none"
+          className="mt-4 text-[#ff9e40] hover:underline focus:outline-none"
           onClick={() => setIsSignIn(!isSignIn)}
         >
           {isSignIn ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
