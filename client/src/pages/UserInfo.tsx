@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const AuthPage = () => {
+const UserInfo = () => {
   const [isSignIn, setIsSignIn] = useState(true);
 
   return (
@@ -116,4 +116,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default UserInfo;
