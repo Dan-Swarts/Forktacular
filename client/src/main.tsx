@@ -6,7 +6,7 @@ import ErrorPage from './pages/ErrorPage';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import RecipeBook from './pages/RecipeBook';
-import RecipeCard from './pages/RecipeCard';
+import RecipeShowcase from './pages/RecipeShowcase';
 import RecipeMaker from './pages/RecipeMaker';
 import UserInfo from './pages/UserInfo';
 
@@ -37,8 +37,8 @@ const router = createBrowserRouter([
         element: <UserInfo />
       },
       {
-        path: 'recipe-card',
-        element: <RecipeCard />
+        path: 'recipe-showcase',
+        element: <RecipeShowcase />
       }
     ]
   }
