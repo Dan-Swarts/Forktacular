@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* globals.css or your base CSS file */
+html, body {
+    @apply bg-[#fef3d0]; /* Set the background color for the whole page */
+    height: 100%;
+  }
