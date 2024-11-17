@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import { User } from '../../models/user.js';
 import { Recipe } from '../../models/recipe.js'; 
 
+
 const router = express.Router();
 
 // GET /users - Get all users
@@ -72,6 +73,38 @@ router.post('/', async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       message: error.message
+    });
+  }
+});
+
+// POST /users/:userId/recipes/:recipeId - Save a recipe to a user
+router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) => {
+  const { userId, recipeId } = req.params;
+  try {
+    // Find the User
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the Recipe
+    const recipe = await Recipe.findByPk(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+
+    console.log(User.associations);
+    console.log(Recipe.associations);
+
+    // Add the Recipe to the User
+    await user.addRecipe(recipe); // Sequelize's `add` method handles the UserRecipe join table
+
+    return res.status(200).json({
+      message: `Recipe (ID: ${recipeId}) successfully saved for User (ID: ${userId}).`,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
     });
   }
 });

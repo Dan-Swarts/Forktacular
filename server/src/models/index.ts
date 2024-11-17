@@ -6,7 +6,7 @@ import { RecipeFactory } from './recipe.js';
     const User = UserFactory(sequelize); 
     const Recipe = RecipeFactory(sequelize); 
 
-    const UserRecipes = sequelize.define('UserRecipes', {}, { timestamps: false });
+    const UserRecipes = sequelize.define('UserRecips', {}, { timestamps: false });
 
     User.belongsToMany(Recipe, { through: 'UserRecipes', onDelete: 'CASCADE' });
     Recipe.belongsToMany(User, { through: 'UserRecipes', onDelete: 'CASCADE' });
