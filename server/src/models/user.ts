@@ -33,11 +33,17 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       userName: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          len: [3, 50], // Minimum 3 and maximum 50 characters
+        },
       },
       userEmail: {
         type: DataTypes.STRING,
         allowNull: false, 
         unique: true, 
+        validate: {
+          isEmail: true, // Ensure it's a valid email
+        },
       }, 
       userPassword: {
         type: DataTypes.STRING, 

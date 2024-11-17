@@ -1,5 +1,4 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
-//import { User } from './user.js';
 
 interface RecipeAttributes {
   id: number;
@@ -86,7 +85,7 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
       },
       spoonacularId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       spoonacularSourceUrl: {
         type: DataTypes.STRING, 

@@ -1,7 +1,7 @@
-import { seedVolunteers } from './volunteer-seeds.js';
-import { seedWork } from './work-seeds.js';
+
 import { seedUsers } from './user-seeds.js'; 
-import { seedRecipes } from './recipe-seeds.js'
+import { seedRecipes } from './recipe-seeds.js';
+import { seedUserRecipes } from './user-recipes-seeds.js';
 import sequelize from '../config/connection.js';
 
 
@@ -16,11 +16,8 @@ const seedAll = async (): Promise<void> => {
     await seedRecipes(); 
     console.log('\n----- RECIPES SEEDED -----\n');
 
-    await seedVolunteers();
-    console.log('\n----- VOLUNTEERS SEEDED -----\n');
-    
-    await seedWork();
-    console.log('\n----- WORK SEEDED -----\n');
+    await seedUserRecipes();
+    console.log('\n----- USER-RECIPES SEEDED -----\n');
     
     process.exit(0);
   } catch (error) {

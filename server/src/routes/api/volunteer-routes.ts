@@ -1,4 +1,4 @@
-import express from 'express';
+/*import express from 'express';
 import type { Request, Response } from 'express';
 import { Volunteer } from '../../models/volunteer.js';
 
@@ -92,4 +92,4 @@ router.delete('/:id', async (req: Request, res: Response) => {
   }
 });
 
-export { router as volunteerRouter };
+export { router as volunteerRouter };*/
