@@ -1,8 +1,7 @@
 import { Router } from 'express';
-import { recipeRouter } from './recipe-routes'; 
-import { userRouter } from './user-routes'; 
+import { userRouter } from './user-routes.js'; 
+import { recipeRouter } from './recipe-routes.js'; 
 import searchRouter from './search-routes.js';
-
 
 const router = Router();
 

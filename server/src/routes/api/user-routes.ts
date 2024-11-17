@@ -2,11 +2,12 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import { User } from '../../models/user.js';
 import { Recipe } from '../../models/recipe.js'; 
+import sequelize from '../../config/connection.js';
 
 
 const router = express.Router();
 
-// GET /users - Get all users
+// GET /api/users - Get all users
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const users = await User.findAll();
@@ -18,7 +19,7 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
-// GET /users/:id - Get a user by ID
+// GET api/users/:id - Get a user by ID
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -37,7 +38,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// GET /users/:id/recipes - Get all recipes saved by a User
+// GET api/users/:id/recipes - Get all recipes saved by a User -- DOESN'T GIVE BACK WHAT WE WANT RIGH TNOW, BUT THE ROUTE IS 200
 router.get('/:id/recipes', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -62,7 +63,7 @@ router.get('/:id/recipes', async (req: Request, res: Response) => {
   }
 });
 
-// POST /users - Create a new user
+// POST api/users - Create a new user
 router.post('/', async (req: Request, res: Response) => {
   const { userName, userEmail, userPassword, intolerance, diet, favIngredients } = req.body;
   try {
@@ -77,7 +78,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// POST /users/:userId/recipes/:recipeId - Save a recipe to a user
+// POST api/users/:userId/recipes/:recipeId - Save a recipe to a user -- ASSOCIATIONS DONT LOG, but getting a 200
 router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) => {
   const { userId, recipeId } = req.params;
   try {
@@ -85,19 +86,25 @@ router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) =>
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
+    } else {
+      console.log(user);
     }
 
     // Find the Recipe
     const recipe = await Recipe.findByPk(recipeId);
     if (!recipe) {
       return res.status(404).json({ message: 'Recipe not found' });
-    }
-
+    } else {
+    console.log(recipe.title); 
     console.log(User.associations);
-    console.log(Recipe.associations);
+    console.log(Recipe.associations); 
+    console.log('Connecting to database: ', sequelize.config.database); 
+  
+  }
+
 
     // Add the Recipe to the User
-    await user.addRecipe(recipe); // Sequelize's `add` method handles the UserRecipe join table
+   //await user.addRecipe(recipe); // Sequelize's `add` method handles the UserRecipe join table
 
     return res.status(200).json({
       message: `Recipe (ID: ${recipeId}) successfully saved for User (ID: ${userId}).`,
@@ -109,7 +116,7 @@ router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) =>
   }
 });
 
-// PUT /users/:id - Update a user by ID
+// PUT api/users/:id - Update a user by ID
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userName, userEmail, userPassword, intolerance, diet, favIngredients } = req.body;
@@ -137,7 +144,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE /users/:id - Delete a user by ID
+// DELETE api/users/:id - Delete a user by ID
 router.delete('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

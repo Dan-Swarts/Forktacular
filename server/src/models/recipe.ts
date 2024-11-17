@@ -1,5 +1,4 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
-import { User } from './user'; 
 
 interface RecipeAttributes {
   id: number;
@@ -99,7 +98,6 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
     }
   );
 
-  Recipe.belongsToMany(User, { through: 'UserRecipe' });  
   return Recipe;
 }
 

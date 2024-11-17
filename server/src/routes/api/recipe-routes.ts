@@ -4,7 +4,7 @@ import { Recipe } from '../../models/index.js';
 
  const router = express.Router();
 
-//  GET /recipes - Get all recipes
+//  GET /api/recipes - Get all recipes
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const recipes = await Recipe.findAll();
@@ -16,7 +16,7 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
-// GET /recipes/:id - Get recipe by ID
+// GET /api/recipes/:id - Get recipe by ID
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -35,7 +35,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// POST /recipes - Create new recipe
+// POST /api/recipes - Create new recipe
 router.post('/', async (req: Request, res: Response) => {
   const { title, summary, readyInMinutes, servings, ingredients, instructions, steps, diets, image, sourceUrl, spoonacularId, spoonacularSourceUrl } = req.body;
   try {
@@ -51,7 +51,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 
-// PUT /recipes/:id - Update recipe by ID
+// PUT /api/recipes/:id - Update recipe by ID
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, summary, readyInMinutes, servings, ingredients, instructions, steps, diets, image, sourceUrl, spoonacularId, spoonacularSourceUrl } = req.body;
