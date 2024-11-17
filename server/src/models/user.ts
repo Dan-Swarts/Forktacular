@@ -1,4 +1,5 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
+import { Recipe } from './recipe'; 
 
 interface UserAttributes {
   id: number;
@@ -20,7 +21,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public intolerance!: string[]; 
   public diet!: string[]; 
   public favIngredients!: string[];
+
+  public recipes?: Recipe[]; // Optional because it is populated only if the association is included
 }
+
 
 export function UserFactory(sequelize: Sequelize): typeof User {
   User.init(
