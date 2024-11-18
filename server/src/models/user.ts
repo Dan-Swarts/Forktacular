@@ -6,9 +6,9 @@ interface UserAttributes {
   userName: string;
   userEmail: string;
   userPassword: string; 
-  intolerance: string[];
-  diet: string[];
-  favIngredients: string[]; 
+  intolerance?: string[];
+  diet?: string[];
+  favIngredients?: string[]; 
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
@@ -18,9 +18,9 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public userName!: string;
   public userEmail!: string; 
   public userPassword!: string;  
-  public intolerance!: string[]; 
-  public diet!: string[]; 
-  public favIngredients!: string[];
+  public intolerance?: string[]; 
+  public diet?: string[]; 
+  public favIngredients?: string[];
 
   public recipes?: Recipe[]; // Optional because it is populated only if the association is included
 }
