@@ -44,7 +44,7 @@ export const seedRecipes = async () => {
       spoonacularSourceUrl: "http://www.foodista.com/recipe/3MK8JYZR/kale-bruschetta",
       spoonacularId: 648715
     }
-  ]);
+  ], { individualHooks: true})
 };
 
 

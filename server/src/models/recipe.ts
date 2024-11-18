@@ -1,5 +1,4 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
-//import { User } from './user.js';
 
 interface RecipeAttributes {
   id: number;
@@ -10,11 +9,11 @@ interface RecipeAttributes {
   ingredients: string[]; 
   instructions: string; 
   steps: string[]; 
-  diets: string[]; 
-  image: string; 
-  sourceUrl: string; 
-  spoonacularId: number; 
-  spoonacularSourceUrl: string; 
+  diets?: string[]; 
+  image?: string; 
+  sourceUrl?: string; 
+  spoonacularId?: number; 
+  spoonacularSourceUrl?: string; 
 }
 
 interface RecipeCreationAttributes extends Optional<RecipeAttributes, 'id'> {}
@@ -28,11 +27,11 @@ export class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> im
   public ingredients!: string[]; 
   public instructions!: string;
   public steps!: string[];  
-  public diets!: string[]; 
-  public image!: string; 
-  public sourceUrl!: string; 
-  public spoonacularId!: number; 
-  public spoonacularSourceUrl!: string; 
+  public diets?: string[]; 
+  public image?: string; 
+  public sourceUrl?: string; 
+  public spoonacularId?: number; 
+  public spoonacularSourceUrl?: string; 
 
 }
 
@@ -58,7 +57,7 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
       }, 
       servings: {
         type: DataTypes.INTEGER, 
-        allowNull: true,
+        allowNull: false,
       }, 
       ingredients: {
         type: DataTypes.ARRAY(DataTypes.TEXT), 
@@ -86,7 +85,7 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
       },
       spoonacularId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       spoonacularSourceUrl: {
         type: DataTypes.STRING, 
@@ -101,3 +100,4 @@ export function RecipeFactory(sequelize: Sequelize): typeof Recipe {
 
   return Recipe;
 }
+
