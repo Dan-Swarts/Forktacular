@@ -1,7 +1,25 @@
 import { useNavigate } from 'react-router-dom';
+import '../index.css';
+import RecipeCard from '../components/RecipeCard';
+import Recipe from '../interfaces/recipe';
+import apiService from '../api/apiService';
+import { useState, useEffect } from 'react';  
+ 
 
 const HomePage = () => {
   const navigate = useNavigate();
+
+  const [recipes,setRecipes] = useState<Recipe[]>([]);
+
+  const getRandomRecipes = async() => {
+    const recipes = await apiService.forignRandomSearch();
+    setRecipes(recipes);
+  }
+
+  useEffect(() => {
+    getRandomRecipes();
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-[#fef3d0]">
@@ -53,8 +71,19 @@ const HomePage = () => {
             Go to Recipe Maker
           </button>
         </div>
+
+        {/* Content */}
+        <div className="pt-20 px-4"> {/* Added padding-top to avoid overlap with fixed navbar */}
+          <h1 className="text-4xl font-bold text-[#a84e24] mb-8 text-center">Sample Recipes</h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"> {/* Adjusted gap */}
+            {recipes.map((recipe) => 
+              <RecipeCard recipe={recipe}></RecipeCard>
+            )}
+            
+          </div>
+        </div>
       </div>
-    </div>
+      </div>
   );
 };
 
