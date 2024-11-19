@@ -7,7 +7,7 @@ import sequelize from '../../config/connection.js';
 
 const router = express.Router();
 
-// GET /api/users - Get all users
+// 1. GET /api/users - Get all users
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const users = await User.findAll();
@@ -19,7 +19,7 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
-// GET api/users/:id - Get a user by ID
+// 2. GET api/users/:id - Get a user by ID
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -38,7 +38,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// GET api/users/:id/recipes - Get all recipes saved by a User
+// 3. GET api/users/:id/recipes - Get all recipes saved by a User
 router.get('/:id/recipes', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -62,7 +62,7 @@ router.get('/:id/recipes', async (req: Request, res: Response) => {
 });
 
 
-// POST api/users - Create a new user
+// 4. POST api/users - Create a new user
 router.post('/', async (req: Request, res: Response) => {
   const { userName, userEmail, userPassword, intolerance, diet, favIngredients } = req.body;
   try {
@@ -77,7 +77,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// POST api/users/:userId/recipes/:recipeId - Save a recipe to a user 
+// 5. POST api/users/:userId/recipes/:recipeId - Save a recipe to a user 
 router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) => {
   const { userId, recipeId } = req.params;
   try {
@@ -114,7 +114,7 @@ router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) =>
   }
 });
 
-// PUT api/users/:id - Update a user by ID
+// 6. PUT api/users/:id - Update a user by ID
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userName, userEmail, userPassword, intolerance, diet, favIngredients } = req.body;
@@ -142,7 +142,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE api/users/:id - Delete a user by ID
+// 7. DELETE api/users/:id - Delete a user by ID
 router.delete('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

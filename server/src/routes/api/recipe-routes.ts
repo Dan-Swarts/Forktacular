@@ -6,7 +6,7 @@ import { User } from '../../models/index.js';
 
  const router = express.Router();
 
-//  GET /api/recipes - Get all recipes
+// 1.  GET /api/recipes - Get all recipes
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const recipes = await Recipe.findAll();
@@ -18,7 +18,7 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
-// GET /api/recipes/:id - Get recipe by ID
+// 2. GET /api/recipes/:id - Get recipe by ID
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -38,7 +38,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 
-// GET /api/recipes/users/:userId - Get recipeIds by userIds
+// 3. GET /api/recipes/users/:userId - Get recipeIds by userIds
 router.get('/users/:userId', async (req, res) => {
   const { userId } = req.params;
 
@@ -71,7 +71,7 @@ router.get('/users/:userId', async (req, res) => {
 
 
 
-// POST /api/recipes - Create new recipe
+// 4. POST /api/recipes - Create new recipe
 router.post('/', async (req: Request, res: Response) => {
   const { title, summary, readyInMinutes, servings, ingredients, instructions, steps, diets, image, sourceUrl, spoonacularId, spoonacularSourceUrl } = req.body;
   try {
@@ -87,7 +87,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 
-// PUT /api/recipes/:id - Update recipe by ID
+// 5. PUT /api/recipes/:id - Update recipe by ID
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, summary, readyInMinutes, servings, ingredients, instructions, steps, diets, image, sourceUrl, spoonacularId, spoonacularSourceUrl } = req.body;
@@ -121,7 +121,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE /recipes/:id - Delete recipe by ID
+// 6. DELETE /recipes/:id - Delete recipe by ID
 router.delete('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

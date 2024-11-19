@@ -4,6 +4,7 @@ import RecipeDetails from './interfaces/recipeDetails';
 import { createContext, useState } from 'react';
 
 const defaultRecipe: RecipeDetails  = {
+  id: 0, 
   title: '',
   summary: '',
   readInMinutes: 0,

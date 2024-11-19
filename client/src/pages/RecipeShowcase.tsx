@@ -53,7 +53,7 @@ const RecipeShowcase = () => {
     <div className="mb-6">
       <h3 className="text-2xl font-semibold text-[#a84e24] mb-2">Ingredients</h3>
       <ul className="list-disc list-inside space-y-2">
-        {currentRecipeDetails.ingredients.map((item: any, index: number) => (
+        {currentRecipeDetails.ingredients?.map((item: any, index: number) => (
           <li key={index} className="text-gray-800">
             {item.ingredient} - {item.measurement}
           </li>

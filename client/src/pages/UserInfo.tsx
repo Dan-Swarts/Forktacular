@@ -15,7 +15,7 @@ const UserInfo = () => {
   // Async function fetchUsers retrieves user data 
   const fetchUser = async () => {
     // Call retrieveUser function which asynchronously fetches user data.
-    const data = await retrieveUser("1");
+    const data = await retrieveUser(1);
     console.log(data); 
   };
 
