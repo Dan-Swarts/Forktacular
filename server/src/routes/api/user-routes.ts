@@ -19,6 +19,96 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
+
+// Get /api/users/account
+router.get('/account', async (req:Request,res:Response) => {
+  try{
+    const userInfo = req.user;
+
+    if(!userInfo){
+      return res.status(400).json({message: 'bad request'});
+    }
+
+    const user = await User.findByPk(userInfo.id);
+    return res.status(200).json(user);
+  } catch(error) {
+    return res.status(500).json(error);
+  }
+});
+
+// PUT /api/users/account/update
+router.put('/account/update', async (req:Request,res:Response) => {
+  try{
+    const userInfo = req.user;
+
+    if(!userInfo){
+      return res.status(400).json({message: 'bad request'});
+    }
+
+    const user = await User.findByPk(userInfo.id);
+
+    if(!user){
+      return res.status(404).json({message: 'user not found'});
+    }
+
+    const { intolerance, diet, favIngredients, } = req.body;
+
+    if(intolerance){ user.intolerance = intolerance; }
+    if(diet){ user.diet = diet; }
+    if(favIngredients){ user.favIngredients = favIngredients; }
+
+    await user.save();
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+});
+
+// 2. GET api/users/:id - Get a user by ID
+
+router.get('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id);
+    if(user) {
+      res.json(user);
+    } else {
+      res.status(404).json({
+        message: 'User not found'
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+});
+
+// 3. GET api/users/:id/recipes - Get all recipes saved by a User
+router.get('/:id/recipes', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id, {
+        include: [{ model: Recipe }], 
+      },
+    );
+
+    if (user) {
+      return res.json(user.Recipes); // Ensure we return the recipes, not the entire user
+    } else {
+      return res.status(404).json({
+        message: 'User not found',
+      });
+    }
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 // 2. GET api/users/:id - Get a user by ID
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -49,6 +139,7 @@ router.get('/:id/recipes', async (req: Request, res: Response) => {
 
     if (user) {
       return res.json(user.Recipes); // Ensure we return the recipes, not the entire user
+
     } else {
       return res.status(404).json({
         message: 'User not found',
