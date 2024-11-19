@@ -2,7 +2,11 @@ import { useState } from "react";
 import { authService } from "../api/authentication";
 import UserLogin from "../interfaces/UserLogin";
 
-export default function LoginForm(){
+interface loginFormProps{
+  setSignIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function LoginForm({ setSignIn }: loginFormProps){
 
   const [formValues, setFormValues] = useState({
     userName: '',
@@ -23,6 +27,7 @@ export default function LoginForm(){
     }
 
     return (
+      <>
         <form onSubmit={handleLogin}>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2" htmlFor="username">
@@ -55,5 +60,13 @@ export default function LoginForm(){
           Sign In
         </button>
       </form>
+
+        <button
+        className="mt-4 text-[#ff9e40] hover:underline focus:outline-none"
+        onClick={() => setSignIn(false)}
+        >Need an account? Sign Up
+        
+        </button>
+      </>
     )
 }

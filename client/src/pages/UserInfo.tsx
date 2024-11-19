@@ -7,8 +7,6 @@ import AccountShowCase from '../components/AccountShowCase';
 
 const UserInfo = () => {
   const [loginCheck,setLoginCheck] = useState(false);
-
-
   const [signIn,setSignIn] = useState(true);
 
   useLayoutEffect(() => {
@@ -54,15 +52,9 @@ const UserInfo = () => {
           loginCheck
             ? <AccountShowCase setLoginCheck={setLoginCheck}></AccountShowCase>
             : signIn 
-              ? <LoginForm></LoginForm>
-              : <SignUpForm></SignUpForm>
+              ? <LoginForm setSignIn={setSignIn}></LoginForm>
+              : <SignUpForm setSignIn={setSignIn}></SignUpForm>
         }
-        <button
-          className="mt-4 text-[#ff9e40] hover:underline focus:outline-none"
-          onClick={() => setSignIn(!signIn)}
-        >
-          {signIn ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
-        </button>
       </div>
     </div>
   );
