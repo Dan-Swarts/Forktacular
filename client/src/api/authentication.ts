@@ -25,6 +25,33 @@ export const login = async (userInfo: UserLogin) => {
 }
 
 class AuthService {
+    login = async (userInfo: UserLogin) => {
+
+        console.log(userInfo);
+        try {
+            const response = await fetch('auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userInfo),
+            });
+    
+            if(!response.ok){
+                const errorData = await response.json();
+                throw new Error(`Error: ${errorData.message}`);
+            }
+    
+            const data = await response.json();
+            localStorage.setItem('id_token', data.token);
+            window.location.assign('/');
+            return data;
+    
+        } catch (error){
+            console.log('Error from user login: ',error);
+            return Promise.reject('Could not fetch user info');
+        }
+    }
   
     // Check if the user is logged in by retrieving the token from localStorage
     loggedIn() {
@@ -38,12 +65,6 @@ class AuthService {
       return loggedUser;
     }
   
-    // Store the JWT token in localStorage and redirect to the home page
-    login(idToken: string) {
-      localStorage.setItem('id_token', idToken);
-      window.location.assign('/');
-    }
-  
     // Remove the JWT token from localStorage and redirect to the home page
     logout() {
       localStorage.removeItem('id_token');
@@ -51,7 +72,7 @@ class AuthService {
     }
 }
   
-  // Export an instance of the AuthService class
-  export default new AuthService();
+const authService  = new AuthService();
+export { authService  };
   
 

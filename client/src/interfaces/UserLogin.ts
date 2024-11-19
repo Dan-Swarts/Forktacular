@@ -1,5 +1,6 @@
 export default interface UserLogin {
-    username: string | null;
-    password: string | null;
+    userName: string | null;
+    userPassword: string | null;
+    userEmail?: string | null;
 }
   

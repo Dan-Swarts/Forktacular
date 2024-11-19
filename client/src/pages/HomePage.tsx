@@ -1,9 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, } from 'react';
+import { useState, useLayoutEffect} from 'react';
+import { authService } from '../api/authentication';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [loginCheck,_setLoginCheck] = useState(false);
+  const [loginCheck,setLoginCheck] = useState(false);
+
+  useLayoutEffect(() => {
+    if(authService.loggedIn()) {
+      setLoginCheck(true);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#fef3d0]">

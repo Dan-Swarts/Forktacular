@@ -1,8 +1,40 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../api/authentication';
+import UserLogin from '../interfaces/UserLogin';
 
 const UserInfo = () => {
-  const [isSignIn, setIsSignIn] = useState(true);
+  const [_loginCheck,setLoginCheck] = useState(false);
+
+  const [formValues, setFormValues] = useState({
+    userName: '',
+    userPassword: '',
+    userEmail: '',
+  });
+
+  const handleChange = (e: any) => {
+    setFormValues({
+      ...formValues,
+      [e.target.id]: e.target.value
+    });
+  };
+
+  const [signIn,setSignIn] = useState(true);
+
+  const handleLogin = (e: any) => {
+    e.preventDefault();
+    authService.login(formValues as UserLogin);
+  }
+  const handleSignUp = (e: any) =>{
+    e.preventDefault();
+    console.log('Form Values:', formValues);
+  }
+
+  useLayoutEffect(() => {
+    if(authService.loggedIn()) {
+      setLoginCheck(true);
+    }
+  }, []);
   const navigate = useNavigate();
 
   return (
@@ -34,19 +66,20 @@ const UserInfo = () => {
     </nav>
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-[#a84e24]">
-          {isSignIn ? 'Sign In' : 'Sign Up'}
+          {signIn ? 'Sign In' : 'Sign Up'}
         </h2>
-        {isSignIn ? (
-          <form>
+        {signIn ? (
+          <form onSubmit={handleLogin}>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2" htmlFor="username">
                 Username
               </label>
               <input
                 type="text"
-                id="username"
+                id="userName"
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#ff9e40]"
                 placeholder="Enter your username"
+                onChange={handleChange}
               />
             </div>
             <div className="mb-6">
@@ -55,9 +88,10 @@ const UserInfo = () => {
               </label>
               <input
                 type="password"
-                id="password"
+                id="userPassword"
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#ff9e40]"
                 placeholder="Enter your password"
+                onChange={handleChange}
               />
             </div>
             <button
@@ -68,16 +102,29 @@ const UserInfo = () => {
             </button>
           </form>
         ) : (
-          <form>
+          <form onSubmit={handleSignUp}>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2" htmlFor="username">
                 Username
               </label>
               <input
                 type="text"
-                id="username"
+                id="userName"
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
                 placeholder="Enter your username"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2" htmlFor="password">
+                Email
+              </label>
+              <input
+                type="email"
+                id="userEmail"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
+                placeholder="Enter your email"
+                onChange={handleChange}
               />
             </div>
             <div className="mb-4">
@@ -86,9 +133,10 @@ const UserInfo = () => {
               </label>
               <input
                 type="password"
-                id="password"
+                id="userPassword"
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
                 placeholder="Enter your password"
+                onChange={handleChange}
               />
             </div>
             <div className="mb-4">
@@ -97,7 +145,7 @@ const UserInfo = () => {
               </label>
               <input
                 type="password"
-                id="confirm-password"
+                id="userPassword"
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#a84e24]"
                 placeholder="Confirm your password"
               />
@@ -134,9 +182,9 @@ const UserInfo = () => {
         )}
         <button
           className="mt-4 text-[#ff9e40] hover:underline focus:outline-none"
-          onClick={() => setIsSignIn(!isSignIn)}
+          onClick={() => setSignIn(!signIn)}
         >
-          {isSignIn ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
+          {signIn ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
         </button>
       </div>
     </div>
