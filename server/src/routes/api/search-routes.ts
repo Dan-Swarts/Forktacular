@@ -15,6 +15,7 @@ router.get('/test', (_req:Request, res:Response) => {
 router.post('/recipes', async (req: Request, res: Response) => {
     try {
         const searchTerms: searchInput = req.body;
+        console.log(searchTerms)
         const recipes = await spoonacularService.findRecipes(searchTerms);
         res.status(200).json(recipes);
     } catch(error) {
