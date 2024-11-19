@@ -24,7 +24,8 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-[#fef3d0]">
       {/* Navbar */}
-      <nav className="bg-[#f5d3a4] shadow-md fixed top-0 w-full flex justify-between items-center px-4 py-2">
+      <nav className="bg-[#f5d3a4] shadow-md fixed top-0 w-full flex justify-between items-center px-4 py-2 z-50">
+
       {/* Forktacular button on the left */}
       <button
         onClick={() => navigate('/')}
