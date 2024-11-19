@@ -24,7 +24,11 @@ router.post('/login', async (req:Request,res:Response) => {
 
         const secretKey = process.env.JWT_SECRET_KEY || '';
 
-        const token = jwt.sign({ userEmail }, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign(
+            { id: user.id, userEmail: user.userEmail, userName: user.userName }, 
+            secretKey, 
+            { expiresIn: '1h' }
+        );
 
         return res.status(200).json({ token });
 
@@ -39,11 +43,15 @@ router.post('/signUp', async (req:Request,res:Response) => {
         const { userName, userEmail, userPassword, } = req.body;
         const hashedPassword = await bcrypt.hash(userPassword, 10);
 
-        await User.create({ userName, userEmail, userPassword: hashedPassword });
+        const user = await User.create({ userName, userEmail, userPassword: hashedPassword });
         
         const secretKey = process.env.JWT_SECRET_KEY || '';
 
-        const token = jwt.sign({ userEmail }, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign(
+            { id: user.id, userEmail: user.userEmail, userName: user.userName }, 
+            secretKey, 
+            { expiresIn: '1h' }
+        );
 
         return res.status(200).json({ token });
 

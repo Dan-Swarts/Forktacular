@@ -24,6 +24,10 @@ export default function LoginForm({ setSignIn }: loginFormProps){
 
     const handleLogin = async (e: any) => {
       e.preventDefault();
+
+      if(!checkEmail){ return; }
+
+      if(!checkPassword) { return; }
       const response = await authService.login(formValues as UserLogin);
       if(response.error){
         setErrorMessage('Error: Authentication Failed.');
@@ -34,22 +38,27 @@ export default function LoginForm({ setSignIn }: loginFormProps){
       const inputEmail = e.target.value;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if(inputEmail === '') {
-        setErrorMessage('Please enter an email.');
-      } else if (!emailRegex.test(inputEmail)){
-        setErrorMessage('Please enter a valid email.');
-      } else {
-        setErrorMessage('');
-      }
-    }
+          setErrorMessage('Please enter an email.');
+          return false;
+      } 
+      
+      if (!emailRegex.test(inputEmail)){
+          setErrorMessage('Please enter a valid email.');
+          return false;
+      } 
+          
+      setErrorMessage('');
+      return true;
+  }
 
-    const checkPassword = (e:any) => {
-      const inputPassword = e.target.value;
-      if(inputPassword === ''){
+  const checkPassword = (e:any) => {
+    const inputPassword = e.target.value;
+    if(inputPassword === ''){
         setErrorMessage('Please enter a password.');
-      } else {
+    } else {
         setErrorMessage('');
-      }
     }
+  }
 
     return (
       <>

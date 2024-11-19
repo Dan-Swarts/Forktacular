@@ -1,9 +1,16 @@
 import { authService } from "../api/authentication";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import apiService from "../api/apiService";
 
 interface accountShowCaseProps{
     setLoginCheck: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface accountInfo {
+    diet?:string,
+    intolerance?:string,
+    favIngredients?:string,
 }
 
 export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps){
@@ -11,12 +18,24 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
     const navigate = useNavigate();
 
     const [formValues, setFormValues] = useState({
-        'intolerance':'',
-        'diet':'',
-        'favIngredients':'',
+        diet:'',
+        intolerance:'',
+        favIngredients:'',
     });
 
-    const handleLogOut = () =>{
+    useLayoutEffect(() => {
+        const getInfo = async () => {
+            const accountInfo:accountInfo = await apiService.getAccountInformation();
+            setFormValues({
+                diet: accountInfo.diet? accountInfo.diet : '',
+                intolerance: accountInfo.intolerance? accountInfo.intolerance : '',
+                favIngredients: accountInfo.favIngredients? accountInfo.favIngredients : '',
+            });
+        }
+        getInfo();
+    },[]);
+
+    const handleLogOut = () => {
       authService.logout();
       navigate('/user-info');
       setLoginCheck(false);

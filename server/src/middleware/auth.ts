@@ -19,7 +19,7 @@ export const authenticateToken = (req:Request,res:Response,next:NextFunction) =>
             return res.sendStatus(403);
         }
 
-        req.user = user as {username: string}
+        req.user = user as {id: number, userEmail:string, userName: string}
         return next();
     });
 }

@@ -47,6 +47,34 @@ class apiService {
         const information: any = await response.json();
         return information;
     };
+
+    async getAccountInformation() {
+        const jwtToken = authService.getToken();
+        const response = await fetch('/api/users/account', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`
+            },
+        });
+
+        const information: any = await response.json();
+        return information;
+    };
+
+    async setAccountInformation(requestParams:any) {
+        const jwtToken = authService.getToken();
+        const response = await fetch('/api/users/account', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            body: JSON.stringify(requestParams),
+        });
+
+        const information: any = await response.json();
+        return information;
+    };
 }
 
 export default new apiService();

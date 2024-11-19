@@ -27,6 +27,13 @@ export default function SignUpForm({ setSignIn }: loginFormProps){
 
     const handleSignUp = async (e: any) => {
         e.preventDefault();
+
+        if(!checkUsername){ return; }
+
+        if(!checkEmail){ return; }
+
+        if(!checkPassword) { return; }
+
         if(formValues.userPassword != formValues.confirmPassword){
             setErrorMessage('Your passwords do not match');
             return;
@@ -35,6 +42,7 @@ export default function SignUpForm({ setSignIn }: loginFormProps){
         const response = await authService.signUp(formValues as UserLogin);
         if(response.error){
             setErrorMessage('This email is associated with a different user.');
+            return;
         }
     }
 
@@ -43,20 +51,38 @@ export default function SignUpForm({ setSignIn }: loginFormProps){
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if(inputEmail === '') {
             setErrorMessage('Please enter an email.');
-        } else if (!emailRegex.test(inputEmail)){
+            return false;
+        } 
+        
+        if (!emailRegex.test(inputEmail)){
             setErrorMessage('Please enter a valid email.');
-        } else {
-            setErrorMessage('');
-        }
+            return false;
+        } 
+            
+        setErrorMessage('');
+        return true;
     }
 
     const checkUsername = (e:any) => {
         const inputUserName = e.target.value;
         if(inputUserName === ''){
             setErrorMessage('Please enter a username.');
-        } else {
-            setErrorMessage('');
-        }
+            return false;
+        } 
+        
+        if(inputUserName.length < 3){
+            setErrorMessage('Usernames must be longer than 3 characters.');
+            return false;
+        } 
+        
+        if (inputUserName.length > 50){ 
+            setErrorMessage('Usernames must be shorter than 50 characters.');
+            return false;
+        } 
+
+        setErrorMessage('');
+        return true;
+        
     }
   
     const checkPassword = (e:any) => {
@@ -153,7 +179,7 @@ export default function SignUpForm({ setSignIn }: loginFormProps){
             <button
                 type="submit"
                 className="w-full bg-[#ff9e40] text-white py-2 rounded hover:bg-[#e7890c]">
-                Sign In
+                Sign Up
             </button>
             <p className="text-red-500 font-medium mt-2 text-sm">{errorMessage}</p>
         </form>
