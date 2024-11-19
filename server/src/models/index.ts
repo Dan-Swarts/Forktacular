@@ -1,21 +1,15 @@
 import sequelize from '../config/connection.js';
-import { VolunteerFactory } from './volunteer.js';
-import { WorkFactory } from './work.js';
 
 import { UserFactory } from './user.js'; 
 import { RecipeFactory } from './recipe.js'; 
 
-    const Volunteer = VolunteerFactory(sequelize);
-    const Work = WorkFactory(sequelize);
-
     const User = UserFactory(sequelize); 
     const Recipe = RecipeFactory(sequelize); 
 
-    Volunteer.hasMany(Work, { foreignKey: 'assignedVolunteerId'});
-    Work.belongsTo(Volunteer, { foreignKey: 'assignedVolunteerId', as: 'assignedVolunteer'});
+    const UserRecipes = sequelize.define('UserRecipes', {}, { timestamps: false });
 
-    User.belongsToMany(Recipe, { through: 'UserRecipe'});
-    Recipe.belongsToMany(User, { through: 'UserRecipe'}); 
+    User.belongsToMany(Recipe, { through: 'UserRecipes', onDelete: 'CASCADE' });
+    Recipe.belongsToMany(User, { through: 'UserRecipes', onDelete: 'CASCADE' });
+    
 
-
-export { Volunteer, Work, User, Recipe };
+export { User, Recipe, UserRecipes};

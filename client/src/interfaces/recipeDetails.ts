@@ -1,0 +1,15 @@
+export default interface RecipeDetails {
+    id: number | null, 
+    title: string | null,
+    summary: string| null,
+    readInMinutes: number| null,
+    servings: number| null,
+    ingredients: string[]| null,
+    instructions: string| null,
+    steps: string[]| null,
+    diets: string[]| null,
+    image: string | null,
+    sourceUrl: string| null,
+    spoonacularSourceUrl: string| null,
+    spoonacularId: number| null,
+}
