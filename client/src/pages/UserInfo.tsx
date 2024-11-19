@@ -1,9 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { retrieveUser } from '../api/usersAPI'
+//import type { UserDetails} from '../interfaces/UserDetails'
+
 
 const UserInfo = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  // Async function fetchUsers retrieves user data 
+  const fetchUser = async () => {
+    // Call retrieveUser function which asynchronously fetches user data.
+    const data = await retrieveUser("1");
+    console.log(data); 
+  };
+
+const handleSignUpSubmit = async (event: React.MouseEvent<HTMLButtonElement> ) => {
+    event.preventDefault(); 
+    const form = event.target.form.children; 
+    console.log(event.target.form.children[0]); 
+    form.forEach(element => {
+      console.log(element); 
+    })
+
+}
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#fef3d0]">
@@ -125,6 +149,7 @@ const UserInfo = () => {
               />
             </div>
             <button
+              onClick={() => handleSignUpSubmit(event)}
               type="submit"
               className="w-full bg-[#a84e24] text-white py-2 rounded hover:bg-[#9c401e]"
             >
@@ -135,6 +160,7 @@ const UserInfo = () => {
         <button
           className="mt-4 text-[#ff9e40] hover:underline focus:outline-none"
           onClick={() => setIsSignIn(!isSignIn)}
+    
         >
           {isSignIn ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
         </button>
