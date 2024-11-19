@@ -19,16 +19,6 @@ const UserInfo = () => {
     console.log(data); 
   };
 
-const handleSignUpSubmit = async (event: React.MouseEvent<HTMLButtonElement> ) => {
-    event.preventDefault(); 
-    const form = event.target.form.children; 
-    console.log(event.target.form.children[0]); 
-    form.forEach(element => {
-      console.log(element); 
-    })
-
-}
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#fef3d0]">
       {/* Navbar */}
@@ -149,7 +139,6 @@ const handleSignUpSubmit = async (event: React.MouseEvent<HTMLButtonElement> ) =
               />
             </div>
             <button
-              onClick={() => handleSignUpSubmit(event)}
               type="submit"
               className="w-full bg-[#a84e24] text-white py-2 rounded hover:bg-[#9c401e]"
             >
