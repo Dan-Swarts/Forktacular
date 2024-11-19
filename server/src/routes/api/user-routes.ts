@@ -7,7 +7,7 @@ import sequelize from '../../config/connection.js';
 
 const router = express.Router();
 
-// GET /api/users - Get all users
+// 1. GET /api/users - Get all users
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const users = await User.findAll();
@@ -18,6 +18,7 @@ router.get('/', async (_req: Request, res: Response) => {
     });
   }
 });
+
 
 // Get /api/users/account
 router.get('/account', async (req:Request,res:Response) => {
@@ -65,7 +66,8 @@ router.put('/account/update', async (req:Request,res:Response) => {
   }
 });
 
-// GET api/users/:id - Get a user by ID
+// 2. GET api/users/:id - Get a user by ID
+
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -84,16 +86,14 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// GET api/users/:id/recipes - Get all recipes saved by a User -- DOESN'T GIVE BACK WHAT WE WANT RIGH TNOW, BUT THE ROUTE IS 200
+// 3. GET api/users/:id/recipes - Get all recipes saved by a User
 router.get('/:id/recipes', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id, {
-      include: {
-        model: Recipe,
-        through: { attributes: [] }, // Exclude join table attributes
+        include: [{ model: Recipe }], 
       },
-    });
+    );
 
     if (user) {
       return res.json(user.Recipes); // Ensure we return the recipes, not the entire user
@@ -139,6 +139,7 @@ router.get('/:id/recipes', async (req: Request, res: Response) => {
 
     if (user) {
       return res.json(user.Recipes); // Ensure we return the recipes, not the entire user
+
     } else {
       return res.status(404).json({
         message: 'User not found',

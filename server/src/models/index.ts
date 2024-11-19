@@ -12,4 +12,4 @@ import { RecipeFactory } from './recipe.js';
     Recipe.belongsToMany(User, { through: 'UserRecipes', onDelete: 'CASCADE' });
     
 
-export { User, Recipe, UserRecipes };
+export { User, Recipe, UserRecipes};

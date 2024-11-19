@@ -1,4 +1,6 @@
+
 import  UserDetails  from "../interfaces/userDetails.js"; 
+
 
 // 1. GET /api/users - Get all users
 // Retrieve all users from the API
