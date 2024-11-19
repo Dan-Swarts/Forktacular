@@ -1,16 +1,16 @@
 import { Router, Request, Response, } from "express";
 import { User } from "../models/user.js";
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 const router = Router();
 
 router.post('/login', async (req:Request,res:Response) => {
     try{
-        const { userName, userPassword, } = req.body;
+        const { userEmail, userPassword, } = req.body;
 
         const user = await User.findOne({
-            where: { userName },
+            where: { userEmail },
         });
 
         if(!user){
@@ -24,7 +24,7 @@ router.post('/login', async (req:Request,res:Response) => {
 
         const secretKey = process.env.JWT_SECRET_KEY || '';
 
-        const token = jwt.sign({ userName }, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign({ userEmail }, secretKey, { expiresIn: '1h' });
 
         return res.status(200).json({ token });
 
@@ -43,7 +43,7 @@ router.post('/signUp', async (req:Request,res:Response) => {
         
         const secretKey = process.env.JWT_SECRET_KEY || '';
 
-        const token = jwt.sign({ userName }, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign({ userEmail }, secretKey, { expiresIn: '1h' });
 
         return res.status(200).json({ token });
 

@@ -17,9 +17,9 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
     });
 
     const handleLogOut = () =>{
-        authService.logout();
-        navigate('/user-info');
-        setLoginCheck(false);
+      authService.logout();
+      navigate('/user-info');
+      setLoginCheck(false);
     }
 
     const handleChange = (e: any) => {
@@ -30,50 +30,67 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
     };
 
     const handleAccountUpdate = (e: any) => {
-        e.preventDefault();
-        console.log('formValues:', formValues)
+      e.preventDefault();
+      console.log('formValues:', formValues)
     }
 
     return (
-        <>
-        <form onSubmit={handleAccountUpdate}>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2" htmlFor="username">
-            diet
-          </label>
-          <input
-            type="text"
-            id="diet"
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#ff9e40]"
-            placeholder="Enter your diet"
-            onChange={handleChange}
-        />
-        </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2" htmlFor="password">
-            intolerance
-          </label>
-          <input
-            type="password"
-            id="intolerance"
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-[#ff9e40]"
-            placeholder="Enter your password"
-            onChange={handleChange}
-          />
-        </div>
-        
-        <button
-          type="submit"
-          className="w-full bg-[#ff9e40] text-white py-2 rounded hover:bg-[#e7890c]"
-        >
-          Sign In
-        </button>
-      </form>
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
+        <form onSubmit={handleAccountUpdate} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="diet">
+              Diet
+            </label>
+            <select
+              id="diet"
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
+              onChange={handleChange}
+            >
+              <option value="">Select a diet</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="paleo">Paleo</option>
+              <option value="keto">Keto</option>
+              <option value="mediterranean">Mediterranean</option>
+            </select>
+          </div>
 
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="intolerance">
+              Intolerance
+            </label>
+            <select
+              id="intolerance"
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
+              onChange={handleChange}
+            >
+              <option value="">Select an intolerance</option>
+              <option value="dairy">Dairy</option>
+              <option value="gluten">Gluten</option>
+              <option value="nuts">Nuts</option>
+              <option value="soy">Soy</option>
+              <option value="shellfish">Shellfish</option>
+            </select>
+          </div>
+
+          <div className="flex items-center justify-between">
             <button
-                onClick={handleLogOut}
-                >LOG OUT
+              type="submit"
+              className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+            >
+              Update Preferences
             </button>
-        </>
+          </div>
+        </form>
+
+        <div className="mt-6">
+          <button
+            onClick={handleLogOut}
+            className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+          >
+            Log out
+          </button>
+        </div>
+      </div>
     )
 }

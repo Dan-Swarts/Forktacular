@@ -22,8 +22,7 @@ class AuthService {
             return data;
     
         } catch (error){
-            console.log('Error from user login: ',error);
-            return Promise.reject('Could not fetch user info');
+            return {error: error};
         }
     }
 
@@ -48,8 +47,7 @@ class AuthService {
             return data;
     
         } catch (error){
-            console.log('Error from user login: ',error);
-            return Promise.reject('Could not fetch user info');
+            return {error: error};
         }
     }
   
