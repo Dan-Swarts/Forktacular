@@ -38,19 +38,17 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// GET api/users/:id/recipes - Get all recipes saved by a User -- DOESN'T GIVE BACK WHAT WE WANT RIGH TNOW, BUT THE ROUTE IS 200
+// GET api/users/:id/recipes - Get all recipes saved by a User
 router.get('/:id/recipes', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id, {
-      include: {
-        model: Recipe,
-        through: { attributes: [] }, // Exclude join table attributes
+        include: [{ model: Recipe }], 
       },
-    });
-
+    );
+    console.log(user)
     if (user) {
-      return res.json(user.recipes); // Ensure we return the recipes, not the entire user
+      return res.json(user); // Ensure we return the recipes, not the entire user
     } else {
       return res.status(404).json({
         message: 'User not found',
@@ -78,7 +76,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// POST api/users/:userId/recipes/:recipeId - Save a recipe to a user -- ASSOCIATIONS DONT LOG, but getting a 200
+// POST api/users/:userId/recipes/:recipeId - Save a recipe to a user 
 router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) => {
   const { userId, recipeId } = req.params;
   try {
@@ -101,15 +99,14 @@ router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) =>
     console.log('Connecting to database: ', sequelize.config.database); 
   
   }
-
-
     // Add the Recipe to the User
-   //await user.addRecipe(recipe); // Sequelize's `add` method handles the UserRecipe join table
+   await user.addRecipe(recipe); // Sequelize's `add` method handles the UserRecipe join table
 
     return res.status(200).json({
       message: `Recipe (ID: ${recipeId}) successfully saved for User (ID: ${userId}).`,
     });
   } catch (error: any) {
+    console.log(error);
     return res.status(500).json({
       message: error.message,
     });

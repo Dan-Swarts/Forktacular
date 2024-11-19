@@ -1,4 +1,8 @@
-import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
+import {
+  DataTypes,
+  type BelongsToManyAddAssociationMixin,
+  type Sequelize,
+  Model, Optional } from 'sequelize';
 import { Recipe } from './recipe'; 
 
 interface UserAttributes {
@@ -23,6 +27,9 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public favIngredients?: string[];
 
   public recipes?: Recipe[]; // Optional because it is populated only if the association is included
+
+  declare addRecipe: BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
+  declare addRecipes: BelongsToManyAddAssociationMixin<Recipe[], Recipe['id'][]>;
 }
 
 
@@ -68,6 +75,7 @@ export function UserFactory(sequelize: Sequelize): typeof User {
     },
     {
       tableName: 'user',
+      timestamps: true, 
       sequelize,
     }
   );
