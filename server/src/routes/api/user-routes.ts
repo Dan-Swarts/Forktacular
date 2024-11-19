@@ -3,7 +3,6 @@ import type { Request, Response } from 'express';
 import { User } from '../../models/user.js';
 import { Recipe } from '../../models/recipe.js'; 
 import sequelize from '../../config/connection.js';
-//import { UserRecipes } from '../../models/index.js';
 
 
 const router = express.Router();
