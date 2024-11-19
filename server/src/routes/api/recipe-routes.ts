@@ -1,6 +1,8 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 import { Recipe } from '../../models/index.js';
+import { User } from '../../models/index.js';
+
 
  const router = express.Router();
 
@@ -34,6 +36,40 @@ router.get('/:id', async (req: Request, res: Response) => {
     });
   }
 });
+
+
+// GET /api/recipes/users/:userId - Get recipeIds by userIds
+router.get('/users/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+      const userWithRecipes = await User.findOne({
+          where: { id: userId }, 
+          include: {
+              model: Recipe,      
+              through: { attributes: [] }, // Omit join table data from response
+              attributes: ['id'],  // Fetch only RecipeIDs
+          },
+      });
+
+      if (!userWithRecipes) {
+          // If user not found, return a 404 response
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Extract RecipeIDs
+      const recipeIds = userWithRecipes.Recipes?.map(recipe => recipe.id);
+
+      // Respond with the RecipeIDs
+      return res.json({ recipeIds });
+  } catch (error) {
+      // Handle unexpected errors
+      console.error(error);
+      return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 
 // POST /api/recipes - Create new recipe
 router.post('/', async (req: Request, res: Response) => {

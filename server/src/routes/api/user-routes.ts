@@ -46,9 +46,9 @@ router.get('/:id/recipes', async (req: Request, res: Response) => {
         include: [{ model: Recipe }], 
       },
     );
-    console.log(user)
+
     if (user) {
-      return res.json(user); // Ensure we return the recipes, not the entire user
+      return res.json(user.Recipes); // Ensure we return the recipes, not the entire user
     } else {
       return res.status(404).json({
         message: 'User not found',
@@ -60,6 +60,7 @@ router.get('/:id/recipes', async (req: Request, res: Response) => {
     });
   }
 });
+
 
 // POST api/users - Create a new user
 router.post('/', async (req: Request, res: Response) => {
