@@ -5,14 +5,6 @@ import bcrypt from 'bcrypt';
 
 const router = Router();
 
-router.get('/test',(_req:Request,res:Response) => {
-    try{
-        res.status(200).json({ message: 'right' })
-    } catch(error){
-        res.status(400).json({ message: 'wrong' })
-    }
-});
-
 router.post('/login', async (req:Request,res:Response) => {
     try{
         const { userName, userPassword, } = req.body;
@@ -34,7 +26,7 @@ router.post('/login', async (req:Request,res:Response) => {
 
         const token = jwt.sign({ userName }, secretKey, { expiresIn: '1h' });
 
-        return res.json({ token });
+        return res.status(200).json({ token });
 
     } catch(error){
         return res.sendStatus(500);
@@ -47,11 +39,16 @@ router.post('/signUp', async (req:Request,res:Response) => {
         const { userName, userEmail, userPassword, } = req.body;
         const hashedPassword = await bcrypt.hash(userPassword, 10);
 
-        const newUser = await User.create({ userName, userEmail, userPassword: hashedPassword });
-        res.status(200).json(newUser);
+        await User.create({ userName, userEmail, userPassword: hashedPassword });
+        
+        const secretKey = process.env.JWT_SECRET_KEY || '';
+
+        const token = jwt.sign({ userName }, secretKey, { expiresIn: '1h' });
+
+        return res.status(200).json({ token });
 
     } catch(error:any){
-        res.status(500).json(error.message);
+        return res.status(500).json(error.message);
     }
 });
 
