@@ -8,7 +8,10 @@ const RecipeShowcase = () => {
   const { currentRecipeDetails } = useContext(currentRecipeContext);
 
   const RawHtmlRenderer = ({ htmlString }: { htmlString: string }) => {
-    return <div dangerouslySetInnerHTML={{ __html: htmlString }} />;
+    // Replace multiple line breaks with a single space or remove unwanted elements
+    const cleanHtml = htmlString.replace(/<\/?[^>]+(>|$)/g, ""); // removes HTML tags if needed
+    
+    return <span dangerouslySetInnerHTML={{ __html: cleanHtml }} />;
   };
   
   return (
@@ -99,13 +102,13 @@ const RecipeShowcase = () => {
       <RawHtmlRenderer htmlString={currentRecipeDetails.instructions} />
     </div>
 
-     {/* Steps List */}
-     <div className="mb-8">
+      {/* Steps List */}
+      <div className="mb-8">
         <h3 className="text-2xl font-semibold text-[#a84e24] mb-8">Steps</h3>
-        <ol className="list-disc list-inside space-y-2">
+        <ol className="list-decimal list-inside space-y-2">
           {currentRecipeDetails.steps?.map((step: string, index: number) => (
             <li key={index} className="text-gray-800">
-              {step}
+              <RawHtmlRenderer htmlString={step} />
             </li>
           ))}
         </ol>
