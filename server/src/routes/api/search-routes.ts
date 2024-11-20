@@ -22,15 +22,6 @@ router.post('/recipes', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/random', async (_req: Request, res: Response) => {
-    try {
-        const recipes = await spoonacularService.findRandomRecipes();
-        res.status(200).json(recipes);
-    } catch(error) {
-        res.status(500).json(error);
-    }
-});
-
 router.post('/information', async (req: Request, res: Response) => {
     try{
         const id: number = req.body.id;

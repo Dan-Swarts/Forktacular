@@ -87,7 +87,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // 3. GET api/users/:id/recipes - Get all recipes saved by a User
-router.get('/:id/recipes', async (req: Request, res: Response) => {
+router.get('/recipes', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id, {
