@@ -5,14 +5,17 @@ import bcrypt from 'bcrypt';
 
 const router = Router();
 
+//route: auth/login
 router.post('/login', async (req:Request,res:Response) => {
     try{
         const { userEmail, userPassword, } = req.body;
 
         const user = await User.findOne({
             where: { userEmail },
+         
         });
 
+        console.log(userEmail);
         if(!user){
             return res.status(401).json({ message: 'Authentication failed.'});
         }
@@ -38,8 +41,10 @@ router.post('/login', async (req:Request,res:Response) => {
 });
 
 
+//route: auth/signUp
 router.post('/signUp', async (req:Request,res:Response) => {
     try{
+        console.log(req.body); 
         const { userName, userEmail, userPassword, } = req.body;
         const hashedPassword = await bcrypt.hash(userPassword, 10);
 
@@ -59,6 +64,7 @@ router.post('/signUp', async (req:Request,res:Response) => {
         return res.status(500).json(error.message);
     }
 });
+
 
 // POST api/users - Create a new user
 router.post('/', async (req: Request, res: Response) => {

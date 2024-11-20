@@ -27,8 +27,9 @@ export default function LoginForm({ setSignIn }: loginFormProps){
 
       if(!checkEmail){ return; }
 
-      if(!checkPassword) { return; }
+      if(!checkPassword) { return; } 
       const response = await authService.login(formValues as UserLogin);
+      console.log(response); 
       if(response.error){
         setErrorMessage('Error: Authentication Failed.');
       }

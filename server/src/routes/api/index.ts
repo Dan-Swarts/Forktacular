@@ -9,6 +9,6 @@ const router = Router();
 router.use('/recipes', recipeRouter); 
 router.use('/search', searchRouter);
 router.use('/users', userRouter); 
-router.use('/dev',devRouter);
+router.use('/dev', devRouter);
 
 export default router;

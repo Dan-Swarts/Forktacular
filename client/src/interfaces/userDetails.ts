@@ -4,6 +4,6 @@ export default interface UserDetails {
     userEmail: string | null;
     userPassword: string | null; 
     intolerance?: string[] | null;
-    diet?: string[] | null;
+    diet?: string | null;
     favIngredients?: string[] | null; 
 }

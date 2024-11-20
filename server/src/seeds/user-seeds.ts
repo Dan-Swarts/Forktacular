@@ -7,7 +7,7 @@ export const seedUsers = async () => {
       userEmail: 'paul@gmail.com',
       userPassword: '1234', 
       intolerance: ['dairy'], 
-      diet: ['vegetarian'], 
+      diet: 'vegetarian', 
       favIngredients: ['kale']
     }, 
     {
@@ -15,7 +15,7 @@ export const seedUsers = async () => {
       userEmail: 'joe@gmail.com',
       userPassword: '1234', 
       intolerance: ['dairy'], 
-      diet: ['vegetarian'], 
+      diet: 'vegetarian', 
       favIngredients: ['rosemary'],
     }, 
     {
@@ -23,7 +23,7 @@ export const seedUsers = async () => {
       userEmail: 'jessica@gmail.com',
       userPassword: '1234', 
       intolerance: ['dairy'], 
-      diet: ['vegetarian'], 
+      diet: 'vegetarian', 
       favIngredients: ['garlic'],
     },
     {
@@ -31,7 +31,7 @@ export const seedUsers = async () => {
       userEmail: 'jennifer@gmail.com',
       userPassword: '1234', 
       intolerance: ['dairy'], 
-      diet: ['vegetarian'], 
+      diet: 'vegetarian', 
       favIngredients: ['onion']
 
     }
