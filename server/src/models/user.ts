@@ -30,6 +30,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   declare addRecipe: BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
   declare addRecipes: BelongsToManyAddAssociationMixin<Recipe[], Recipe['id'][]>;
+  declare removeRecipe: BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
 }
 
 

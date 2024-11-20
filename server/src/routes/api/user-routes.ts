@@ -114,7 +114,46 @@ router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) =>
   }
 });
 
-// 6. PUT api/users/:id - Update a user by ID
+
+// 6. POST api/users/:userId/recipes/:recipeId - Remove a recipe from a user 
+router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) => {
+  const { userId, recipeId } = req.params;
+  try {
+    // Find the User
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    } else {
+      console.log(user);
+    }
+
+    // Find the Recipe
+    const recipe = await Recipe.findByPk(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    } else {
+    console.log(recipe.title); 
+    console.log(User.associations);
+    console.log(Recipe.associations); 
+    console.log('Connecting to database: ', sequelize.config.database); 
+  
+  }
+    // Remove the Recipe rom the User
+   await user.removeRecipe(recipe); 
+
+    return res.status(200).json({
+      message: `Recipe (ID: ${recipeId}) successfully removed for User (ID: ${userId}).`,
+    });
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+
+// 7. PUT api/users/:id - Update a user by ID
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userName, userEmail, userPassword, intolerance, diet, favIngredients } = req.body;
@@ -142,7 +181,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// 7. DELETE api/users/:id - Delete a user by ID
+// 8. DELETE api/users/:id - Delete a user by ID
 router.delete('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
