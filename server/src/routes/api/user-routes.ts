@@ -7,8 +7,9 @@ import sequelize from '../../config/connection.js';
 
 const router = express.Router();
 
-// 1. GET /api/users - Get all users
-router.get('/', async (_req: Request, res: Response) => {
+
+// GET /api/users/databaseUsers - Get all users
+router.get('/databaseUsers', async (_req: Request, res: Response) => {
   try {
     const users = await User.findAll();
     res.json(users);
@@ -20,6 +21,33 @@ router.get('/', async (_req: Request, res: Response) => {
 });
 
 
+// Get all recipes saved by one logged-in user
+// GET /api/users/userRecipes
+router.get('/userRecipes', async (req: Request, res: Response) => {
+  const userInfo = req.user;
+  if(!userInfo){return res.sendStatus(404);}
+  try {
+    const user = await User.findByPk(userInfo.id, {
+        include: [{ model: Recipe }], 
+      },
+    );
+
+    if (user) {
+      return res.json(user.Recipes); // Ensure we return the recipes, not the entire user
+
+    } else {
+      return res.status(404).json({
+        message: 'User not found',
+      });
+    }
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+// Get the account details of one logged-in user
 // Get /api/users/account
 router.get('/account', async (req:Request,res:Response) => {
   try{
@@ -36,6 +64,7 @@ router.get('/account', async (req:Request,res:Response) => {
   }
 });
 
+// Update the account of one logged-in user
 // PUT /api/users/account/update
 router.put('/account/update', async (req:Request,res:Response) => {
   try{
@@ -66,114 +95,17 @@ router.put('/account/update', async (req:Request,res:Response) => {
   }
 });
 
-// 2. GET api/users/:id - Get a user by ID
 
-router.get('/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await User.findByPk(id);
-    if(user) {
-      res.json(user);
-    } else {
-      res.status(404).json({
-        message: 'User not found'
-      });
-    }
-  } catch (error: any) {
-    res.status(500).json({
-      message: error.message
-    });
-  }
-});
+// Save a recipe to one logged-in user
+// POST api/users/recipes/:recipeId - Save a recipe to a user 
+router.post('/save/recipe/:recipeId', async (req: Request, res: Response) => {
+  const userInfo = req.user;
+  const { recipeId } = req.params;
+  if(!userInfo){return res.sendStatus(404);}
 
-// 3. GET api/users/:id/recipes - Get all recipes saved by a User
-router.get('/:id/recipes', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await User.findByPk(id, {
-        include: [{ model: Recipe }], 
-      },
-    );
-
-    if (user) {
-      return res.json(user.Recipes); // Ensure we return the recipes, not the entire user
-    } else {
-      return res.status(404).json({
-        message: 'User not found',
-      });
-    }
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
-
-// 2. GET api/users/:id - Get a user by ID
-router.get('/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await User.findByPk(id);
-    if(user) {
-      res.json(user);
-    } else {
-      res.status(404).json({
-        message: 'User not found'
-      });
-    }
-  } catch (error: any) {
-    res.status(500).json({
-      message: error.message
-    });
-  }
-});
-
-// 3. GET api/users/:id/recipes - Get all recipes saved by a User
-router.get('/:id/recipes', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await User.findByPk(id, {
-        include: [{ model: Recipe }], 
-      },
-    );
-
-    if (user) {
-      return res.json(user.Recipes); // Ensure we return the recipes, not the entire user
-
-    } else {
-      return res.status(404).json({
-        message: 'User not found',
-      });
-    }
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
-
-
-// 4. POST api/users - Create a new user
-router.post('/', async (req: Request, res: Response) => {
-  const { userName, userEmail, userPassword, intolerance, diet, favIngredients } = req.body;
-  try {
-    const newUser = await User.create({
-      userEmail, userName, userPassword, intolerance, diet, favIngredients
-    });
-    res.status(201).json(newUser);
-  } catch (error: any) {
-    res.status(400).json({
-      message: error.message
-    });
-  }
-});
-
-// 5. POST api/users/:userId/recipes/:recipeId - Save a recipe to a user 
-router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) => {
-  const { userId, recipeId } = req.params;
   try {
     // Find the User
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(userInfo.id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     } else {
@@ -195,45 +127,66 @@ router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) =>
    await user.addRecipe(recipe); // Sequelize's `add` method handles the UserRecipe join table
 
     return res.status(200).json({
-      message: `Recipe (ID: ${recipeId}) successfully saved for User (ID: ${userId}).`,
+      message: `Recipe (ID: ${recipeId}) successfully saved for User (ID: ${userInfo.id}).`,
     });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({
-      message: error.message,
+      message: 'An error occurred while adding the recipe to the user.',
+      error: error.message,
     });
   }
 });
 
-// 6. PUT api/users/:id - Update a user by ID
-router.put('/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { userName, userEmail, userPassword, intolerance, diet, favIngredients } = req.body;
+// Remove a recipe from one logged-in user 
+// DELETE api/users/remove/recipe/:recipeId
+router.delete('/remove/recipe/:recipeId', async (req: Request, res: Response) => {
+  const userInfo = req.user; 
+  const { recipeId } = req.params;
+
+  if (!userInfo) {
+    return res.sendStatus(404); 
+  }
+
   try {
-    const user = await User.findByPk(id);
-    if(user) {
-      user.userName = userName;
-      user.userEmail = userEmail; 
-      user.userPassword = userPassword; 
-      user.intolerance = intolerance; 
-      user.diet = diet; 
-      user.favIngredients = favIngredients; 
-
-      await user.save();
-      res.json(user);
+    // Find the User
+    const user = await User.findByPk(userInfo.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     } else {
-      res.status(404).json({
-        message: 'User not found'
-      });
-    }
+    console.log(user);
+  }
+
+    // Find the Recipe
+    const recipe = await Recipe.findByPk(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    } else {
+    console.log(recipe.title); 
+    console.log(User.associations);
+    console.log(Recipe.associations); 
+    console.log('Connecting to database: ', sequelize.config.database); 
+  
+  }
+    // Remove the Recipe from the User
+    await user.removeRecipe(recipe); // Sequelize's `remove` method handles the join table deletion
+
+    return res.status(200).json({
+      message: `Recipe (ID: ${recipeId}) successfully removed from User (ID: ${userInfo.id}).`,
+    });
   } catch (error: any) {
-    res.status(400).json({
-      message: error.message
+    console.error(error);
+    return res.status(500).json({
+      message: 'An error occurred while removing the recipe from the user.',
+      error: error.message,
     });
   }
 });
 
-// 7. DELETE api/users/:id - Delete a user by ID
+
+
+// Delete the user by their account ID (not logged-in)
+// DELETE api/users/:id - Delete a user by ID
 router.delete('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -248,6 +201,29 @@ router.delete('/:id', async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     res.status(500).json({
+      message: error.message
+    });
+  }
+});
+
+// Delete the account of a logged-in user
+// DELETE api/users/ - User deletes themselves
+router.delete('/', async (req: Request, res: Response) => {
+  try {
+    const userInfo = req.user;
+    if(!userInfo){return res.sendStatus(404);}
+    const user = await User.findByPk(userInfo.id);
+
+    if(user) {
+      await user.destroy();
+      return res.json({ message: 'User deleted' });
+    } else {
+      return res.status(404).json({
+        message: 'User not found'
+      });
+    }
+  } catch (error: any) {
+    return res.status(500).json({
       message: error.message
     });
   }

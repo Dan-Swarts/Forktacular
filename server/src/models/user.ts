@@ -11,7 +11,7 @@ interface UserAttributes {
   userEmail: string;
   userPassword: string; 
   intolerance?: string[];
-  diet?: string[];
+  diet?: string;
   favIngredients?: string[]; 
 }
 
@@ -23,12 +23,13 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public userEmail!: string; 
   public userPassword!: string;  
   public intolerance?: string[]; 
-  public diet?: string[]; 
+  public diet?: string; 
   public favIngredients?: string[];
 
   public Recipes?: Recipe[]; // Optional because it is populated only if the association is included
   declare addRecipe: BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
   declare addRecipes: BelongsToManyAddAssociationMixin<Recipe[], Recipe['id'][]>;
+  declare removeRecipe:  BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
 }
 
 
@@ -64,7 +65,7 @@ export function UserFactory(sequelize: Sequelize): typeof User {
         allowNull: true,
       }, 
       diet: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.STRING,
         allowNull: true,
       }, 
       favIngredients: {
