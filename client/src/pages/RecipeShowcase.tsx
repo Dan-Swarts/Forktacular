@@ -3,9 +3,6 @@ import { useContext } from "react";
 import { currentRecipeContext } from "../App";
 
 
-// Fix how this page is showcasing data
-
-
 const RecipeShowcase = () => {
   const navigate = useNavigate();
   const { currentRecipeDetails } = useContext(currentRecipeContext);

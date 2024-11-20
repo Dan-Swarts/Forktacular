@@ -13,7 +13,6 @@ const RecipeSearchPage: React.FC = () => {
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const queryText = e.target.value;
-    // console.log(queryText);
     setQuery(queryText);
     if (queryText.trim() === '') {
       setResults([]);
@@ -24,7 +23,6 @@ const RecipeSearchPage: React.FC = () => {
       query: queryText
     }
     const recipes = await apiService.forignRecipeSearch(searchParams);
-    // console.log(recipes);
     setResults(recipes);
     setLoading(false);
   };
