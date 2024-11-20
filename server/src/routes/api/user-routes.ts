@@ -176,7 +176,7 @@ router.post('/:userId/recipes/:recipeId', async (req: Request, res: Response) =>
   }
 });
 
-
+/*
 // 7. PUT api/users/:id - Update a user by ID
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -194,18 +194,12 @@ router.put('/:id', async (req: Request, res: Response) => {
       await user.save();
       res.json(user);
     } else {
-    console.log(recipe.title); 
+
     console.log(User.associations);
     console.log(Recipe.associations); 
     console.log('Connecting to database: ', sequelize.config.database); 
   
-  }
-    // Remove the Recipe from the User
-    await user.removeRecipe(recipe); // Sequelize's `remove` method handles the join table deletion
 
-    return res.status(200).json({
-      message: `Recipe (ID: ${recipeId}) successfully removed from User (ID: ${userInfo.id}).`,
-    });
   } catch (error: any) {
     console.error(error);
     return res.status(500).json({
@@ -214,7 +208,7 @@ router.put('/:id', async (req: Request, res: Response) => {
     });
   }
 });
-
+*/
 
 
 // Delete the user by their account ID (not logged-in)
