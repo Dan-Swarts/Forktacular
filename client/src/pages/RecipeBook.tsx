@@ -4,6 +4,7 @@ import RecipeCard from '../components/RecipeCard';
 import Recipe from '../interfaces/recipe';
 import apiService from '../api/apiService';
 import { useState, useEffect } from 'react';
+import { retrieveRecipesByUserId } from '../api/recipesAPI'
 
 
 export default function RecipeBook() {
@@ -11,15 +12,21 @@ export default function RecipeBook() {
 
   const [recipes,setRecipes] = useState<Recipe[]>([]);
 
-  const getRandomRecipes = async() => {
-    const recipes = await apiService.forignRandomSearch();
-    setRecipes(recipes);
-  }
-
   useEffect(() => {
-    getRandomRecipes();
-  }, []);
-
+    const fetchData = async () => {
+      const userRecipes = await retrieveRecipesByUserId(1);
+      if (userRecipes && userRecipes.length > 0) {
+        setRecipes(userRecipes); 
+      } else {
+        // Call a different function if no recipes exist
+        const randomRecipes = await apiService.forignRandomSearch();
+        setRecipes(randomRecipes);
+      }
+    };
+  
+    fetchData();
+  }, []); 
+  
   return (
     <div className="max-w-7xl mx-auto p-6 bg-[#fef3d0]">
     {/* Navbar */}

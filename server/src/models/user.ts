@@ -29,7 +29,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public Recipes?: Recipe[]; // Optional because it is populated only if the association is included
   declare addRecipe: BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
   declare addRecipes: BelongsToManyAddAssociationMixin<Recipe[], Recipe['id'][]>;
-  declare removeRecipe:  BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
+  declare removeRecipe: BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
 }
 
 
