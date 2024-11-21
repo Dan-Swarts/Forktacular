@@ -74,14 +74,18 @@ const retrieveRecipeIdsByUserId = async (id: number | undefined) => {
 
 // 4. GET api/users/:id/recipes - Get all recipes saved by a User
 // Retrieve all recipes saved by a particular user ID via the API
-const retrieveRecipesByUserId = async (id: number | undefined) => {
+const retrieveRecipeByUserId = async (id: number | undefined) => {
+    const jwtToken = authService.getToken();
     try {
       const response = await fetch(`/api/users/${id}/recipes`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-        }
+            'Authorization': `Bearer ${jwtToken}`
+        },
       });
       const data = await response.json();
+
+      console.log("front end data:" + data); 
   
       if (!response.ok) {
         throw new Error('Invalid API response, check network tab!');
@@ -96,7 +100,7 @@ const retrieveRecipesByUserId = async (id: number | undefined) => {
   }
 
 
-// 5. GET api/users/:id/recipes - Get all recipes saved by a User
+// 5. GET api/users/userRecipes - Get all recipes saved by a User
 // Retrieve all recipes saved by a particular user ID via the API
 const retrieveRecipesByUser = async () => {
     const jwtToken = authService.getToken();
@@ -309,14 +313,5 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
 
 
 
-  export { retrieveRecipes, retrieveRecipe, deleteRecipeDatabase, retrieveRecipesByUser, addRecipe, addRecipeToDatabase, updateRecipe, deleteRecipe, retrieveRecipesByUserId, retrieveRecipeIdsByUserId};
+  export { retrieveRecipes, retrieveRecipe, deleteRecipeDatabase, retrieveRecipesByUser, addRecipe, addRecipeToDatabase, updateRecipe, deleteRecipe, retrieveRecipeByUserId, retrieveRecipeIdsByUserId};
   
-
-  /*const response = await fetch(
-    `/api/recipes/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }
-  )*/

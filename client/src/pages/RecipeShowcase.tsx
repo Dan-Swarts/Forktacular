@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { currentRecipeContext } from "../App";
-import { addRecipe, retrieveRecipesByUser, deleteRecipe } from "../api/recipesAPI";
+import { addRecipe, deleteRecipe } from "../api/recipesAPI";
 import { authService } from '../api/authentication';
 import { useState, useLayoutEffect} from 'react';
 
@@ -10,21 +10,29 @@ const RecipeShowcase = () =>  {
   const navigate = useNavigate();
   const { currentRecipeDetails } = useContext(currentRecipeContext);
   const [loginCheck,setLoginCheck] = useState(false);
-  const [isSaved, setIsSaved] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
 
 
   useLayoutEffect(() => {
     const checkLogin = async () => {
-      console.log("here is the current recipe ID!!" + currentRecipeDetails.id)
+      console.log("here is the current recipe ID!!" + currentRecipeDetails.id);
+  
       const isLoggedIn = await authService.loggedIn(); 
       setLoginCheck(isLoggedIn);
-    
-        if (isLoggedIn) {
-          const exists = await retrieveRecipesByUser();
+  /*
+      if (isLoggedIn) {
+        if (currentRecipeDetails.id === 0) {
+          setIsSaved(false); 
+        } else {
+          const exists = await retrieveRecipeByUserId(currentRecipeDetails.id);
+          console.log("exists:" + exists); 
+          console.log(currentRecipeDetails.id); 
           setIsSaved(exists);
         }
+      }*/
     };
-    checkLogin(); 
+  
+    checkLogin();
   }, [currentRecipeDetails]);
 
   // Function to save recipe
