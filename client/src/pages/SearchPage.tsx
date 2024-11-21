@@ -7,10 +7,10 @@ import FilterForm from '../components/FilterForm';
 
 
 export interface filterInfo {
-  diet:string,
+  diet?:string,
   intolerance:string[],
   cuisine?:string,
-  includeIngredients?:string[],
+  includeIngredients:string[],
 }
 
 
@@ -20,8 +20,8 @@ const RecipeSearchPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false); // Track loading state
   const [filterVisible, setFilterVisible] = useState<boolean>(false); // Track filter form visibility
   const [filterValue,setFilterValue] = useState<filterInfo>({
-    diet:'',
     intolerance:[],
+    includeIngredients:[],
   });
   const navigate = useNavigate();
 
@@ -130,7 +130,8 @@ const RecipeSearchPage: React.FC = () => {
             </button>
             <FilterForm 
               filterValue={filterValue}
-              setFilterValue={setFilterValue}>
+              setFilterValue={setFilterValue}
+              setFilterVisible={setFilterVisible}>
             </FilterForm>
           </div>
         </div>
