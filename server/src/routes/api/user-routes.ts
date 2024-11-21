@@ -64,6 +64,40 @@ router.get('/account', async (req:Request,res:Response) => {
   }
 });
 
+
+// Get the status of a recipe -- if it's attached to a user in the UserRecipes table
+// Get /api/users/user/recipe-status/:recipeId
+router.get('/user/recipe-status/:recipeId', async (req: Request, res: Response) => {
+  const { recipeId } = req.params;
+  const userInfo = req.user;
+
+  if (!userInfo) {
+    return res.status(401).json({ message: 'Unauthorized: User not logged in.' });
+  }
+
+  try {
+    // Check if the user has this recipe in the join table
+    const user = await User.findByPk(userInfo.id, {
+      include: {
+        model: Recipe,
+        through: {
+          where: { RecipeId: recipeId }, 
+        },
+      },
+    });
+
+      // Determine true or false strict boolean if the user is attached to that recipe
+    const isAttached = !!(user && user.Recipes && user.Recipes.length > 0);
+      // Set up the json to provide a key/value pair with exists and isAttached as true/false
+    return res.status(200).json({ exists: isAttached });
+
+  } catch (error) {
+    console.error('Error checking recipe-user association:', error);
+    return res.status(500).json(error);
+  }
+});
+
+
 // Update the account of one logged-in user
 // PUT /api/users/account/update
 router.put('/account/update', async (req:Request,res:Response) => {
