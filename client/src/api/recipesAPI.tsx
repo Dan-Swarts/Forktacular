@@ -243,15 +243,15 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
 
  // 8. DELETE /recipes/:id - Delete recipe from UserRecipes relationship
   // Delete a recipe by ID via DELETE request to the API
-  const deleteRecipe = async (recipeDetails: RecipeDetails) => {
+  const deleteRecipe = async (id: number | undefined) => {
     const jwtToken = authService.getToken();
     
     try {
     
     // Delete the recipe for the user
     const deleteResponse = await fetch(
-        `/api/users/remove/recipe/${recipeDetails.id}`, {
-        method: 'POST',
+        `/api/users/remove/recipe/${id}`, {
+        method: 'DELETE',
         headers: {
         'Authorization': `Bearer ${jwtToken}`,
         },

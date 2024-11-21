@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { currentRecipeContext } from "../App";
-import { addRecipe, deleteRecipe } from "../api/recipesAPI";
+import { addRecipe, retrieveRecipesByUser, deleteRecipe } from "../api/recipesAPI";
 import { authService } from '../api/authentication';
 import { useState, useLayoutEffect} from 'react';
 
@@ -18,11 +18,11 @@ const RecipeShowcase = () =>  {
       console.log("here is the current recipe ID!!" + currentRecipeDetails.id)
       const isLoggedIn = await authService.loggedIn(); 
       setLoginCheck(isLoggedIn);
-    /*
+    
         if (isLoggedIn) {
           const exists = await retrieveRecipesByUser();
           setIsSaved(exists);
-        }*/
+        }
     };
     checkLogin(); 
   }, [currentRecipeDetails]);
@@ -44,7 +44,7 @@ const RecipeShowcase = () =>  {
   const deleteCurrentRecipe = async () => {
     console.log("currrent REcipe detials ID:" + currentRecipeDetails.id);
     try {
-      const result = await deleteRecipe(currentRecipeDetails); 
+      const result = await deleteRecipe(currentRecipeDetails.id); 
       alert('Recipe deleted successfully!');
       console.log('Recipe delete response:', result);
       setIsSaved(false); 
