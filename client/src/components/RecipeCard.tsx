@@ -3,19 +3,30 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import apiService from "../api/apiService";
 import { currentRecipeContext } from "../App";
-
+import { retrieveRecipe } from "../api/recipesAPI";
 
 interface RecipeCardProps {
   recipe: Recipe;
 }
 
-export default function RecipeCard({ recipe: { spoonacularId, title, image }}: RecipeCardProps) {
+export default function RecipeCard({ recipe: { id, spoonacularId, title, image }}: RecipeCardProps) {
   const { setCurrentRecipeDetails } = useContext(currentRecipeContext);
+  console.log(id); 
+
   const handleSubmit = async () => {
-    const id = spoonacularId;
-    const recipeDetails = await apiService.forignInformationSearch(id);
-    setCurrentRecipeDetails(recipeDetails);
-    navigate('/recipe-showcase')
+
+    if (!id) {
+      const spoonId = spoonacularId;
+      const recipeDetails = await apiService.forignInformationSearch(spoonId);
+      setCurrentRecipeDetails(recipeDetails);
+    } else {
+      const customId = id;
+      const recipeDetails = await retrieveRecipe(customId);
+      setCurrentRecipeDetails(recipeDetails);
+    } 
+
+   navigate('/recipe-showcase')
+
   }
 
     const navigate = useNavigate();

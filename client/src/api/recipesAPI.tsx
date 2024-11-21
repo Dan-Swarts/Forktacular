@@ -26,11 +26,13 @@ const retrieveRecipes = async () => {
 // 2. GET /api/recipes/:id - Get recipe by ID
 // Retrieve a single recipe by ID from the API
 const retrieveRecipe = async (id: number | undefined) => {
+    const jwtToken = authService.getToken();
     try {
       const response = await fetch(`/api/recipes/${id}`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-        }
+            'Authorization': `Bearer ${jwtToken}`
+        },
       });
       const data = await response.json();
   
@@ -241,13 +243,14 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
 
  // 8. DELETE /recipes/:id - Delete recipe from UserRecipes relationship
   // Delete a recipe by ID via DELETE request to the API
-  const deleteRecipe = async (id: number | undefined) => {
+  const deleteRecipe = async (recipeDetails: RecipeDetails) => {
     const jwtToken = authService.getToken();
+    
     try {
     
     // Delete the recipe for the user
     const deleteResponse = await fetch(
-        `/api/users/remove/recipe/${id}`, {
+        `/api/users/remove/recipe/${recipeDetails.id}`, {
         method: 'POST',
         headers: {
         'Authorization': `Bearer ${jwtToken}`,

@@ -10,11 +10,12 @@ const RecipeShowcase = () =>  {
   const navigate = useNavigate();
   const { currentRecipeDetails } = useContext(currentRecipeContext);
   const [loginCheck,setLoginCheck] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
 
 
   useLayoutEffect(() => {
     const checkLogin = async () => {
+      console.log("here is the current recipe ID!!" + currentRecipeDetails.id)
       const isLoggedIn = await authService.loggedIn(); 
       setLoginCheck(isLoggedIn);
     /*
@@ -24,7 +25,7 @@ const RecipeShowcase = () =>  {
         }*/
     };
     checkLogin(); 
-  }, []);
+  }, [currentRecipeDetails]);
 
   // Function to save recipe
    const saveRecipe = async () => {
@@ -41,8 +42,9 @@ const RecipeShowcase = () =>  {
 
   //Function to delete recipe
   const deleteCurrentRecipe = async () => {
+    console.log("currrent REcipe detials ID:" + currentRecipeDetails.id);
     try {
-      const result = await deleteRecipe(currentRecipeDetails.id); 
+      const result = await deleteRecipe(currentRecipeDetails); 
       alert('Recipe deleted successfully!');
       console.log('Recipe delete response:', result);
       setIsSaved(false); 
@@ -128,7 +130,7 @@ const RecipeShowcase = () =>  {
        className={`font-semibold py-2 px-4 rounded mb-6 transition-colors duration-300 ${
          isSaved
            ? 'bg-red-500 hover:bg-red-600 text-white'
-           : 'bg-[#a84e24] hover:bg-[#b7572e] text-white' 
+           : 'bg-[#a84e24] hover:bg-green-600 text-white' 
        }`}
      >
        {isSaved ? 'Delete Recipe' : 'Save Recipe'}

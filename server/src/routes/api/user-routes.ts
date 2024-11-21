@@ -178,6 +178,7 @@ router.delete('/remove/recipe/:recipeId', async (req: Request, res: Response) =>
   const userInfo = req.user; 
   const { recipeId } = req.params;
 
+  console.log("here is the user Info" + userInfo); 
   if (!userInfo) {
     return res.sendStatus(404); 
   }
