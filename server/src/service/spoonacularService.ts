@@ -83,7 +83,9 @@ class spoonacularService {
     }
 
     async parseInformation(information: any){
+        const id = 0; 
         return {
+            id: id, 
             title: information.title,
             summary: information.summary,
             readyInMinutes: information.readyInMinutes,

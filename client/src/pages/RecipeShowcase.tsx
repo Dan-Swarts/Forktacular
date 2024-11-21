@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { currentRecipeContext } from "../App";
-import { addRecipe } from "../api/recipesAPI";
+import { addRecipe, retrieveRecipeByUserId, deleteRecipe } from "../api/recipesAPI";
 import { authService } from '../api/authentication';
 import { useState, useLayoutEffect} from 'react';
 
@@ -10,17 +10,34 @@ const RecipeShowcase = () =>  {
   const navigate = useNavigate();
   const { currentRecipeDetails } = useContext(currentRecipeContext);
   const [loginCheck,setLoginCheck] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
 
   useLayoutEffect(() => {
     const checkLogin = async () => {
-      const isLoggedIn = await authService.loggedIn(); // Call authService.loggedIn() to check
+      console.log("Current recipe ID:", currentRecipeDetails.id);
+  
+      const isLoggedIn = await authService.loggedIn();
       setLoginCheck(isLoggedIn);
+  
+      if (isLoggedIn && currentRecipeDetails.id) {
+        try {
+          const exists = await retrieveRecipeByUserId(currentRecipeDetails.id);
+          console.log("Exists value:", exists);
+          setIsSaved(true); 
+        } catch (err) {
+          console.error("Error retrieving recipe:", err);
+          setIsSaved(false); // Default to false on error
+        }
+      } else {
+        setIsSaved(false); // Not logged in or no recipe ID
+      }
     };
-    checkLogin(); // Call the async function inside the effect
-  }, []);
+  
+    checkLogin();
+  }, [currentRecipeDetails]);
 
-   // Function to save recipe
+  // Function to save recipe
    const saveRecipe = async () => {
     console.log("Current Recipe Details:", currentRecipeDetails);
     try {
@@ -30,6 +47,20 @@ const RecipeShowcase = () =>  {
     } catch (err) {
       console.error('Error saving recipe:', err);
       alert('Failed to save the recipe.');
+    }
+  };
+
+  //Function to delete recipe
+  const deleteCurrentRecipe = async () => {
+    console.log("currrent REcipe detials ID:" + currentRecipeDetails.id);
+    try {
+      const result = await deleteRecipe(currentRecipeDetails.id); 
+      alert('Recipe deleted successfully!');
+      console.log('Recipe delete response:', result);
+      setIsSaved(false); 
+    } catch (err) {
+      console.error('Error deleting recipe:', err);
+      alert('Failed to delete recipe.');
     }
   };
 
@@ -83,17 +114,7 @@ const RecipeShowcase = () =>  {
     <h2 className="text-3xl font-bold text-[#a84e24] mb-4">{currentRecipeDetails.title}</h2>
     
     {/* Save Button */}
-    {loginCheck ? (
-          <button
-            onClick={saveRecipe}
-            className="bg-[#a84e24] text-white font-semibold py-2 px-4 rounded hover:bg-[#b7572e] mb-6"
-          >
-            Save Recipe
-          </button>
-         ) : (
-          <div className="text-gray-500 italic mb-6">Log in to save recipes.</div>
-        )}
-      
+   
       {/* Additional Info */}
       <div className="mb-6 space-y-2">
         {currentRecipeDetails.readyInMinutes && (
@@ -111,8 +132,24 @@ const RecipeShowcase = () =>  {
               Diets: <span className="text-black font-medium">{currentRecipeDetails.diets.join(', ')}</span>
             </h4>
           )}
-      </div>
+      
 
+      {loginCheck ? (
+       <button
+       onClick={isSaved ? deleteCurrentRecipe : saveRecipe}
+       className={`font-semibold py-2 px-4 rounded mb-6 transition-colors duration-300 ${
+         isSaved
+           ? 'bg-red-500 hover:bg-red-600 text-white'
+           : 'bg-[#a84e24] hover:bg-green-600 text-white' 
+       }`}
+     >
+       {isSaved ? 'Delete Recipe' : 'Save Recipe'}
+     </button>
+         ) : (
+          <div className="text-gray-500 italic mb-6">Log in to save recipes.</div>
+        )}
+      
+      </div>
 
      {/* Recipe Summary */}
      <div className="mb-8">

@@ -17,6 +17,7 @@ export default function RecipeBook() {
       const userRecipes = await retrieveRecipesByUser();
       if (userRecipes && userRecipes.length > 0) {
         setRecipes(userRecipes); 
+        console.log(userRecipes);
       } else {
         // Call a different function if no recipes exist
         console.log("no recipes on user");

@@ -26,11 +26,13 @@ const retrieveRecipes = async () => {
 // 2. GET /api/recipes/:id - Get recipe by ID
 // Retrieve a single recipe by ID from the API
 const retrieveRecipe = async (id: number | undefined) => {
+    const jwtToken = authService.getToken();
     try {
       const response = await fetch(`/api/recipes/${id}`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-        }
+            'Authorization': `Bearer ${jwtToken}`
+        },
       });
       const data = await response.json();
   
@@ -70,16 +72,20 @@ const retrieveRecipeIdsByUserId = async (id: number | undefined) => {
   }
 
 
-// 4. GET api/users/:id/recipes - Get all recipes saved by a User
-// Retrieve all recipes saved by a particular user ID via the API
-const retrieveRecipesByUserId = async (id: number | undefined) => {
+// 4. GET api/users/user/recipe-status/:id - Get one recipe saved by a User 
+// Retrieve one recipes saved by a particular user ID via the API
+const retrieveRecipeByUserId = async (id: number | undefined) => {
+    const jwtToken = authService.getToken();
     try {
-      const response = await fetch(`/api/users/${id}/recipes`, {
+      const response = await fetch(`/api/users/user/recipe-status/${id}`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-        }
+            'Authorization': `Bearer ${jwtToken}`
+        },
       });
       const data = await response.json();
+
+      console.log("front end data:" + data); 
   
       if (!response.ok) {
         throw new Error('Invalid API response, check network tab!');
@@ -94,7 +100,7 @@ const retrieveRecipesByUserId = async (id: number | undefined) => {
   }
 
 
-// 5. GET api/users/:id/recipes - Get all recipes saved by a User
+// 5. GET api/users/userRecipes - Get all recipes saved by a User
 // Retrieve all recipes saved by a particular user ID via the API
 const retrieveRecipesByUser = async () => {
     const jwtToken = authService.getToken();
@@ -151,12 +157,12 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
     }
   }
 
-  // 6. POST /api/recipes - Create new recipe
+  // 6. POST /api/recipes - Create new recipe and save it to a particular user
 // Add a new recipe via POST request to the API
   const addRecipe = async (body: RecipeDetails) => {
     const jwtToken = authService.getToken();
     try {
-      // First API call to create the recipe
+      // reate the recipe
       const response = await fetch('/api/recipes/', {
         method: 'POST',
         headers: {
@@ -174,15 +180,15 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
         throw new Error('Failed to create recipe');
       }
   
-      // Extract the recipe ID from the response
-      const { id: recipeId } = data; // Assuming the response includes the recipe ID
+      // Extract the recipe ID 
+      const { id: recipeId } = data; 
       console.log("recipeID = " + recipeId); 
   
       if (!recipeId) {
         throw new Error('Recipe ID not returned from API');
       }
      
-      // Second API call to save the recipe for the user
+      // Save the recipe for the user
       const saveResponse = await fetch(`/api/users/save/recipe/${recipeId}`, {
         method: 'POST',
         headers: {
@@ -237,10 +243,51 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
       return Promise.reject('Could not update recipe');
     }
   }
-  
-  // 8. DELETE /recipes/:id - Delete recipe by ID
+ 
+
+ // 8. DELETE /recipes/:id - Delete recipe from UserRecipes relationship
   // Delete a recipe by ID via DELETE request to the API
   const deleteRecipe = async (id: number | undefined) => {
+    const jwtToken = authService.getToken();
+    
+    try {
+    
+    // Delete the recipe for the user
+    const deleteResponse = await fetch(
+        `/api/users/remove/recipe/${id}`, {
+        method: 'DELETE',
+        headers: {
+        'Authorization': `Bearer ${jwtToken}`,
+        },
+    });
+
+    if (!deleteResponse.ok) {
+        throw new Error('Invalid API response, check network tab!');
+    }
+
+    const deleteData = await deleteResponse.json();
+    console.log("API response status (delete recipe):", deleteResponse.status);
+    console.log("API response data (delete recipe):", deleteData);
+
+    if (!deleteResponse.ok) {
+        throw new Error('Failed to delete recipe for user');
+    }
+
+    return deleteData;
+    } catch (err) {
+    if (err instanceof Error) {
+        console.error('Error during recipe operations:', err.message);
+        return Promise.reject(err.message);
+    } else {
+        console.error('Unknown error during recipe operations:', err);
+        return Promise.reject('An unknown error occurred');
+    }
+    }
+};
+
+  // 9. DELETE /recipes/:id - Delete recipe by ID
+  // Delete a recipe by ID via DELETE request to the API
+  const deleteRecipeDatabase = async (id: number | undefined) => {
     try {
       const response = await fetch(
         `/api/recipes/${id}`, {
@@ -263,5 +310,8 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
     }
   }  
 
-  export { retrieveRecipes, retrieveRecipe, retrieveRecipesByUser, addRecipe, addRecipeToDatabase, updateRecipe, deleteRecipe, retrieveRecipesByUserId, retrieveRecipeIdsByUserId};
+
+
+
+  export { retrieveRecipes, retrieveRecipe, deleteRecipeDatabase, retrieveRecipesByUser, addRecipe, addRecipeToDatabase, updateRecipe, deleteRecipe, retrieveRecipeByUserId, retrieveRecipeIdsByUserId};
   
