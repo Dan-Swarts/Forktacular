@@ -20,14 +20,8 @@ class apiService {
     };
 
     async forignRandomSearch() {
-        const jwtToken = authService.getToken();
 
-        const response = await fetch('/open/random', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${jwtToken}`
-            }
-        });
+        const response = await fetch('/open/random');
 
         const recipes: any = await response.json();
         return recipes;

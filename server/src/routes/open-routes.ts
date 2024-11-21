@@ -3,6 +3,7 @@ import spoonacularService from "../service/spoonacularService.js";
 
 const router = Router();
 
+// GET /open/random/ - GET random recipies
 router.get('/random', async (_req: Request, res: Response) => {
     try {
         const recipes = await spoonacularService.findRandomRecipes();

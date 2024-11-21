@@ -16,11 +16,21 @@ const HomePage = () => {
     setRecipes(recipes);
   }
 
+  // useLayoutEffect( async () => {
+  //   if( await authService.loggedIn()) {
+  //     setLoginCheck(true);
+  //   }
+  // }, []);
+
   useLayoutEffect(() => {
-    if(authService.loggedIn()) {
-      setLoginCheck(true);
       getRandomRecipes();
-    }
+
+    const checkLogin = async () => {
+      if (await authService.loggedIn()) {
+        setLoginCheck(true);
+      }
+    };
+    checkLogin(); // Call the async function inside the synchronous effect.
   }, []);
 
   return (
