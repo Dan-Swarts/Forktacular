@@ -2,9 +2,9 @@ import { useState, useCallback, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Recipe from '../interfaces/recipe';
 import RecipeCard from '../components/RecipeCard';
-import apiService from '../api/apiService';
 import FilterForm from '../components/FilterForm';
 import { getAccountInformation } from '../api/usersAPI';
+import apiService from '../api/apiService';
 
 
 export interface filterInfo {
@@ -27,7 +27,13 @@ const RecipeSearchPage: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const getRandomRecipes = async() => {
+    const recipes = await apiService.forignRandomSearch();
+    setResults(recipes);
+  }
+
   useLayoutEffect(() => {
+    getRandomRecipes();
     const getInfo = async () => {
       const response = await getAccountInformation();
       const accountInfo:any = await response.json();
@@ -62,15 +68,32 @@ const RecipeSearchPage: React.FC = () => {
 
   const handleSearch = async (queryText: string) => {
     setLoading(true);
-    const searchParams = {
+    const searchParams: any = {
       query: queryText,
     };
+
+    if(filterValue.cuisine){
+      searchParams.cuisine = filterValue.cuisine;
+    }
+
+    if(filterValue.diet){
+      searchParams.diet = filterValue.diet;
+    }
+
+    if(filterValue.intolerance.length > 0){
+      searchParams.intolerance = filterValue.intolerance;
+    }
+
+    if (filterValue.includeIngredients.length > 0) {
+      searchParams.includeIngredients = filterValue.includeIngredients.join(',');
+    }
+
     const recipes = await apiService.forignRecipeSearch(searchParams);
     setResults(recipes);
     setLoading(false);
   };
 
-  const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), []);
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), [filterValue]);
 
   return (
     <div className={`min-h-screen bg-[#fef3d0] ${filterVisible ? 'filter-blur' : ''}`}>
