@@ -169,7 +169,9 @@ export default function FilterForm({filterValue, setFilterValue, setFilterVisibl
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
                 onChange={(e:any) => {setSelectedIntolerance(e.target.value)}}
               >
-                <option value="">Select an intolerance</option>
+                 <option disabled selected>
+                  {'Select an intolerance'}
+                </option>
                 <option value="Dairy">Dairy</option>
                 <option value="Egg">Egg</option>
                 <option value="Gluten">Gluten</option>
@@ -219,7 +221,7 @@ export default function FilterForm({filterValue, setFilterValue, setFilterVisibl
 
         <section>
             <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="intolerance">
-              Ingredients
+              Select required ingredients
             </label>
 
             <div className="flex items-center space-x-2">

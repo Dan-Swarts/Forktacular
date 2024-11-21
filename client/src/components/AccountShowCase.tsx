@@ -135,7 +135,7 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
                 onChange={(e:any) => {setSelectedIntolerance(e.target.value)}}
               >
                 <option disabled selected>
-                  {formValues.intolerance ? formValues.intolerance:'Select an intolerance'}
+                  {'Select an intolerance'}
                 </option>
                 <option value="Dairy">Dairy</option>
                 <option value="Egg">Egg</option>
