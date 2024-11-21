@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { currentRecipeContext } from "../App";
-import { addRecipe, deleteRecipe } from "../api/recipesAPI";
+import { addRecipe, retrieveRecipeByUserId, deleteRecipe } from "../api/recipesAPI";
 import { authService } from '../api/authentication';
 import { useState, useLayoutEffect} from 'react';
 
@@ -15,21 +15,23 @@ const RecipeShowcase = () =>  {
 
   useLayoutEffect(() => {
     const checkLogin = async () => {
-      console.log("here is the current recipe ID!!" + currentRecipeDetails.id);
+      console.log("Current recipe ID:", currentRecipeDetails.id);
   
-      const isLoggedIn = await authService.loggedIn(); 
+      const isLoggedIn = await authService.loggedIn();
       setLoginCheck(isLoggedIn);
-  /*
-      if (isLoggedIn) {
-        if (currentRecipeDetails.id === 0) {
-          setIsSaved(false); 
-        } else {
+  
+      if (isLoggedIn && currentRecipeDetails.id) {
+        try {
           const exists = await retrieveRecipeByUserId(currentRecipeDetails.id);
-          console.log("exists:" + exists); 
-          console.log(currentRecipeDetails.id); 
-          setIsSaved(exists);
+          console.log("Exists value:", exists);
+          setIsSaved(true); // Set isSaved to true if exists > 0, false otherwise
+        } catch (err) {
+          console.error("Error retrieving recipe:", err);
+          setIsSaved(false); // Default to false on error
         }
-      }*/
+      } else {
+        setIsSaved(false); // Not logged in or no recipe ID
+      }
     };
   
     checkLogin();
