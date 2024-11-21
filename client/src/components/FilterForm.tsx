@@ -1,48 +1,23 @@
-import { authService } from "../api/authentication";
-import { useNavigate } from "react-router-dom";
-import { useLayoutEffect, useState } from "react";
-import { getAccountInformation, putAccountInformation } from "../api/usersAPI";
+import { useState } from "react"
 
-interface accountShowCaseProps {
-    setLoginCheck: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface accountInfo {
+interface filterInfo {
     diet:string,
     intolerance:string[],
     favIngredients:string[],
 }
 
-export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps){
+export default function FilterForm(){
 
-    const navigate = useNavigate();
-
-    const [formValues, setFormValues] = useState<accountInfo>({
+    const [formValues, setFormValues] = useState<filterInfo>({
         diet:'',
         intolerance:[],
         favIngredients:[],
     });
 
     const [selectedIntolerance,setSelectedIntolerance] = useState<string>('');
-    // const [selectedFavIngredient,setSelectedFavIngredient] = useState<string>('');
 
-    useLayoutEffect(() => {
-        const getInfo = async () => {
-          const response = await getAccountInformation();
-          const accountInfo:any = await response.json();
-          setFormValues({
-              diet: accountInfo.diet? accountInfo.diet : '',
-              intolerance: accountInfo.intolerance? accountInfo.intolerance : [],
-              favIngredients: accountInfo.favIngredients? accountInfo.favIngredients : [],
-          });
-        }
-        getInfo();
-    },[]);
-
-    const handleLogOut = () => {
-      authService.logout();
-      navigate('/user-info');
-      setLoginCheck(false);
+    const handleFilterUpdate = () => {
+        console.log('handle filter update');
     }
 
     const handleChange = (e: any) => {
@@ -52,81 +27,43 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
         });
     };
 
-    const handleAccountUpdate = (e: any) => {
-      e.preventDefault();
-      putAccountInformation(formValues);
-    };
-
+    
     const addIntolerance = (e: any) => {
-      e.preventDefault();
-
-      if(formValues.intolerance.includes(selectedIntolerance)){
-        console.log('This intolerence is already in the user settings');
-        return;
-      }
-
-      if(selectedIntolerance === ''){
-        console.log('Please select one of the dropdowns.');
-        return;
-      }
-      const updatedIntolerances = [...formValues.intolerance, selectedIntolerance];
-
-      setFormValues((previousValues:accountInfo) => ({
-        ...previousValues,
-        intolerance: updatedIntolerances,
-      }));
-      
-    };
-
-    // const addFavIngredient = (e: any) => {
-    //   e.preventDefault();
-
-    //   if(formValues.favIngredients.includes(selectedFavIngredient)){
-    //     console.log('This ingredient is already in the user settings');
-    //     return;
-    //   }
-
-    //   if(selectedFavIngredient === ''){
-    //     console.log('Please select one of the dropdowns.');
-    //     return;
-    //   }
-    //   const updatedIngredients = [...formValues.favIngredients, selectedFavIngredient];
-
-    //   setFormValues((previousValues:accountInfo) => ({
-    //     ...previousValues,
-    //     favIngredients: updatedIngredients,
-    //   }));
-    // };
+        e.preventDefault();
+  
+        if(formValues.intolerance.includes(selectedIntolerance)){
+          console.log('This intolerence is already in the user settings');
+          return;
+        }
+  
+        if(selectedIntolerance === ''){
+          console.log('Please select one of the dropdowns.');
+          return;
+        }
+        const updatedIntolerances = [...formValues.intolerance, selectedIntolerance];
+  
+        setFormValues((previousValues:filterInfo) => ({
+          ...previousValues,
+          intolerance: updatedIntolerances,
+        }));
+        
+      };
 
     const removeIntolerance = (intolerance: string) => {
-      // Filter out the specified intolerance
-      const updatedIntolerances = formValues.intolerance.filter(
-        (item) => item !== intolerance
-      );
-    
-      // Update the formValues state
-      setFormValues((previousValues: accountInfo) => ({
-        ...previousValues,
-        intolerance: updatedIntolerances,
-      }));
+        // Filter out the specified intolerance
+        const updatedIntolerances = formValues.intolerance.filter(
+          (item) => item !== intolerance
+        );
+      
+        // Update the formValues state
+        setFormValues((previousValues: filterInfo) => ({
+          ...previousValues,
+          intolerance: updatedIntolerances,
+        }));
     };
 
-    // const removeIngredient = (ingredient: string) => {
-    //   // Filter out the specified intolerance
-    //   const updatedIngredients = formValues.favIngredients.filter(
-    //     (item) => item !== ingredient
-    //   );
-    
-    //   // Update the formValues state
-    //   setFormValues((previousValues: accountInfo) => ({
-    //     ...previousValues,
-    //     favIngredients: updatedIngredients,
-    //   }));
-    // };
-
-    return (
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
-        <form onSubmit={handleAccountUpdate} className="space-y-6">
+    return(
+        <form onSubmit={handleFilterUpdate} className="space-y-6">
           <section>
             <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="diet">
               Diet
@@ -218,15 +155,5 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
             </button>
           </div>
         </form>
-
-        <div className="mt-6">
-          <button
-            onClick={handleLogOut}
-            className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
-          >
-            Log out
-          </button>
-        </div>
-      </div>
     )
 }
