@@ -66,7 +66,7 @@ router.post('/signUp', async (req:Request,res:Response) => {
 });
 
 
-// POST api/users - Create a new user
+// POST auth/ - Create a new user
 router.post('/', async (req: Request, res: Response) => {
     const { userName, userEmail, userPassword, intolerance, diet, favIngredients } = req.body;
     try {
