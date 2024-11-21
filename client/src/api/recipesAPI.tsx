@@ -1,4 +1,5 @@
 import RecipeDetails from "../interfaces/recipeDetails";
+import { authService } from "./authentication";
 
 // 1.  GET /api/recipes - Get all recipes
 // Retrieve all recipes from the API
@@ -92,6 +93,33 @@ const retrieveRecipesByUserId = async (id: number | undefined) => {
     }
   }
 
+
+// 5. GET api/users/:id/recipes - Get all recipes saved by a User
+// Retrieve all recipes saved by a particular user ID via the API
+const retrieveRecipesByUser = async () => {
+    const jwtToken = authService.getToken();
+    try {
+      const response = await fetch(`/api/users/userRecipes`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${jwtToken}`
+        },
+    });
+
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error('Invalid API response, check network tab!');
+      }
+  
+      return data;
+  
+    } catch (err) {
+      console.log('Error from recipe retrieval:', err);
+      return {};
+    }
+  }
+
 // 5. POST /api/recipes - Create new recipe
 // Add a new recipe via POST request to the API
 const addRecipe = async (body: RecipeDetails) => {
@@ -171,5 +199,5 @@ const addRecipe = async (body: RecipeDetails) => {
     }
   }  
 
-  export { retrieveRecipes, retrieveRecipe, addRecipe, updateRecipe, deleteRecipe, retrieveRecipesByUserId, retrieveRecipeIdsByUserId};
+  export { retrieveRecipes, retrieveRecipe, retrieveRecipesByUser, addRecipe, updateRecipe, deleteRecipe, retrieveRecipesByUserId, retrieveRecipeIdsByUserId};
   
