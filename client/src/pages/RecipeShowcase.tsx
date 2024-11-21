@@ -24,7 +24,7 @@ const RecipeShowcase = () =>  {
         try {
           const exists = await retrieveRecipeByUserId(currentRecipeDetails.id);
           console.log("Exists value:", exists);
-          setIsSaved(true); // Set isSaved to true if exists > 0, false otherwise
+          setIsSaved(true); 
         } catch (err) {
           console.error("Error retrieving recipe:", err);
           setIsSaved(false); // Default to false on error
