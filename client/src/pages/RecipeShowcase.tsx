@@ -44,6 +44,7 @@ const RecipeShowcase = () =>  {
       const result = await addRecipe(currentRecipeDetails);
       alert('Recipe saved successfully!');
       console.log('Recipe save response:', result);
+      setIsSaved(true); 
     } catch (err) {
       console.error('Error saving recipe:', err);
       alert('Failed to save the recipe.');
