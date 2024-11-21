@@ -5,11 +5,24 @@ import RecipeCard from '../components/RecipeCard';
 import apiService from '../api/apiService';
 import FilterForm from '../components/FilterForm';
 
+
+export interface filterInfo {
+  diet:string,
+  intolerance:string[],
+  cuisine?:string,
+  includeIngredients?:string[],
+}
+
+
 const RecipeSearchPage: React.FC = () => {
   const [query, setQuery] = useState<string>(''); // Track the search query
   const [results, setResults] = useState<Recipe[]>([]); // Store the search results
   const [loading, setLoading] = useState<boolean>(false); // Track loading state
   const [filterVisible, setFilterVisible] = useState<boolean>(false); // Track filter form visibility
+  const [filterValue,setFilterValue] = useState<filterInfo>({
+    diet:'',
+    intolerance:[],
+  });
   const navigate = useNavigate();
 
   const handleChange = async (e: any) => {
@@ -115,7 +128,10 @@ const RecipeSearchPage: React.FC = () => {
             >
               ×
             </button>
-            <FilterForm />
+            <FilterForm 
+              filterValue={filterValue}
+              setFilterValue={setFilterValue}>
+            </FilterForm>
           </div>
         </div>
       )}
