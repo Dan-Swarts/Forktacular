@@ -1,5 +1,5 @@
 export default interface RecipeDetails {
-    id: number, 
+    id?: number, 
     title: string,
     summary: string,
     readyInMinutes: number,
@@ -9,7 +9,7 @@ export default interface RecipeDetails {
     steps: string[]| null,
     diets: string[]| null,
     image: string | null,
-    sourceUrl: string| null,
-    spoonacularSourceUrl: string| null,
-    spoonacularId: number| null,
+    sourceUrl?: string| null,
+    spoonacularSourceUrl?: string| null,
+    spoonacularId?: number| null,
 }
