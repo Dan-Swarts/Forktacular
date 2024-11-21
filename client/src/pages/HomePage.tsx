@@ -1,14 +1,25 @@
 import { useNavigate } from 'react-router-dom';
+import '../index.css';
+import RecipeCard from '../components/RecipeCard';
+import Recipe from '../interfaces/recipe';
 import { useState, useLayoutEffect} from 'react';
 import { authService } from '../api/authentication';
+import apiService from '../api/apiService';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [loginCheck,setLoginCheck] = useState(false);
+  const [recipes,setRecipes] = useState<Recipe[]>([]);
+
+  const getRandomRecipes = async() => {
+    const recipes = await apiService.forignRandomSearch();
+    setRecipes(recipes);
+  }
 
   useLayoutEffect(() => {
     if(authService.loggedIn()) {
       setLoginCheck(true);
+      getRandomRecipes();
     }
   }, []);
 
@@ -53,7 +64,19 @@ const HomePage = () => {
                   <h1>
                       Login to view all your recipies!
                   </h1>
+
+                  <div className="pt-20 px-4"> {/* Added padding-top to avoid overlap with fixed navbar */}
+                  <h1 className="text-4xl font-bold text-[#a84e24] mb-8 text-center">Sample Recipes</h1>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"> {/* Adjusted gap */}
+                    {recipes.map((recipe) => 
+                      <RecipeCard recipe={recipe}></RecipeCard>
+                    )}
+                    
+                  </div>
+                  </div>
               </div>
+              
+              
             )
 
           : (<div className="pt-20 px-4">
@@ -77,10 +100,23 @@ const HomePage = () => {
               Go to Recipe Maker
             </button>
           </div>
-        </div>
+
+          {/* Content */}
+        <div className="pt-20 px-4"> {/* Added padding-top to avoid overlap with fixed navbar */}
+          <h1 className="text-4xl font-bold text-[#a84e24] mb-8 text-center">Sample Recipes</h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"> {/* Adjusted gap */}
+            {recipes.map((recipe) => 
+              <RecipeCard recipe={recipe}></RecipeCard>
+            )}
+            
+                </div>
+              </div>
+            </div>
+       
       )} 
     </div>
   );
 };
 
 export default HomePage;
+
