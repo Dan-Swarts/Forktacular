@@ -20,7 +20,9 @@ class apiService {
     };
 
     async forignRandomSearch() {
+
         const response = await fetch('/open/random');
+
         const recipes: any = await response.json();
         return recipes;
     };

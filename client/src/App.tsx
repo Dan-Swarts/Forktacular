@@ -7,7 +7,7 @@ const defaultRecipe: RecipeDetails  = {
   id: 0, 
   title: '',
   summary: '',
-  readInMinutes: 0,
+  readyInMinutes: 0,
   servings: 0,
   ingredients: [],
   instructions: '',
