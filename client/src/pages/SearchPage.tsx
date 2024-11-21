@@ -1,36 +1,31 @@
 import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import Recipe from '../interfaces/recipe';
-import RecipeCard from '../components/RecipeCard'; 
+import RecipeCard from '../components/RecipeCard';
 import apiService from '../api/apiService';
-
+import FilterForm from '../components/FilterForm';
 
 const RecipeSearchPage: React.FC = () => {
   const [query, setQuery] = useState<string>(''); // Track the search query
   const [results, setResults] = useState<Recipe[]>([]); // Store the search results
   const [loading, setLoading] = useState<boolean>(false); // Track loading state
+  const [filterVisible, setFilterVisible] = useState<boolean>(false); // Track filter form visibility
   const navigate = useNavigate();
+
   const handleChange = async (e: any) => {
-    // the query is changed instantly, and the api search is debounced
     const queryText = e.target.value;
     setQuery(queryText);
     if (queryText.trim() === '') {
       setResults([]);
       return;
     }
-    debouncedHandleSearch(queryText)
-  }
+    debouncedHandleSearch(queryText);
+  };
 
   const debounce = (mainFunction: any, delay: number) => {
-    // Declare a variable called 'timer' to store the timer ID
     let timer: any;
-  
-    // Return an anonymous function that takes in any number of arguments
     return function (...args: any) {
-      // Clear the previous timer to prevent the execution of 'mainFunction'
       clearTimeout(timer);
-  
-      // Set a new timer that will execute 'mainFunction' after the specified delay
       timer = setTimeout(() => {
         mainFunction(...args);
       }, delay);
@@ -40,18 +35,17 @@ const RecipeSearchPage: React.FC = () => {
   const handleSearch = async (queryText: string) => {
     setLoading(true);
     const searchParams = {
-      query: queryText
-    }
+      query: queryText,
+    };
     const recipes = await apiService.forignRecipeSearch(searchParams);
-    // console.log(recipes);
     setResults(recipes);
     setLoading(false);
   };
-  
+
   const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), []);
 
   return (
-    <div className="min-h-screen bg-[#fef3d0]">
+    <div className={`min-h-screen bg-[#fef3d0] ${filterVisible ? 'filter-blur' : ''}`}>
       {/* Navbar */}
       <nav className="bg-[#f5d3a4] shadow-md fixed top-0 left-0 right-0 flex justify-between items-center px-6 py-2 max-w-7xl mx-auto z-10">
         <button
@@ -66,9 +60,15 @@ const RecipeSearchPage: React.FC = () => {
         </div>
 
         <div className="flex space-x-4">
-          <button onClick={() => navigate('/recipe-book')} className="text-[#a84e24] hover:text-[#b7572e]">Recipe Book</button>
-          <button onClick={() => navigate('/recipe-maker')} className="text-[#a84e24] hover:text-[#b7572e]">Recipe Maker</button>
-          <button onClick={() => navigate('/user-info')} className="text-[#a84e24] hover:text-[#b7572e]">Account</button>
+          <button onClick={() => navigate('/recipe-book')} className="text-[#a84e24] hover:text-[#b7572e]">
+            Recipe Book
+          </button>
+          <button onClick={() => navigate('/recipe-maker')} className="text-[#a84e24] hover:text-[#b7572e]">
+            Recipe Maker
+          </button>
+          <button onClick={() => navigate('/user-info')} className="text-[#a84e24] hover:text-[#b7572e]">
+            Account
+          </button>
         </div>
       </nav>
 
@@ -83,7 +83,10 @@ const RecipeSearchPage: React.FC = () => {
             value={query}
             onChange={handleChange}
           />
-          <button className="ml-2 bg-[#ff9e40] text-white px-4 py-2 rounded-md hover:bg-[#e7890c] transition-colors">
+          <button
+            className="ml-2 bg-[#ff9e40] text-white px-4 py-2 rounded-md hover:bg-[#e7890c] transition-colors"
+            onClick={() => setFilterVisible(true)} // Show filter form
+          >
             Filter
           </button>
         </div>
@@ -92,21 +95,30 @@ const RecipeSearchPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {loading ? (
             <p>Loading...</p>
+          ) : !results ? (
+            <p>Something went wrong...</p>
+          ) : results.length === 0 ? (
+            <p>No results found...</p>
           ) : (
-            !results
-              ? <p>something went wrong...</p>
-              : results.length=== 0
-                ? (
-                <p>No results found...</p>
-                )
-                : (
-                  results.map((recipe) => (
-                    <RecipeCard recipe={recipe} />
-                  ))
-                )
-              )}
+            results.map((recipe) => <RecipeCard recipe={recipe} />)
+          )}
         </div>
       </div>
+
+      {/* Filter Form Modal */}
+      {filterVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+          <div className="bg-white p-4 rounded-lg shadow-lg relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+              onClick={() => setFilterVisible(false)} // Hide filter form
+            >
+              ×
+            </button>
+            <FilterForm />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
