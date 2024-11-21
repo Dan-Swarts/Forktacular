@@ -1,162 +1,217 @@
-import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-
-//  Match this page pass the correct data to the model
-
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { currentRecipeContext } from "../App";
+import RecipeDetails from "../interfaces/recipeDetails";
 
 const RecipeMaker = () => {
   const navigate = useNavigate();
-  const [recipeImage, setRecipeImage] = useState<string | null>(null);
-  const [ingredients, setIngredients] = useState<{ ingredient: string; measurement: string }[]>([{ ingredient: '', measurement: '' }]);
-  const [instructions, setInstructions] = useState<string>('');
+  const { setCurrentRecipeDetails } = useContext(currentRecipeContext);
+  const [recipe, setRecipe] = useState<RecipeDetails>({
+    title: "",
+    summary: "",
+    readyInMinutes: 0,
+    servings: 0,
+    ingredients: [""],
+    instructions: "",
+    steps: [],
+    diets: [],
+    image: "",
+  });
 
-  // Handle file upload
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setRecipeImage(URL.createObjectURL(file));
-    }
+  const handleChange = (field: keyof RecipeDetails, value: any) => {
+    setRecipe((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  // Handle ingredient change
-  const handleIngredientChange = (index: number, field: 'ingredient' | 'measurement', value: string) => {
-    const newIngredients = [...ingredients];
-    newIngredients[index][field] = value;
-    setIngredients(newIngredients);
+  const handleListChange = (field: keyof RecipeDetails, index: number, value: string) => {
+    const updatedList = [...(recipe[field] as string[])];
+    updatedList[index] = value;
+    setRecipe((prev) => ({
+      ...prev,
+      [field]: updatedList,
+    }));
   };
 
-  // Add new ingredient field
-  const handleAddIngredient = () => {
-    setIngredients([...ingredients, { ingredient: '', measurement: '' }]);
+  const handleAddItem = (field: keyof RecipeDetails) => {
+    setRecipe((prev) => ({
+      ...prev,
+      [field]: [...(recipe[field] as string[]), ""],
+    }));
   };
 
-  // Remove ingredient field
-  const handleRemoveIngredient = (index: number) => {
-    const newIngredients = ingredients.filter((_, i) => i !== index);
-    setIngredients(newIngredients);
+  const handleRemoveItem = (field: keyof RecipeDetails, index: number) => {
+    const updatedList = [...(recipe[field] as string[])];
+    updatedList.splice(index, 1);
+    setRecipe((prev) => ({
+      ...prev,
+      [field]: updatedList,
+    }));
   };
 
-  // Handle instruction change
-  const handleInstructionsChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInstructions(e.target.value);
-  };
-
-  // Handle form submission 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle the form data
-    console.log('Recipe Submitted:', { recipeImage, ingredients, instructions });
+    setCurrentRecipeDetails(recipe);
+    navigate("/recipe-showcase");
   };
 
   return (
-    <div className="bg-[#ffe89d] min-h-screen pt-24"> {/* Added pt-24 to prevent content from being hidden behind the navbar */}
-   <nav className="bg-[#f5d3a4] shadow-md fixed top-0 left-0 right-0 flex justify-between items-center px-6 py-2 max-w-7xl mx-auto z-10">
-  {/* Forktacular button on the left */}
-  <button
-    onClick={() => navigate('/')}
-    className="text-[#a84e24] hover:text-[#b7572e] font-semibold"
-  >
-    Forktacular
-  </button>
+    <div className="bg-[#fef3d0] min-h-screen pt-24 px-6">
+      <h1 className="text-3xl font-bold text-center mb-8">Create a Recipe</h1>
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-3xl mx-auto bg-[#fadaae] p-6 shadow-lg rounded-lg space-y-4 border border-gray-200"
+      >
+        <div>
+          <label className="block font-bold mb-1">Title</label>
+          <input
+            type="text"
+            value={recipe.title}
+            onChange={(e) => handleChange("title", e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label className="block font-bold mb-1">Summary</label>
+          <textarea
+            value={recipe.summary}
+            onChange={(e) => handleChange("summary", e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label className="block font-bold mb-1">Ready In Minutes</label>
+          <input
+            type="number"
+            value={recipe.readyInMinutes}
+            onChange={(e) => handleChange("readyInMinutes", +e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label className="block font-bold mb-1">Servings</label>
+          <input
+            type="number"
+            value={recipe.servings}
+            onChange={(e) => handleChange("servings", +e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
 
-  {/* Title centered */}
-  <div className="text-2xl font-bold text-[#a84e24] flex-1 text-center">
-    Recipe Maker
-  </div>
+        <div>
+          <label className="block font-bold mb-1">Ingredients</label>
+          {recipe.ingredients.map((ingredient, index) => (
+            <div key={index} className="flex items-center space-x-2 mb-2">
+              <input
+                type="text"
+                value={ingredient}
+                onChange={(e) => handleListChange("ingredients", index, e.target.value)}
+                className="flex-1 p-2 border rounded"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem("ingredients", index)}
+                className="text-red-500"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => handleAddItem("ingredients")}
+            className="text-blue-500"
+          >
+            Add Ingredient
+          </button>
+        </div>
 
-  {/* Navigation buttons on the right */}
-  <div className="flex space-x-4">
-    <button onClick={() => navigate('/recipe-book')} className="text-[#a84e24] hover:text-[#b7572e]">Recipe Book</button>
-    <button onClick={() => navigate('/search')} className="text-[#a84e24] hover:text-[#b7572e]">Search Page</button>
-    <button onClick={() => navigate('/user-info')} className="text-[#a84e24] hover:text-[#b7572e]">Account</button>
-  </div>
-</nav>
+        <div>
+          <label className="block font-bold mb-1">Instructions</label>
+          <textarea
+            value={recipe.instructions}
+            onChange={(e) => handleChange("instructions", e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
 
-  {/* Main Content Area */}
-  <div className="max-w-3xl mx-auto p-6 bg-[#fadaae] shadow-lg rounded-md mt-24"> {/* mt-24 to prevent content overlap */}
-    <h2 className="text-2xl font-semibold text-[#a84e24] text-center mb-6">Recipe Maker</h2>
+        {/* Diets Section */}
+        <div>
+          <label className="block font-bold mb-1">Diets</label>
+          {(recipe.diets ?? []).map((diet, index) => (
+            <div key={index} className="flex items-center space-x-2 mb-2">
+              <input
+                type="text"
+                value={diet}
+                onChange={(e) => handleListChange("diets", index, e.target.value)}
+                className="flex-1 p-2 border rounded"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem("diets", index)}
+                className="text-red-500"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => handleAddItem("diets")}
+            className="text-blue-500"
+          >
+            Add Diet
+          </button>
+        </div>
 
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Recipe Image Upload */}
-      <div>
-        <label htmlFor="image" className="block text-lg font-medium mb-2 text-[#a84e24]">Recipe Image</label>
-        <input
-          type="file"
-          id="image"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-gray-700 file:bg-gray-100 hover:file:bg-gray-200"
-        />
-        {recipeImage && (
-          <div className="mt-4">
-            <img src={recipeImage} alt="Recipe Preview" className="w-full h-48 object-cover rounded-md" />
-          </div>
-        )}
-      </div>
+        {/* Steps Section */}
+        <div>
+          <label className="block font-bold mb-1">Steps</label>
+          {(recipe.steps ?? []).map((step, index) => (
+            <div key={index} className="flex items-center space-x-2 mb-2">
+              <input
+                type="text"
+                value={step}
+                onChange={(e) => handleListChange("steps", index, e.target.value)}
+                className="flex-1 p-2 border rounded"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveItem("steps", index)}
+                className="text-red-500"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => handleAddItem("steps")}
+            className="text-blue-500"
+          >
+            Add Step
+          </button>
+        </div>
 
-      {/* Ingredients Section */}
-      <div>
-        <label className="block text-lg font-medium mb-2 text-[#a84e24]">Ingredients</label>
-        {ingredients.map((ingredient, index) => (
-          <div key={index} className="flex items-center space-x-4 mb-4">
-            <input
-              type="text"
-              value={ingredient.ingredient}
-              onChange={(e) => handleIngredientChange(index, 'ingredient', e.target.value)}
-              placeholder="Ingredient"
-              className="w-1/2 p-2 border border-gray-300 rounded-md"
-            />
-            <input
-              type="text"
-              value={ingredient.measurement}
-              onChange={(e) => handleIngredientChange(index, 'measurement', e.target.value)}
-              placeholder="Measurement"
-              className="w-1/3 p-2 border border-gray-300 rounded-md"
-            />
-            <button
-              type="button"
-              onClick={() => handleRemoveIngredient(index)}
-              className="text-red-600 hover:text-red-800"
-            >
-              Remove
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={handleAddIngredient}
-          className="text-[#0062cc] hover:text-[#0046b1]"
-        >
-          Add Ingredient
-        </button>
-      </div>
+        <div>
+          <label className="block font-bold mb-1">Image URL</label>
+          <input
+            type="text"
+            value={recipe.image ?? ""} // Handle null value
+            onChange={(e) => setRecipe({ ...recipe, image: e.target.value })}
+            className="p-2 border rounded w-full"
+          />
+        </div>
 
-      {/* Cooking Instructions Section */}
-      <div>
-        <label htmlFor="instructions" className="block text-lg font-medium mb-2 text-[#a84e24]">Cooking Instructions</label>
-        <textarea
-          id="instructions"
-          value={instructions}
-          onChange={handleInstructionsChange}
-          placeholder="Write your cooking instructions here..."
-          rows={5}
-          className="w-full p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      {/* Submit Button */}
-      <div className="flex justify-center">
         <button
           type="submit"
-          className="bg-[#ff9e40] text-white px-6 py-2 rounded-md hover:bg-[#e7890c]"
+          className="w-full bg-[#a84e24] text-white font-bold p-2 rounded"
         >
-          Submit Recipe
+          Create Recipe
         </button>
-      </div>
-    </form>
-  </div>
-</div>
+      </form>
+    </div>
   );
 };
 
