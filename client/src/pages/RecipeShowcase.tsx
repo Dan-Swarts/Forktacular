@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { currentRecipeContext } from "../App";
-import { addRecipe, retrieveRecipesByUser, deleteRecipe } from "../api/recipesAPI";
+import { addRecipe, deleteRecipe } from "../api/recipesAPI";
 import { authService } from '../api/authentication';
 import { useState, useLayoutEffect} from 'react';
 
@@ -17,11 +17,11 @@ const RecipeShowcase = () =>  {
     const checkLogin = async () => {
       const isLoggedIn = await authService.loggedIn(); 
       setLoginCheck(isLoggedIn);
-    
+    /*
         if (isLoggedIn) {
           const exists = await retrieveRecipesByUser();
           setIsSaved(exists);
-        }
+        }*/
     };
     checkLogin(); 
   }, []);
@@ -102,19 +102,7 @@ const RecipeShowcase = () =>  {
     <h2 className="text-3xl font-bold text-[#a84e24] mb-4">{currentRecipeDetails.title}</h2>
     
     {/* Save Button */}
-    {loginCheck ? (
-          <button
-          onClick={isSaved ? deleteCurrentRecipe : saveRecipe}
-            className={`bg-[#a84e24] text-white font-semibold py-2 px-4 rounded hover:bg-[#b7572e] mb-6 ${
-              isSaved ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
-          }`}
-          >
-            {isSaved ? 'Delete Recipe' : 'Save Recipe'}
-          </button>
-         ) : (
-          <div className="text-gray-500 italic mb-6">Log in to save recipes.</div>
-        )}
-      
+   
       {/* Additional Info */}
       <div className="mb-6 space-y-2">
         {currentRecipeDetails.readyInMinutes && (
@@ -132,8 +120,24 @@ const RecipeShowcase = () =>  {
               Diets: <span className="text-black font-medium">{currentRecipeDetails.diets.join(', ')}</span>
             </h4>
           )}
-      </div>
+      
 
+      {loginCheck ? (
+       <button
+       onClick={isSaved ? deleteCurrentRecipe : saveRecipe}
+       className={`font-semibold py-2 px-4 rounded mb-6 transition-colors duration-300 ${
+         isSaved
+           ? 'bg-red-500 hover:bg-red-600 text-white'
+           : 'bg-[#a84e24] hover:bg-[#b7572e] text-white' 
+       }`}
+     >
+       {isSaved ? 'Delete Recipe' : 'Save Recipe'}
+     </button>
+         ) : (
+          <div className="text-gray-500 italic mb-6">Log in to save recipes.</div>
+        )}
+      
+      </div>
 
      {/* Recipe Summary */}
      <div className="mb-8">

@@ -37,10 +37,10 @@ export default function RecipeCard({ recipe: { spoonacularId, title, image }}: R
             {/* Recipe Title */}
             <h2 className="text-2xl font-bold text-[#a84e24] mb-3">{title}</h2>
 
-            {/* Ingredients */}
+            {/* Ingredients
             <h3 className="text-lg font-semibold text-[#a84e24] mb-2">Ingredients:</h3>
             <ul className="list-disc list-inside mb-4 space-y-1">
-            </ul>
+            </ul> */}
 
             {/* View Recipe Button */}
             <button
