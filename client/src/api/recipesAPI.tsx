@@ -71,9 +71,9 @@ const retrieveRecipeIdsByUserId = async (id: number | undefined) => {
     }
   }
 
-'/user/recipe-status/:recipeId'
-// 4. GET api/users/:id/recipes - Get all recipes saved by a User
-// Retrieve all recipes saved by a particular user ID via the API
+
+// 4. GET api/users/user/recipe-status/:id - Get one recipe saved by a User 
+// Retrieve one recipes saved by a particular user ID via the API
 const retrieveRecipeByUserId = async (id: number | undefined) => {
     const jwtToken = authService.getToken();
     try {
