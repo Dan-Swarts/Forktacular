@@ -49,6 +49,7 @@ const RecipeShowcase = () =>  {
       alert('Recipe saved successfully!');
       console.log('Recipe save response:', result);
       setIsSaved(true); 
+      navigate('/');
     } catch (err) {
       console.error('Error saving recipe:', err);
       alert('Failed to save the recipe.');
