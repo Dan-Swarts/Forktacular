@@ -4,7 +4,7 @@ import RecipeCard from '../components/RecipeCard';
 import Recipe from '../interfaces/recipe';
 import apiService from '../api/apiService';
 import { useState, useEffect } from 'react';
-import { retrieveRecipesByUserId } from '../api/recipesAPI'
+import { retrieveRecipesByUser } from '../api/recipesAPI'
 
 
 export default function RecipeBook() {
@@ -14,11 +14,12 @@ export default function RecipeBook() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const userRecipes = await retrieveRecipesByUserId(1);
+      const userRecipes = await retrieveRecipesByUser();
       if (userRecipes && userRecipes.length > 0) {
         setRecipes(userRecipes); 
       } else {
         // Call a different function if no recipes exist
+        console.log("no recipes on user");
         const randomRecipes = await apiService.forignRandomSearch();
         setRecipes(randomRecipes);
       }
