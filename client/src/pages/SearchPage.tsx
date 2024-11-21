@@ -1,15 +1,16 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Recipe from '../interfaces/recipe';
 import RecipeCard from '../components/RecipeCard';
 import apiService from '../api/apiService';
 import FilterForm from '../components/FilterForm';
+import { getAccountInformation } from '../api/usersAPI';
 
 
 export interface filterInfo {
   diet?:string,
-  intolerance:string[],
   cuisine?:string,
+  intolerance:string[],
   includeIngredients:string[],
 }
 
@@ -23,7 +24,21 @@ const RecipeSearchPage: React.FC = () => {
     intolerance:[],
     includeIngredients:[],
   });
+
   const navigate = useNavigate();
+
+  useLayoutEffect(() => {
+    const getInfo = async () => {
+      const response = await getAccountInformation();
+      const accountInfo:any = await response.json();
+      setFilterValue({
+          diet: accountInfo.diet? accountInfo.diet : '',
+          intolerance: accountInfo.intolerance? accountInfo.intolerance : [],
+          includeIngredients:[],
+      });
+    }
+    getInfo();
+  },[]);
 
   const handleChange = async (e: any) => {
     const queryText = e.target.value;

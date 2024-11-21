@@ -8,9 +8,8 @@ interface accountShowCaseProps {
 }
 
 interface accountInfo {
-    diet:string,
+    diet?:string,
     intolerance:string[],
-    favIngredients:string[],
 }
 
 export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps){
@@ -20,7 +19,6 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
     const [formValues, setFormValues] = useState<accountInfo>({
         diet:'',
         intolerance:[],
-        favIngredients:[],
     });
 
     const [selectedIntolerance,setSelectedIntolerance] = useState<string>('');
@@ -33,7 +31,6 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
           setFormValues({
               diet: accountInfo.diet? accountInfo.diet : '',
               intolerance: accountInfo.intolerance? accountInfo.intolerance : [],
-              favIngredients: accountInfo.favIngredients? accountInfo.favIngredients : [],
           });
         }
         getInfo();
@@ -78,26 +75,6 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
       
     };
 
-    // const addFavIngredient = (e: any) => {
-    //   e.preventDefault();
-
-    //   if(formValues.favIngredients.includes(selectedFavIngredient)){
-    //     console.log('This ingredient is already in the user settings');
-    //     return;
-    //   }
-
-    //   if(selectedFavIngredient === ''){
-    //     console.log('Please select one of the dropdowns.');
-    //     return;
-    //   }
-    //   const updatedIngredients = [...formValues.favIngredients, selectedFavIngredient];
-
-    //   setFormValues((previousValues:accountInfo) => ({
-    //     ...previousValues,
-    //     favIngredients: updatedIngredients,
-    //   }));
-    // };
-
     const removeIntolerance = (intolerance: string) => {
       // Filter out the specified intolerance
       const updatedIntolerances = formValues.intolerance.filter(
@@ -111,19 +88,6 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
       }));
     };
 
-    // const removeIngredient = (ingredient: string) => {
-    //   // Filter out the specified intolerance
-    //   const updatedIngredients = formValues.favIngredients.filter(
-    //     (item) => item !== ingredient
-    //   );
-    
-    //   // Update the formValues state
-    //   setFormValues((previousValues: accountInfo) => ({
-    //     ...previousValues,
-    //     favIngredients: updatedIngredients,
-    //   }));
-    // };
-
     return (
       <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
         <form onSubmit={handleAccountUpdate} className="space-y-6">
@@ -136,7 +100,7 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
               onChange={handleChange}
             >
-              <option value="">{formValues.diet}</option>
+              <option value="">{formValues.diet? formValues.diet : 'select diet'}</option>
               <option value="Gluten Free">Gluten Free</option>
               <option value="Ketogenic">Ketogenic</option>
               <option value="Vegetarian">Vegetarian</option>
