@@ -26,7 +26,7 @@ export default function RecipeBook() {
   
     fetchData();
   }, []); 
-
+  
   return (
     <div className="max-w-7xl mx-auto p-6 bg-[#fef3d0]">
     {/* Navbar */}
