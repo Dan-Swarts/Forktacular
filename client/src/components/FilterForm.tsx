@@ -95,7 +95,10 @@ export default function FilterForm({filterValue, setFilterValue, setFilterVisibl
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
               onChange={handleChange}
             >
-              <option value="">{filterValue.diet? filterValue.diet:'Select a diet'}</option>
+              <option disabled selected>
+                {filterValue.diet? filterValue.diet:'Select a diet'}
+              </option>
+              <option value="">None</option>
               <option value="Gluten Free">Gluten Free</option>
               <option value="Ketogenic">Ketogenic</option>
               <option value="Vegetarian">Vegetarian</option>
@@ -121,7 +124,10 @@ export default function FilterForm({filterValue, setFilterValue, setFilterVisibl
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
                 onChange={handleChange}
             >
-                <option value="">{filterValue.cuisine ? filterValue.cuisine :'Select a cuisine'}</option>
+                <option disabled selected>
+                  {filterValue.cuisine ? filterValue.cuisine:'Select a cuisine'}
+                </option>
+                <option value="">None</option>
                 <option value="African">African</option>
                 <option value="Asian">Asian</option>
                 <option value="American">American</option>

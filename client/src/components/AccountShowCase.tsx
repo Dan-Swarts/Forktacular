@@ -1,6 +1,6 @@
 import { authService } from "../api/authentication";
 import { useNavigate } from "react-router-dom";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState, useEffect } from "react";
 import { getAccountInformation, putAccountInformation } from "../api/usersAPI";
 
 interface accountShowCaseProps {
@@ -8,7 +8,7 @@ interface accountShowCaseProps {
 }
 
 interface accountInfo {
-    diet?:string,
+    diet:string,
     intolerance:string[],
 }
 
@@ -20,6 +20,10 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
         diet:'',
         intolerance:[],
     });
+
+    useEffect(() => {
+      console.log('Updated formValues:', formValues);
+    }, [formValues]);
 
     const [selectedIntolerance,setSelectedIntolerance] = useState<string>('');
     // const [selectedFavIngredient,setSelectedFavIngredient] = useState<string>('');
@@ -47,6 +51,7 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
           ...formValues,
           [e.target.id]: e.target.value
         });
+        console.log(formValues);
     };
 
     const handleAccountUpdate = (e: any) => {
@@ -100,7 +105,10 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
               onChange={handleChange}
             >
-              <option value="">{formValues.diet? formValues.diet : 'select diet'}</option>
+              <option disabled selected>
+                {formValues.diet ? formValues.diet : 'select a diet'}
+              </option>
+              <option value="">None</option>
               <option value="Gluten Free">Gluten Free</option>
               <option value="Ketogenic">Ketogenic</option>
               <option value="Vegetarian">Vegetarian</option>
@@ -126,7 +134,9 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
                 onChange={(e:any) => {setSelectedIntolerance(e.target.value)}}
               >
-                <option value="">Select an intolerance</option>
+                <option disabled selected>
+                  {formValues.intolerance ? formValues.intolerance:'Select an intolerance'}
+                </option>
                 <option value="Dairy">Dairy</option>
                 <option value="Egg">Egg</option>
                 <option value="Gluten">Gluten</option>

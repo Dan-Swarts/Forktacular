@@ -88,6 +88,8 @@ const RecipeSearchPage: React.FC = () => {
       searchParams.includeIngredients = filterValue.includeIngredients.join(',');
     }
 
+    console.log(searchParams);
+
     const recipes = await apiService.forignRecipeSearch(searchParams);
     setResults(recipes);
     setLoading(false);

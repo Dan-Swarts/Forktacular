@@ -21,6 +21,8 @@ const UserInfo = () => {
     checkLogin(); // Call the async function inside the synchronous effect.
   }, []);
 
+  
+
   const navigate = useNavigate();
 
   return (
@@ -51,9 +53,14 @@ const UserInfo = () => {
       </div>
     </nav>
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-[#a84e24]">
-          {signIn ? 'Sign In' : 'Sign Up'}
-        </h2>
+        {
+          loginCheck 
+            ? (<h2 className="text-2xl font-bold mb-6 text-center text-[#a84e24]">
+              { signIn ? 'Sign In' : 'Sign Up'}
+              </h2>
+            )
+            : <></>
+        }
         {
           loginCheck
             ? <AccountShowCase setLoginCheck={setLoginCheck}></AccountShowCase>
