@@ -27,7 +27,7 @@ const retrieveUsers = async () => {
 
 // 2. GET api/users/:id - Get a user by ID
 // Retrieve a single user by ID from the Database
-const retrieveSimpleUser = async (id: number | undefined) => {
+const retrieveUser = async (id: number | undefined) => {
     try {
       const response = await fetch(`/api/users/${id}`, {
         headers: {
@@ -51,7 +51,7 @@ const retrieveSimpleUser = async (id: number | undefined) => {
 
 // 3. GET api/users/:id - Get a user by ID
 // Retrieve a single user by ID from the API
-const retrieveUser = async () => {
+const retrieveSimpleUser = async () => {
     try {
       const response = await fetch(`/api/users/userRecipes`, {
         headers: {
@@ -104,7 +104,7 @@ const addUser = async (body: UserDetails) => {
 
 // 4. PUT api/users/:id - Update a user by ID
   // Update an existing user via PUT request to the API
-  const updateUser = async (id: number | undefined, body: UserDetails) => {
+  const updateUser = async (body: UserDetails) => {
     try {
       const response = await fetch(
         `/api/users/account/update`, {
