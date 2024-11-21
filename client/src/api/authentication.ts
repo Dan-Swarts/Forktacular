@@ -53,9 +53,23 @@ class AuthService {
     }
   
     // Check if the user is logged in by retrieving the token from localStorage
-    loggedIn() {
-      const token = this.getToken();
-      return token;
+    loggedIn = async() => {
+        const jwtToken = this.getToken();
+        const response = await fetch('/api/users/account', {
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`
+            }
+        });
+
+        if(response.status === 403){
+            return false;
+        } else if(response.status === 200) {
+            return true;
+        } else {
+            console.log('error!');
+            return false;
+        }
+
     }
   
     // Retrieve the JWT token from localStorage

@@ -6,10 +6,20 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [loginCheck,setLoginCheck] = useState(false);
 
+  // useLayoutEffect( async () => {
+  //   if( await authService.loggedIn()) {
+  //     setLoginCheck(true);
+  //   }
+  // }, []);
+
   useLayoutEffect(() => {
-    if(authService.loggedIn()) {
-      setLoginCheck(true);
-    }
+    const checkLogin = async () => {
+      if (await authService.loggedIn()) {
+        setLoginCheck(true);
+      }
+    };
+  
+    checkLogin(); // Call the async function inside the synchronous effect.
   }, []);
 
   return (
