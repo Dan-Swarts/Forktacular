@@ -42,12 +42,18 @@ class spoonacularService {
         try {
             const searchURL = `${this.baseURL}/recipes/random?number=10&apiKey=${this.apiKey}`;
             const response = await fetch(searchURL);
+
+            // error occured
+            if(response.status !== 200){
+                return {error: response.statusText};
+            }
+
             const randomRecipes = await response.json();
             const recipes = this.parseRandomRecipes(randomRecipes);
             return recipes;
         } catch(error) {
             console.log(error);
-            return null;
+            return error;
         }
     }
 

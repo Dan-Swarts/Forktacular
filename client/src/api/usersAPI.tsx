@@ -229,8 +229,10 @@ const addUser = async (body: UserDetails) => {
   const putAccountInformation = async (accountPreferences : accountPreferences) => {
     const jwtToken = authService.getToken();
     const response = await fetch('/api/users/account/update', {
+        method: 'PUT',
         headers: { 
-            'Authorization': `Bearer ${jwtToken}`
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwtToken}`
         },
         body: JSON.stringify(accountPreferences),
     });

@@ -1,36 +1,40 @@
 import { authService } from "../api/authentication";
 import { useNavigate } from "react-router-dom";
 import { useLayoutEffect, useState } from "react";
-import apiService from "../api/apiService";
+import { getAccountInformation, putAccountInformation } from "../api/usersAPI";
 
-interface accountShowCaseProps{
+interface accountShowCaseProps {
     setLoginCheck: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface accountInfo {
-    diet?:string,
-    intolerance?:string,
-    favIngredients?:string,
+    diet:string,
+    intolerance:string[],
+    favIngredients:string[],
 }
 
 export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps){
 
     const navigate = useNavigate();
 
-    const [formValues, setFormValues] = useState({
+    const [formValues, setFormValues] = useState<accountInfo>({
         diet:'',
-        intolerance:'',
-        favIngredients:'',
+        intolerance:[],
+        favIngredients:[],
     });
+
+    const [selectedIntolerance,setSelectedIntolerance] = useState<string>('');
+    // const [selectedFavIngredient,setSelectedFavIngredient] = useState<string>('');
 
     useLayoutEffect(() => {
         const getInfo = async () => {
-            const accountInfo:accountInfo = await apiService.getAccountInformation();
-            setFormValues({
-                diet: accountInfo.diet? accountInfo.diet : '',
-                intolerance: accountInfo.intolerance? accountInfo.intolerance : '',
-                favIngredients: accountInfo.favIngredients? accountInfo.favIngredients : '',
-            });
+          const response = await getAccountInformation();
+          const accountInfo:any = await response.json();
+          setFormValues({
+              diet: accountInfo.diet? accountInfo.diet : '',
+              intolerance: accountInfo.intolerance? accountInfo.intolerance : [],
+              favIngredients: accountInfo.favIngredients? accountInfo.favIngredients : [],
+          });
         }
         getInfo();
     },[]);
@@ -50,13 +54,80 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
 
     const handleAccountUpdate = (e: any) => {
       e.preventDefault();
-      console.log('formValues:', formValues)
-    }
+      putAccountInformation(formValues);
+    };
+
+    const addIntolerance = (e: any) => {
+      e.preventDefault();
+
+      if(formValues.intolerance.includes(selectedIntolerance)){
+        console.log('This intolerence is already in the user settings');
+        return;
+      }
+
+      if(selectedIntolerance === ''){
+        console.log('Please select one of the dropdowns.');
+        return;
+      }
+      const updatedIntolerances = [...formValues.intolerance, selectedIntolerance];
+
+      setFormValues((previousValues:accountInfo) => ({
+        ...previousValues,
+        intolerance: updatedIntolerances,
+      }));
+      
+    };
+
+    // const addFavIngredient = (e: any) => {
+    //   e.preventDefault();
+
+    //   if(formValues.favIngredients.includes(selectedFavIngredient)){
+    //     console.log('This ingredient is already in the user settings');
+    //     return;
+    //   }
+
+    //   if(selectedFavIngredient === ''){
+    //     console.log('Please select one of the dropdowns.');
+    //     return;
+    //   }
+    //   const updatedIngredients = [...formValues.favIngredients, selectedFavIngredient];
+
+    //   setFormValues((previousValues:accountInfo) => ({
+    //     ...previousValues,
+    //     favIngredients: updatedIngredients,
+    //   }));
+    // };
+
+    const removeIntolerance = (intolerance: string) => {
+      // Filter out the specified intolerance
+      const updatedIntolerances = formValues.intolerance.filter(
+        (item) => item !== intolerance
+      );
+    
+      // Update the formValues state
+      setFormValues((previousValues: accountInfo) => ({
+        ...previousValues,
+        intolerance: updatedIntolerances,
+      }));
+    };
+
+    // const removeIngredient = (ingredient: string) => {
+    //   // Filter out the specified intolerance
+    //   const updatedIngredients = formValues.favIngredients.filter(
+    //     (item) => item !== ingredient
+    //   );
+    
+    //   // Update the formValues state
+    //   setFormValues((previousValues: accountInfo) => ({
+    //     ...previousValues,
+    //     favIngredients: updatedIngredients,
+    //   }));
+    // };
 
     return (
       <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
         <form onSubmit={handleAccountUpdate} className="space-y-6">
-          <div>
+          <section>
             <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="diet">
               Diet
             </label>
@@ -65,32 +136,129 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
               onChange={handleChange}
             >
-              <option value="">Select a diet</option>
-              <option value="vegetarian">Vegetarian</option>
-              <option value="vegan">Vegan</option>
-              <option value="paleo">Paleo</option>
-              <option value="keto">Keto</option>
-              <option value="mediterranean">Mediterranean</option>
+              <option value="">{formValues.diet}</option>
+              <option value="Gluten Free">Gluten Free</option>
+              <option value="Ketogenic">Ketogenic</option>
+              <option value="Vegetarian">Vegetarian</option>
+              <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+              <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
+              <option value="Vegan">Vegan</option>
+              <option value="Pescetarian">Pescetarian</option>
+              <option value="Paleo">Paleo</option>
+              <option value="Primal">Primal</option>
+              <option value="Low FODMAP">Low FODMAP</option>
+              <option value="Whole30">Whole30</option>
             </select>
-          </div>
+          </section>
 
-          <div>
+          <section>
             <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="intolerance">
               Intolerance
             </label>
-            <select
-              id="intolerance"
-              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
-              onChange={handleChange}
-            >
-              <option value="">Select an intolerance</option>
-              <option value="dairy">Dairy</option>
-              <option value="gluten">Gluten</option>
-              <option value="nuts">Nuts</option>
-              <option value="soy">Soy</option>
-              <option value="shellfish">Shellfish</option>
-            </select>
-          </div>
+
+            <div className="flex items-center space-x-2">
+              <select
+                id="intolerance"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
+                onChange={(e:any) => {setSelectedIntolerance(e.target.value)}}
+              >
+                <option value="">Select an intolerance</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Egg">Egg</option>
+                <option value="Gluten">Gluten</option>
+                <option value="Grain">Grain</option>
+                <option value="Peanut">Peanut</option>
+                <option value="Seafood">Seafood</option>
+                <option value="Sesame">Sesame</option>
+                <option value="Shellfish">Shellfish</option>
+                <option value="Soy">Soy</option>
+                <option value="Sulfite">Sulfite</option>
+                <option value="Tree Nut">Tree Nut</option>
+                <option value="Wheat">Wheat</option>
+              </select>
+              <button
+                onClick={addIntolerance}
+                // disabled={!selectedIntolerance}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+
+            <ul>
+              {formValues.intolerance.map((item) => {
+                return (
+                  <li key={item} className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-3 shadow-sm m-2">
+                    <span className="text-gray-800">{item}</span>
+                    <button
+                      onClick={() => {removeIntolerance(item)}}
+                      className="text-gray-400 hover:text-red-500 focus:outline-none focus:text-red-500 transition-colors duration-200"
+                      aria-label={`Remove ${item}`}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </li>
+                )
+              })}
+              
+            </ul>
+
+          </section>
+
+          {/* <section>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="favIngredients">
+              Favorite Ingredients
+            </label>
+
+            <div className="flex items-center space-x-2">
+              <select
+                id="favIngredients"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
+                onChange={(e:any) => {setSelectedFavIngredient(e.target.value)}}
+              >
+                <option value="">Select an intolerance</option>
+                <option value="Bananas">Bananas</option>
+                <option value="Kale">Kale</option>
+                <option value="Rice">Rice</option>
+                <option value="Cheese">Cheese</option>
+                <option value="eggs">eggs</option>
+              </select>
+              <button
+                onClick={addFavIngredient}
+                // disabled={!selectedIntolerance}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+
+            <ul>
+              {formValues.favIngredients.map((item) => {
+                return (
+                  <li key={item} className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-3 shadow-sm m-2">
+                    <span className="text-gray-800">{item}</span>
+                    <button
+                      onClick={() => {removeIngredient(item)}}
+                      className="text-gray-400 hover:text-red-500 focus:outline-none focus:text-red-500 transition-colors duration-200"
+                      aria-label={`Remove ${item}`}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </li>
+                )
+              })}
+              
+            </ul>
+
+          </section> */}
 
           <div className="flex items-center justify-between">
             <button
