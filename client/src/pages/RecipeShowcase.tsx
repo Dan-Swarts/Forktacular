@@ -58,7 +58,7 @@ const RecipeShowcase = () =>  {
       const result = await deleteRecipe(currentRecipeDetails.id); 
       alert('Recipe deleted successfully!');
       console.log('Recipe delete response:', result);
-      //setIsSaved(false); 
+      setIsSaved(false); 
       navigate('/');
     } catch (err) {
       console.error('Error deleting recipe:', err);
