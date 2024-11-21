@@ -113,7 +113,7 @@ const HomePage = () => {
 
           {/* Content */}
         <div className="pt-20 px-4"> {/* Added padding-top to avoid overlap with fixed navbar */}
-          <h1 className="text-4xl font-bold text-[#a84e24] mb-8 text-center">Sample Recipes</h1>
+          <h1 className="text-4xl font-bold text-[#a84e24] mb-8 text-center">Save New Recipes to Your Recipe Book</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"> {/* Adjusted gap */}
             {recipes.map((recipe) => 
               <RecipeCard recipe={recipe}></RecipeCard>

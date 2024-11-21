@@ -123,18 +123,22 @@ const retrieveRecipesByUser = async () => {
 // 5. POST /api/recipes - Create new recipe
 // Add a new recipe via POST request to the API
 const addRecipe = async (body: RecipeDetails) => {
+    const jwtToken = authService.getToken();
     try {
       const response = await fetch(
         '/api/recipes/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}`
           },
           body: JSON.stringify(body)
         }
       )
       const data = await response.json();
-  
+      console.log("API response status:", response.status); // Log response status
+      console.log("API response data:", data); // Log the full response data
+
       if (!response.ok) {
         throw new Error('Invalid API response, check network tab!');
       }
