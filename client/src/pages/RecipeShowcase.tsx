@@ -22,6 +22,7 @@ const RecipeShowcase = () =>  {
   
       if (isLoggedIn && currentRecipeDetails.id) {
         try {
+          setIsSaved(false); 
           const exists = await retrieveRecipeByUserId(currentRecipeDetails.id);
           console.log("Exists value:", exists);
           setIsSaved(true); 
@@ -42,8 +43,12 @@ const RecipeShowcase = () =>  {
     console.log("Current Recipe Details:", currentRecipeDetails);
     try {
       const result = await addRecipe(currentRecipeDetails);
+      if (result && result.id) {
+        currentRecipeDetails.id = result.id; // Update the ID with the one from the backend
+      }
       alert('Recipe saved successfully!');
       console.log('Recipe save response:', result);
+      setIsSaved(true); 
     } catch (err) {
       console.error('Error saving recipe:', err);
       alert('Failed to save the recipe.');
@@ -58,6 +63,7 @@ const RecipeShowcase = () =>  {
       alert('Recipe deleted successfully!');
       console.log('Recipe delete response:', result);
       setIsSaved(false); 
+      navigate('/');
     } catch (err) {
       console.error('Error deleting recipe:', err);
       alert('Failed to delete recipe.');
