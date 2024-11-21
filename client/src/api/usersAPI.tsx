@@ -1,5 +1,6 @@
 
 import  UserDetails  from "../interfaces/userDetails.js"; 
+import { authService } from "./authentication.js";
 
 
 // 1. GET /api/users - Get all users
@@ -207,5 +208,34 @@ const addUser = async (body: UserDetails) => {
     }
   }  
 
-  export { retrieveUsers, retrieveUser, addUser, updateUser, deleteUser, retrieveSimpleUser, deleteSimpleUser, updateSimpleUser};
+  // 7. GET api/users/account - Get account details of user by their jwt token
+  const getAccountInformation = async () => {
+    const jwtToken = authService.getToken();
+    const response = await fetch('/api/users/account', {
+        headers: {
+            'Authorization': `Bearer ${jwtToken}`
+        }
+    });
+    return response;
+  }
+
+  // 8. PUT api/users/account/update - Update user account by jwt token
+  interface accountPreferences {
+    diet?: string,
+    intolerance?: string[],
+    favIngredients?: string[],
+  };
+
+  const putAccountInformation = async (accountPreferences : accountPreferences) => {
+    const jwtToken = authService.getToken();
+    const response = await fetch('/api/users/account/update', {
+        headers: { 
+            'Authorization': `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify(accountPreferences),
+    });
+    return response;
+  }
+
+  export { retrieveUsers, retrieveUser, addUser, updateUser, deleteUser, retrieveSimpleUser, deleteSimpleUser, updateSimpleUser, getAccountInformation, putAccountInformation};
   
