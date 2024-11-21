@@ -16,12 +16,6 @@ const HomePage = () => {
     setRecipes(recipes);
   }
 
-  // useLayoutEffect( async () => {
-  //   if( await authService.loggedIn()) {
-  //     setLoginCheck(true);
-  //   }
-  // }, []);
-
   useLayoutEffect(() => {
       getRandomRecipes();
 

@@ -2,11 +2,23 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { currentRecipeContext } from "../App";
 import { addRecipe } from "../api/recipesAPI";
+import { authService } from '../api/authentication';
+import { useState, useLayoutEffect} from 'react';
 
 
-const RecipeShowcase = ({ loggedIn }: { loggedIn: boolean }) =>  {
+const RecipeShowcase = () =>  {
   const navigate = useNavigate();
   const { currentRecipeDetails } = useContext(currentRecipeContext);
+  const [loginCheck,setLoginCheck] = useState(false);
+
+
+  useLayoutEffect(() => {
+    const checkLogin = async () => {
+      const isLoggedIn = await authService.loggedIn(); // Call authService.loggedIn() to check
+      setLoginCheck(isLoggedIn);
+    };
+    checkLogin(); // Call the async function inside the effect
+  }, []);
 
    // Function to save recipe
    const saveRecipe = async () => {
@@ -71,13 +83,15 @@ const RecipeShowcase = ({ loggedIn }: { loggedIn: boolean }) =>  {
     <h2 className="text-3xl font-bold text-[#a84e24] mb-4">{currentRecipeDetails.title}</h2>
     
     {/* Save Button */}
-    {loggedIn && (
+    {loginCheck ? (
           <button
             onClick={saveRecipe}
             className="bg-[#a84e24] text-white font-semibold py-2 px-4 rounded hover:bg-[#b7572e] mb-6"
           >
             Save Recipe
           </button>
+         ) : (
+          <div className="text-gray-500 italic mb-6">Log in to save recipes.</div>
         )}
       
       {/* Additional Info */}

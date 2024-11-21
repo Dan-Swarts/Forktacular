@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'recipe-showcase',
-        element: <RecipeShowcase loggedIn={true}/>
+        element: <RecipeShowcase />
       }
     ]
   }

@@ -97,7 +97,7 @@ router.put('/account/update', async (req:Request,res:Response) => {
 
 
 // Save a recipe to one logged-in user
-// POST api/users/recipes/:recipeId - Save a recipe to a user 
+// POST api/users/save/recipes/:recipeId - Save a recipe to a user 
 router.post('/save/recipe/:recipeId', async (req: Request, res: Response) => {
   const userInfo = req.user;
   const { recipeId } = req.params;
