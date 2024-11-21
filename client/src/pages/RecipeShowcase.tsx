@@ -1,16 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { currentRecipeContext } from "../App";
+import { addRecipe } from "../api/recipesAPI";
 
 
-const RecipeShowcase = () => {
+const RecipeShowcase = ({ loggedIn }: { loggedIn: boolean }) =>  {
   const navigate = useNavigate();
   const { currentRecipeDetails } = useContext(currentRecipeContext);
+
+   // Function to save recipe
+   const saveRecipe = async () => {
+    console.log("Current Recipe Details:", currentRecipeDetails);
+    try {
+      const result = await addRecipe(currentRecipeDetails);
+      alert('Recipe saved successfully!');
+      console.log('Recipe save response:', result);
+    } catch (err) {
+      console.error('Error saving recipe:', err);
+      alert('Failed to save the recipe.');
+    }
+  };
 
   const RawHtmlRenderer = ({ htmlString }: { htmlString: string }) => {
     // Replace multiple line breaks with a single space or remove unwanted elements
     const cleanHtml = htmlString.replace(/<\/?[^>]+(>|$)/g, ""); // removes HTML tags if needed
-    
     return <span dangerouslySetInnerHTML={{ __html: cleanHtml }} />;
   };
   
@@ -41,6 +54,7 @@ const RecipeShowcase = () => {
     </div>
   </nav>
 
+  {/* Recipe Details */}
   <div className="max-w-2xl mx-auto p-6 bg-[#fadaae] shadow-lg rounded-lg mt-10 border border-gray-200">
     {/* Recipe Image */}
     {currentRecipeDetails.image && (
@@ -56,6 +70,16 @@ const RecipeShowcase = () => {
     {/* Recipe Title */}
     <h2 className="text-3xl font-bold text-[#a84e24] mb-4">{currentRecipeDetails.title}</h2>
     
+    {/* Save Button */}
+    {loggedIn && (
+          <button
+            onClick={saveRecipe}
+            className="bg-[#a84e24] text-white font-semibold py-2 px-4 rounded hover:bg-[#b7572e] mb-6"
+          >
+            Save Recipe
+          </button>
+        )}
+      
       {/* Additional Info */}
       <div className="mb-6 space-y-2">
         {currentRecipeDetails.readyInMinutes && (
