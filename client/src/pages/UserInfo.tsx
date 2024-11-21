@@ -1,8 +1,7 @@
 
-import { useState, useLayoutEffect, useEffect, } from 'react';
+import { useState, useLayoutEffect, } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../api/authentication';
-import { retrieveUser } from '../api/usersAPI'
 import SignUpForm from '../components/SignUpForm';
 import LoginForm from '../components/LoginForm';
 import AccountShowCase from '../components/AccountShowCase';
@@ -23,17 +22,6 @@ const UserInfo = () => {
   }, []);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  // Async function fetchUsers retrieves user data 
-  const fetchUser = async () => {
-    // Call retrieveUser function which asynchronously fetches user data.
-    const data = await retrieveUser(1);
-    console.log(data); 
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#fef3d0]">

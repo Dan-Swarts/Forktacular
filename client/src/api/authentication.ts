@@ -1,4 +1,5 @@
 import UserLogin from "../interfaces/UserLogin"
+import { getAccountInformation } from "./usersAPI";
 
 class AuthService {
     login = async (userInfo: UserLogin) => {
@@ -54,12 +55,7 @@ class AuthService {
   
     // Check if the user is logged in by retrieving the token from localStorage
     loggedIn = async() => {
-        const jwtToken = this.getToken();
-        const response = await fetch('/api/users/account', {
-            headers: {
-                'Authorization': `Bearer ${jwtToken}`
-            }
-        });
+        const response = await getAccountInformation();
 
         if(response.status === 403){
             return false;
