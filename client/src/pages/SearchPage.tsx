@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import Recipe from '../interfaces/recipe';
 import RecipeCard from '../components/RecipeCard'; 
@@ -10,22 +10,45 @@ const RecipeSearchPage: React.FC = () => {
   const [results, setResults] = useState<Recipe[]>([]); // Store the search results
   const [loading, setLoading] = useState<boolean>(false); // Track loading state
   const navigate = useNavigate();
-
-  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: any) => {
+    // the query is changed instantly, and the api search is debounced
     const queryText = e.target.value;
     setQuery(queryText);
     if (queryText.trim() === '') {
       setResults([]);
       return;
     }
+    debouncedHandleSearch(queryText)
+  }
+
+  const debounce = (mainFunction: any, delay: number) => {
+    // Declare a variable called 'timer' to store the timer ID
+    let timer: any;
+  
+    // Return an anonymous function that takes in any number of arguments
+    return function (...args: any) {
+      // Clear the previous timer to prevent the execution of 'mainFunction'
+      clearTimeout(timer);
+  
+      // Set a new timer that will execute 'mainFunction' after the specified delay
+      timer = setTimeout(() => {
+        mainFunction(...args);
+      }, delay);
+    };
+  };
+
+  const handleSearch = async (queryText: string) => {
     setLoading(true);
     const searchParams = {
       query: queryText
     }
     const recipes = await apiService.forignRecipeSearch(searchParams);
+    // console.log(recipes);
     setResults(recipes);
     setLoading(false);
   };
+  
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, 300), []);
 
   return (
     <div className="min-h-screen bg-[#fef3d0]">
@@ -58,7 +81,7 @@ const RecipeSearchPage: React.FC = () => {
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#ff9e40]"
             placeholder="Search for recipes..."
             value={query}
-            onChange={handleSearch}
+            onChange={handleChange}
           />
           <button className="ml-2 bg-[#ff9e40] text-white px-4 py-2 rounded-md hover:bg-[#e7890c] transition-colors">
             Filter
