@@ -83,7 +83,7 @@ router.put('/account/update', async (req:Request,res:Response) => {
     const { intolerance, diet, favIngredients, } = req.body;
 
     if(intolerance){ user.intolerance = intolerance; }
-    if(diet){ user.diet = diet; }
+    if(diet || diet === ''){ user.diet = diet; }
     if(favIngredients){ user.favIngredients = favIngredients; }
 
     await user.save();
