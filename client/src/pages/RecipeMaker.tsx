@@ -7,6 +7,7 @@ import askService from "../api/askService";
 const RecipeMaker = () => {
   const navigate = useNavigate();
   const { setCurrentRecipeDetails } = useContext(currentRecipeContext);
+  const [prompt,setPrompt] = useState<string>('');
   const [recipe, setRecipe] = useState<RecipeDetails>({
     title: "",
     summary: "",
@@ -57,46 +58,50 @@ const RecipeMaker = () => {
     navigate("/recipe-showcase");
   };
 
-  const handleAiCall = async () => {
-    console.log('hello world');
-    await askService.askForRecipe("");
+  const handleAiCall = async (e: any) => {
+    e.preventDefault();
+    const recipe = await askService.askForRecipe(prompt);
+    setPrompt(JSON.stringify(recipe.formattedResponse));
   }
 
   return (
     <div className="bg-[#fef3d0] min-h-screen pt-24 px-6">
       <h1 className="text-3xl font-bold text-center mb-8">Create a Recipe</h1>
 
-      <form className="flex items-center justify-center" onSubmit={handleAiCall}>
-        <button
-          className="flex items-center justify-center px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75 transition duration-300 ease-in-out"
-          type="submit"
-        >
-          <svg
-            className="w-5 h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13 10V3L4 14h7v7l9-11h-7z"
-            />
-          </svg>
-          Generate AI Recipe
-        </button>
-        <div>
-          <label className="block font-bold mb-1">prompt</label>
-          <input
-            type="text"
-            value={recipe.title}
-            onChange={(e) => handleChange("title", e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-      </form>
+      <form className="flex flex-col items-center justify-center" onSubmit={handleAiCall}>
+  <button
+    className="flex items-center justify-center px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75 transition duration-300 ease-in-out"
+    type="submit"
+  >
+    <svg
+      className="w-5 h-5 mr-2"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M13 10V3L4 14h7v7l9-11h-7z"
+      />
+    </svg>
+    Generate AI Recipe
+  </button>
+  <div>
+    <label className="block font-bold mb-1">prompt</label>
+    <textarea
+      // type="text"
+      value={prompt}
+      onChange={(e) => {
+        setPrompt(e.target.value);
+      }}
+      className="w-96 p-2 border rounded"
+    />
+  </div>
+</form>
+
 
 
       <form

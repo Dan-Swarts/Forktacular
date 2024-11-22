@@ -4,7 +4,7 @@ class askService {
     async askForRecipe(question: string) {
         const jwtToken = authService.getToken();
 
-        const response = await fetch('/api/search/recipes', {
+        const response = await fetch('/api/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
