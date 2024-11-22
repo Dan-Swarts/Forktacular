@@ -46,10 +46,10 @@ const RecipeShowcase = () =>  {
       if (result && result.id) {
         currentRecipeDetails.id = result.id; // Update the ID with the one from the backend
       }
-      alert('Recipe saved successfully!');
+      //alert('Recipe saved successfully!');
       console.log('Recipe save response:', result);
       setIsSaved(true); 
-      navigate('/');
+      navigate('/recipe-book');
     } catch (err) {
       console.error('Error saving recipe:', err);
       alert('Failed to save the recipe.');
@@ -61,10 +61,10 @@ const RecipeShowcase = () =>  {
     console.log("currrent REcipe detials ID:" + currentRecipeDetails.id);
     try {
       const result = await deleteRecipe(currentRecipeDetails.id); 
-      alert('Recipe deleted successfully!');
+      //alert('Recipe deleted successfully!');
       console.log('Recipe delete response:', result);
       setIsSaved(false); 
-      navigate('/');
+      navigate('/recipe-book');
     } catch (err) {
       console.error('Error deleting recipe:', err);
       alert('Failed to delete recipe.');
