@@ -1,6 +1,6 @@
 import { authService } from "../api/authentication";
 import { useNavigate } from "react-router-dom";
-import { useLayoutEffect, useState, useEffect } from "react";
+import { useLayoutEffect, useState, } from "react";
 import { getAccountInformation, putAccountInformation } from "../api/usersAPI";
 
 interface accountShowCaseProps {
@@ -21,13 +21,6 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
         intolerance:[],
     });
 
-    useEffect(() => {
-      console.log('Updated formValues:', formValues);
-    }, [formValues]);
-
-    const [selectedIntolerance,setSelectedIntolerance] = useState<string>('');
-    // const [selectedFavIngredient,setSelectedFavIngredient] = useState<string>('');
-
     useLayoutEffect(() => {
         const getInfo = async () => {
           const response = await getAccountInformation();
@@ -42,25 +35,25 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
 
     const handleLogOut = () => {
       authService.logout();
-      navigate('/user-info');
       setLoginCheck(false);
-    }
+    };
 
     const handleChange = (e: any) => {
         setFormValues({
           ...formValues,
           [e.target.id]: e.target.value
         });
-        console.log(formValues);
     };
 
     const handleAccountUpdate = (e: any) => {
       e.preventDefault();
       putAccountInformation(formValues);
+      navigate('/');
     };
 
-    const addIntolerance = (e: any) => {
-      e.preventDefault();
+    const addIntolerance = (event: any) => {
+      event.preventDefault();
+      const selectedIntolerance = event.target.value;
 
       if(formValues.intolerance.includes(selectedIntolerance)){
         console.log('This intolerence is already in the user settings');
@@ -68,15 +61,18 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
       }
 
       if(selectedIntolerance === ''){
-        console.log('Please select one of the dropdowns.');
+        console.log('Please select a dropdown');
         return;
       }
+
       const updatedIntolerances = [...formValues.intolerance, selectedIntolerance];
 
       setFormValues((previousValues:accountInfo) => ({
         ...previousValues,
         intolerance: updatedIntolerances,
       }));
+
+      event.target.value="";
       
     };
 
@@ -96,7 +92,7 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
     return (
       <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
         <form onSubmit={handleAccountUpdate} className="space-y-6">
-          <section>
+          <section className="Diet-section">
             <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="diet">
               Diet
             </label>
@@ -123,7 +119,7 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
             </select>
           </section>
 
-          <section>
+          <section className="Intolerance-section">
             <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="intolerance">
               Intolerance
             </label>
@@ -132,10 +128,10 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
               <select
                 id="intolerance"
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
-                onChange={(e:any) => {setSelectedIntolerance(e.target.value)}}
+                onChange={(event:any) => {addIntolerance(event)}}
               >
-                <option disabled selected>
-                  {'Select an intolerance'}
+                <option selected value=''>
+                  Select an intolerance
                 </option>
                 <option value="Dairy">Dairy</option>
                 <option value="Egg">Egg</option>
@@ -150,15 +146,6 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
                 <option value="Tree Nut">Tree Nut</option>
                 <option value="Wheat">Wheat</option>
               </select>
-              <button
-                onClick={addIntolerance}
-                // disabled={!selectedIntolerance}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-              </button>
             </div>
 
             <ul>
