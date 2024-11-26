@@ -54,6 +54,7 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
     const addIntolerance = (event: any) => {
       event.preventDefault();
       const selectedIntolerance = event.target.value;
+      event.target.value="";
 
       if(formValues.intolerance.includes(selectedIntolerance)){
         console.log('This intolerence is already in the user settings');
@@ -71,8 +72,6 @@ export default function AccountShowCase({ setLoginCheck }: accountShowCaseProps)
         ...previousValues,
         intolerance: updatedIntolerances,
       }));
-
-      event.target.value="";
       
     };
 
