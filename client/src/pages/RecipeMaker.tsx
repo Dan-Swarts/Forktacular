@@ -117,6 +117,7 @@ const RecipeMaker = () => {
             className="w-full p-2 border rounded"
           />
         </div>
+
         <div>
           <label className="block font-bold mb-1">Summary</label>
           <textarea
@@ -125,6 +126,7 @@ const RecipeMaker = () => {
             className="w-full p-2 border rounded"
           />
         </div>
+
         <div>
           <label className="block font-bold mb-1">Ready In Minutes</label>
           <input
@@ -134,6 +136,7 @@ const RecipeMaker = () => {
             className="w-full p-2 border rounded"
           />
         </div>
+
         <div>
           <label className="block font-bold mb-1">Servings</label>
           <input
@@ -186,12 +189,27 @@ const RecipeMaker = () => {
           <label className="block font-bold mb-1">Diets</label>
           {(recipe.diets ?? []).map((diet, index) => (
             <div key={index} className="flex items-center space-x-2 mb-2">
-              <input
-                type="text"
-                value={diet}
+              <select
+                id="diet"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
                 onChange={(e) => handleListChange("diets", index, e.target.value)}
-                className="flex-1 p-2 border rounded"
-              />
+              >
+                <option disabled selected>
+                  {diet}
+                </option>
+                <option value="">None</option>
+                <option value="Gluten Free">Gluten Free</option>
+                <option value="Ketogenic">Ketogenic</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
+                <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Pescetarian">Pescetarian</option>
+                <option value="Paleo">Paleo</option>
+                <option value="Primal">Primal</option>
+                <option value="Low FODMAP">Low FODMAP</option>
+                <option value="Whole30">Whole30</option>
+              </select>
               <button
                 type="button"
                 onClick={() => handleRemoveItem("diets", index)}
