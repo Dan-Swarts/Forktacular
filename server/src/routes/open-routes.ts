@@ -13,4 +13,15 @@ router.get('/random', async (_req: Request, res: Response) => {
     }
 });
 
+// GET /open/information/:id - GET specific recipe information
+router.get('/information/:id', async (req: Request, res: Response) => {
+    try{
+        const id: number = parseInt(req.params.id);
+        const information = await spoonacularService.findInformation(id);
+        res.status(200).json(information);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+});
+
 export default router;

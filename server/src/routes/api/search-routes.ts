@@ -23,14 +23,5 @@ router.post('/recipes', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/information', async (req: Request, res: Response) => {
-    try{
-        const id: number = req.body.id;
-        const information = await spoonacularService.findInformation(id);
-        res.status(200).json(information);
-    } catch(error) {
-        res.status(500).json(error);
-    }
-});
 
 export default router;

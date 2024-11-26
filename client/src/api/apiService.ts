@@ -28,16 +28,7 @@ class apiService {
     };
 
     async forignInformationSearch(id: number) {
-        const jwtToken = authService.getToken();
-        const response = await fetch('/api/search/information', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwtToken}`
-            },
-            body: JSON.stringify({ id:id }),
-        });
-
+        const response = await fetch(`/open/information/${id}`);
         const information: any = await response.json();
         return information;
     };
