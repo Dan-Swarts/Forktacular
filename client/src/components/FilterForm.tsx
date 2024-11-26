@@ -16,7 +16,7 @@ export default function FilterForm({filterValue, setFilterValue, setFilterVisibl
         e.preventDefault();
         console.log(filterValue)
         setFilterVisible(false);
-    }
+    };
 
     const handleChange = (e: any) => {
         setFilterValue({
@@ -28,6 +28,7 @@ export default function FilterForm({filterValue, setFilterValue, setFilterVisibl
     const addIntolerance = (event: any) => {
       event.preventDefault();
       const selectedIntolerance = event.target.value;
+      event.target.value="";
 
       if(filterValue.intolerance.includes(selectedIntolerance)){
         console.log('This intolerence is already in the user settings');
@@ -46,7 +47,6 @@ export default function FilterForm({filterValue, setFilterValue, setFilterVisibl
         intolerance: updatedIntolerances,
       }));
 
-      event.target.value="";
     };
 
     const addIngredient = (e: any) => {
@@ -208,7 +208,6 @@ export default function FilterForm({filterValue, setFilterValue, setFilterVisibl
               </ul>
 
           </section>
-
 
           <section className="ingredients-section">
               <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="intolerance">
