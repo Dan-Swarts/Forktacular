@@ -34,8 +34,8 @@ npm install
 # in the db folder:
 psql -U postgres 
 # here, you will be prompted to enter your password:
-postgres=# \i server/db/schema.sql
-postgres=# \q
+postgres=* \i server/db/schema.sql
+postgres=* \q
 
 # Step 4: remove the '.example' from .env.example. Fill in the .env file with your Postgres password,
 # JWT Secret Key, Spoonacular API Key, and optionally fill in the port number and/or the OpenAI API
