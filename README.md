@@ -29,13 +29,17 @@ node -v
 # Example output: v20.17.0
 npm install
 
-# Step 3: The application relys on a sequalize database connection. We recomend using a postgres connection by following the postgres installation guide above. Then run the schema.sql file found in the db folder:
+# Step 3: The application relys on a sequalize database connection. We recomend using a postgres
+# connection by following the postgres installation guide above. Then run the schema.sql file found
+# in the db folder:
 psql -U postgres 
 # here, you will be prompted to enter your password:
 postgres=# \i server/db/schema.sql
 postgres=# \q
 
-# Step 4: remove the '.example' from .env.example. Fill in the .env file with your Postgres password, JWT Secret Key, Spoonacular API Key, and optionally fill in the port number and/or the OpenAI API Key.
+# Step 4: remove the '.example' from .env.example. Fill in the .env file with your Postgres password,
+# JWT Secret Key, Spoonacular API Key, and optionally fill in the port number and/or the OpenAI API
+# Key.
 
 # Step 5 (optional): seed the database:
 cd server/
