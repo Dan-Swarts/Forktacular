@@ -6,6 +6,7 @@ import askService from "../api/askService";
 
 const RecipeMaker = () => {
   const navigate = useNavigate();
+  const [errorMessage,setErrorMessage] = useState('');
   const { setCurrentRecipeDetails } = useContext(currentRecipeContext);
   const [prompt,setPrompt] = useState<string>('');
   const [recipe, setRecipe] = useState<RecipeDetails>({
@@ -54,6 +55,12 @@ const RecipeMaker = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if(recipe.image){ 
+      if(recipe.image.length > 250){
+        setErrorMessage("Error: URL is too long");
+        return;
+      }
+    }
     setCurrentRecipeDetails(recipe);
     navigate("/recipe-showcase");
   };
@@ -262,11 +269,24 @@ const RecipeMaker = () => {
           <input
             type="text"
             value={recipe.image ?? ""} // Handle null value
-            onChange={(e) => setRecipe({ ...recipe, image: e.target.value })}
+            onClick={(event:any)=> {
+              event.target.select();
+            }}
+            onChange={(e) => {
+              const imageURL = e.target.value;
+              setRecipe({ ...recipe, image: imageURL })
+              if(imageURL.length > 250){
+                setErrorMessage("Error: URL is too long");
+              } else {
+                setErrorMessage("");
+              }
+              }
+            }
             className="p-2 border rounded w-full"
           />
         </div>
 
+        <p className="text-red-500 font-medium mt-2 text-sm">{errorMessage}</p>
         <button
           type="submit"
           className="w-full bg-[#a84e24] text-white font-bold p-2 rounded"
