@@ -9,6 +9,51 @@
 - [Usage](#usage)
 - [Contributing](#contributing)
 
+## Usage
+
+1. View Recipies
+<img src="assets/HomePageDemo.gif"/>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+2. Change Account Information
+<img src="assets/AccountInfoDemo.gif"/>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+3. Save Recipes
+<img src="assets/RecipeBookDemo.gif"/>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+4. Search for Recipes
+<img src="assets/RecipeSearchDemo.gif"/>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+5. Create Custom Recipies
+<img src="assets/RecipeMakerDemo.gif"/>
+
 ## Installation
 
 please visit [our deployed site](https://forktacular.onrender.com/) to access the application. If you want to run the application from your local machine, follow these instructions:
@@ -53,10 +98,6 @@ npm run build
 # step 7: acess the application through your web browser
 # http://localhost:3001/
 ```
-
-## Usage
-
-
 
 ## Contributing
 
