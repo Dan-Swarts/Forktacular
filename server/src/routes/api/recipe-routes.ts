@@ -53,17 +53,15 @@ router.get('/users/:userId', async (req, res) => {
       });
 
       if (!userWithRecipes) {
-          // If user not found, return a 404 response
           return res.status(404).json({ message: 'User not found' });
       }
 
       // Extract RecipeIDs
       const recipeIds = userWithRecipes.Recipes?.map(recipe => recipe.id);
 
-      // Respond with the RecipeIDs
       return res.json({ recipeIds });
   } catch (error) {
-      // Handle unexpected errors
+    
       console.error(error);
       return res.status(500).json({ message: 'Server error' });
   }

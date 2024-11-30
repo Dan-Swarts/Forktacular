@@ -73,7 +73,7 @@ const retrieveRecipeIdsByUserId = async (id: number | undefined) => {
 
 
 // 4. GET api/users/user/recipe-status/:id - Get one recipe saved by a User 
-// Retrieve one recipes saved by a particular user ID via the API
+// Retrieve one recipe saved by a particular user ID via the API
 const retrieveRecipeByUserId = async (id: number | undefined) => {
     const jwtToken = authService.getToken();
     try {
@@ -142,8 +142,8 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
         }
       )
       const data = await response.json();
-      console.log("API response status:", response.status); // Log response status
-      console.log("API response data:", data); // Log the full response data
+      console.log("API response status:", response.status); 
+      console.log("API response data:", data); 
 
       if (!response.ok) {
         throw new Error('Invalid API response, check network tab!');
@@ -182,7 +182,7 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
   
       // Extract the recipe ID 
       const { id: recipeId } = data; 
-      console.log("recipeID = " + recipeId); 
+      console.log("recipeID = ", recipeId); 
   
       if (!recipeId) {
         throw new Error('Recipe ID not returned from API');
@@ -207,10 +207,10 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
       return saveData;
     } catch (err) {
       if (err instanceof Error) {
-        console.error('Error during recipe operations:', err.message);
+        console.error('Error during recipe addition:', err.message);
         return Promise.reject(err.message);
       } else {
-        console.error('Unknown error during recipe operations:', err);
+        console.error('Unknown error during recipe addition:', err);
         return Promise.reject('An unknown error occurred');
       }
     }
@@ -276,10 +276,10 @@ const addRecipeToDatabase = async (body: RecipeDetails) => {
     return deleteData;
     } catch (err) {
     if (err instanceof Error) {
-        console.error('Error during recipe operations:', err.message);
+        console.error('Error during recipe deletion:', err.message);
         return Promise.reject(err.message);
     } else {
-        console.error('Unknown error during recipe operations:', err);
+        console.error('Unknown error during recipe deletion:', err);
         return Promise.reject('An unknown error occurred');
     }
     }
