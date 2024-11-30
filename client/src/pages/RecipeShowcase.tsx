@@ -40,14 +40,12 @@ const RecipeShowcase = () =>  {
 
   // Function to save recipe
    const saveRecipe = async () => {
-    console.log("Current Recipe Details:", currentRecipeDetails);
+   
     try {
       const result = await addRecipe(currentRecipeDetails);
       if (result && result.id) {
         currentRecipeDetails.id = result.id; // Update the ID with the one from the backend
       }
-      //alert('Recipe saved successfully!');
-      console.log('Recipe save response:', result);
       setIsSaved(true); 
       navigate('/recipe-book');
     } catch (err) {
@@ -61,7 +59,6 @@ const RecipeShowcase = () =>  {
     console.log("currrent REcipe detials ID:" + currentRecipeDetails.id);
     try {
       const result = await deleteRecipe(currentRecipeDetails.id); 
-      //alert('Recipe deleted successfully!');
       console.log('Recipe delete response:', result);
       setIsSaved(false); 
       navigate('/recipe-book');

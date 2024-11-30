@@ -86,9 +86,9 @@ router.get('/user/recipe-status/:recipeId', async (req: Request, res: Response) 
       },
     });
 
-      // Determine true or false strict boolean if the user is attached to that recipe
+      // Determine true or false if the user is attached to that recipe
     const isAttached = !!(user && user.Recipes && user.Recipes.length > 0);
-      // Set up the json to provide a key/value pair with exists and isAttached as true/false
+      // Set up a key/value pair with exists and isAttached as true/false
     return res.status(200).json({ exists: isAttached });
 
   } catch (error) {
@@ -151,7 +151,7 @@ router.post('/save/recipe/:recipeId', async (req: Request, res: Response) => {
     if (!recipe) {
       return res.status(404).json({ message: 'Recipe not found' });
     } else {
-    console.log(recipe.title); 
+
     console.log(User.associations);
     console.log(Recipe.associations); 
     console.log('Connecting to database: ', sequelize.config.database); 
@@ -177,9 +177,7 @@ router.post('/save/recipe/:recipeId', async (req: Request, res: Response) => {
 router.delete('/remove/recipe/:recipeId', async (req: Request, res: Response) => {
   const userInfo = req.user; 
   const { recipeId } = req.params;
-  console.log("here is the recipe ID" + recipeId); 
 
-  console.log("here is the user Info" + userInfo); 
   if (!userInfo) {
     return res.sendStatus(404); 
   }
@@ -198,7 +196,7 @@ router.delete('/remove/recipe/:recipeId', async (req: Request, res: Response) =>
     if (!recipe) {
       return res.status(404).json({ message: 'Recipe not found' });
     } else {
-    console.log(recipe.title); 
+
     console.log(User.associations);
     console.log(Recipe.associations); 
     console.log('Connecting to database: ', sequelize.config.database); 
