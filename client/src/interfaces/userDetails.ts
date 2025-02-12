@@ -6,5 +6,4 @@ export default interface UserDetails {
     intolerance?: string[] | null;
     diet?: string | null;
     favIngredients?: string[] | null; 
-    savedRecipes?: string[] | null; 
 }

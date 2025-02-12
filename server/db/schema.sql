@@ -1,0 +1,6 @@
+
+-- DROP DATABASE
+DROP DATABASE IF EXISTS recipe_deebee;
+
+-- CREATE DATABASE
+CREATE DATABASE recipe_deebee;
