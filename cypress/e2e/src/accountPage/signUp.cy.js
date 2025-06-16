@@ -1,11 +1,10 @@
-import credentials from "../testingAssets/accountCredentials";
+import credentials from "../../assets/accountCredentials";
 
 export default function runSignUpTest() {
   describe("Sign up page works as expected", () => {
     it("gives error when using a duplicate email", () => {
       // go to the sign-up page:
-      cy.visit("/");
-      cy.get("#account-nav-button").click();
+      cy.visit("/account");
       cy.get("#navigate-sign-up").click();
 
       // write redundant details:
